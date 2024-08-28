@@ -8,7 +8,8 @@ const mineSchema = new Schema({
     footprint: Number,
     coalType: String,
     qty: Number,
-    image: String
+    image: String,
+    description: String
 })
 
 module.exports = mongoose.model('Mine', mineSchema);

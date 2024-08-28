@@ -65,7 +65,6 @@ app.put("/index/:id", async(req,res)=>{
 })
 
 app.get("/index/:id/edit", async(req,res) =>{
-    console.log(req.params)
     const mines = await Mines.findById(req.params.id);
     res.render("edit", {mines , places});
 })

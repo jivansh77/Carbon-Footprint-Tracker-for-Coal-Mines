@@ -12,22 +12,23 @@
                       </div>
                       <div class="col-md-8">
                         <div class="card-body">
-                          <h5 class="card-title"><%= m.name %></h5>
+                          <h3 class="card-title"><%= m.name %></h3>
                           <p class="card-text text-secondary">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
                                 <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
                               </svg>
-                            <%  if(m.state === "---Select Your State---") {%>
+                              <%  if(mines.district === "---Select Your District---") {%>
                                 Not Assigned,
                             <% } else { %>
-                                <%= m.state %>,
+                                <%= m.district %>,
                             <% } %>
-            
-                            <%  if(m.district === "---Select Your District---") {%>
-                                Not Assigned,
+    
+                            <%  if(mines.state === "---Select Your State---") {%>
+                                Not Assigned
                             <% } else { %>
-                                <%= m.district %>
-                            <% } %></p>
+                                <%= m.state %>
+                            <% } %>
+                        </p>
                           <small class="text-body-secondary">Last updated 3 mins ago</small></p>
                           <a href="/index/<%=m._id%>"><button class="btn btn-dark mt-4">View</button></a>
                         </div>
@@ -48,5 +49,9 @@
         border-color: rgb(0, 0, 0);
         background-color: rgb(240, 240, 240);
         box-shadow: 3px 3px;
+    }
+
+    svg{
+        margin-bottom: 5px;
     }
 </style>

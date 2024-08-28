@@ -1,44 +1,53 @@
 <% layout("../layouts/boilerplate") %>
 
-<div class="row mt-5">
-    <div class="col-6 offset-3">
-        <div class="card">
-            <div class="ratio ratio-16x9">
-                <img src="<%= mines.image %>" class="card-img-top" alt="Not found">
-            </div>
-            <div class="card-body">
-                <h5 class="card-title"><%= mines.name%></h5>
-                <p class="card-text">
-                desc
-                </p>
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item text-secondary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
-                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
-                      </svg>
-                    <%  if(mines.state === "---Select Your State---") {%>
-                        Not Assigned,
-                    <% } else { %>
-                        <%= mines.state %>,
-                    <% } %>
-                        
-                    <%  if(mines.district === "---Select Your District---") {%>
-                        Not Assigned,
-                    <% } else { %>
-                        <%= mines.district %>
-                    <% } %>
-                </li>
-            </ul>
-            <div class="card-body align-items-center">
-                <a href="/index/<%= mines._id%>/edit" class="card-link"><button class="btn btn-success">Edit</button></a>
-                
-                    <form action="/index/<%= mines._id%>?_method=DELETE" method="post" class="d-inline">
-                        <a href="" class="card-link"> <button class="btn btn-danger">Delete</button></a>
-                    </form>
-                
-                <a href="/index" class="card-link">Back</a>
+<div class="container-fluid">
+    <div class="row mt-5">
+        <div class="col-6 offset-3">
+            <div class="card">
+                <div class="ratio ratio-16x9">
+                    <img src="<%= mines.image %>" class="card-img-top" alt="Not found">
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title"><%= mines.name%></h3>
+                    <p class="card-text">
+                        <%= mines.description %>
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-secondary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+                          </svg>
+                            
+                        <%  if(mines.district === "---Select Your District---") {%>
+                            Not Assigned,
+                        <% } else { %>
+                            <%= mines.district %>,
+                        <% } %>
+
+                        <%  if(mines.state === "---Select Your State---") {%>
+                            Not Assigned
+                        <% } else { %>
+                            <%= mines.state %>
+                        <% } %>
+                    </li>
+                </ul>
+                <div class="card-body align-items-center">
+                    <a href="/index/<%= mines._id%>/edit" class="card-link"><button class="btn btn-success">Edit</button></a>
+                    
+                        <form action="/index/<%= mines._id%>?_method=DELETE" method="post" class="d-inline">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    
+                    <a href="/index" class="card-link">Back</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    svg{
+        margin-bottom: 5px;
+    }
+</style>

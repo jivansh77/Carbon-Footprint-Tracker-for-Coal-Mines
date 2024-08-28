@@ -106,8 +106,15 @@ body {
                             <input type="text" class="form-control" id="image" name="Mine[image]" value="<%= mines.image %>">
                         </div>
 
-                        <button class="btn btn-success mt-4" id="subButton">Submit</button>
+                        <div class="mb-2">
+                            <label for="desc" class="form-label">Description</label>
+                            <textarea class="form-control" name="Mine[description]" id="desc"><%= mines.description %></textarea>
+                        </div>
+
+                        <button class="btn btn-success mt-3 d-inline" id="subButton">Submit</button>
+                        <a href="/index/<%= mines.id%>" class="mt-3"><button type="button" class="btn btn-success mt-3">Back</button></a>
                     </form>
+                    
                     
                     <div id="resultBox"></div>
                 </div>
