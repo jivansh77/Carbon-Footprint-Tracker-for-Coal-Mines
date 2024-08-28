@@ -73,19 +73,19 @@
 </nav>
 
 <script>
-  const add = document.querySelector('.add-nav');
-  const home = document.querySelector('.home-nav');
+  // Select all nav links
+  const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+
+  // Get the current path from the URL
   const path = window.location.pathname;
-  if(path === '/home')
-  {
-    home.classList.add('isActive');
-  }
-  else if(path === '/addmine')
-  {
-    add.classList.add('isActive');
-  }
-  else{
-    home.classList.remove('isActive');
-    add.classList.remove('isActive');
-  }
+
+  // Iterate through each nav link and add/remove 'isActive' class based on the current path
+  navLinks.forEach(link => {
+    const linkPath = link.getAttribute('href');
+    if (path === linkPath) {
+      link.classList.add('isActive');
+    } else {
+      link.classList.remove('isActive');
+    }
+  });
 </script>
