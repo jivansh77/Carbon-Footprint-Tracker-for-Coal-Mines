@@ -1,126 +1,309 @@
 <% layout("../layouts/boilerplate") %>
 
 <style>
-body {
-  font-family: 'Roboto', sans-serif;
-  background: #f0f4f8;
-  color: #333;
-  margin: 0;
-  padding: 0;
-}
+  body {
+    font-family: 'Roboto', sans-serif;
+    background: #E3FAE3;
+    color: #142114;
+    margin: 0;
+    padding: 0;
+  }
 
-.container {
-  padding: 40px;
-}
+  .container {
+    padding: 40px;
+  }
 
-#calcBox {
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  margin-top: 20px;
-}
+  #calcBox {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-top: 20px;
+  }
 
-.header-title {
-  font-size: 3rem;
-  color: #222;
-  margin-bottom: 30px;
-  text-align: center;
-  font-weight: 700;
-  line-height: 1.2;
-}
+  .header-title {
+    font-size: 3rem;
+    color: #142114;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 700;
+    line-height: 1.2;
+  }
 
-.form {
-  max-width: 600px;
-  margin: 0 auto;
-}
+  .form {
+    max-width: 600px;
+    margin: 0 auto;
+  }
 
-.form-group {
-  margin-bottom: 20px;
-}
+  .form-group {
+    margin-bottom: 20px;
+  }
 
-.addmine .form-label {
-  font-size: 1.1rem;
-  color: #555;
-  margin-bottom: 8px;
-  display: block;
-}
+  .addmine .form-label {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 8px;
+    display: block;
+  }
 
-.addmine .form-control, .addmine .form-select {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  font-size: 1rem;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+  .addmine .form-control, .addmine .form-select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 
-#resultBox {
-  display: none;
-  margin-top: 30px;
-  padding: 15px;
-  background: #e9ecef;
-  border-radius: 8px;
-  font-size: 1.25rem;
-  text-align: center;
-  color: #333;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
+  .resultBox {
+    display: none;
+    margin-top: 30px;
+    padding: 15px;
+    background: #e9ecef;
+    border-radius: 8px;
+    font-size: 1.25rem;
+    text-align: center;
+    color: #333;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Tab styles */
+  .tab-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .tab {
+    padding: 10px 20px;
+    margin: 0 5px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #142114;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+
+  .tab.active {
+    background-color: #138757;
+    color: #ffffff;
+  }
+
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
 </style>
 
 
 
 <div class="container">
-    <div class="row">
-        <div class="col-8 offset-2">
-            <div id="calcBox">
-                <div class="mt-5">
-                    <h1 class="text-center mb-4 header-title">Carbon Footprint Calculator</h1>
-                    <form>
-                        <div class="mb-4">
-                            <label for="qty" class="form-label">Coal Quantity (in kg):</label>
-                            <input type="number" class="form-control" id="qty" >
-                        </div>
+  <div class="row">
+    <div class="col-10 offset-1">
+      <div id="calcBox">
+        <div class="mt-4">
+          <h1 class="text-center mb-4 header-title">Carbon Footprint Calculator</h1>
 
-                        <div class="mb-4">
-                            <label for="type" class="form-label">Type of Coal:</label>
-                            <select id="type" class="form-select" >
-                              <option class="text-secondary" selected>---Select Type of Coal---</option>
-                              <option>Bituminous</option>
-                              <option>Anthracite </option>
-                            </select>
-                        </div>
-                        <button type="button" class="btn btn-success mt-4" id="subButton">Submit</button>
-                    </form>
-                    
-                    <div id="resultBox"></div>
-                </div>
+          <!-- Tabs -->
+          <div class="tab-container">
+            <div class="tab active" data-tab="directEmissionTab">Direct Emissions</div>
+            <div class="tab" data-tab="electricityUseTab">Electricity Use</div>
+            <div class="tab" data-tab="transportTab">Transport & Others</div>
+            <div class="tab" data-tab="deforestationTab">Deforestation</div>
+            <div class="tab" data-tab="resultsTab">Results</div>
+          </div>
+
+          <!-- Direct Emission Content -->
+          <div id="directEmissionTab" class="tab-content active">
+            <form>
+              <div class="mb-4">
+                <label for="qty" class="form-label">Coal Quantity (in kg):</label>
+                <input type="number" class="form-control" id="qty">
+              </div>
+
+              <div class="mb-4">
+                <label for="type" class="form-label">Type of Coal:</label>
+                <select id="type" class="form-select">
+                  <option class="text-secondary" selected>---Select Type of Coal---</option>
+                  <option>Bituminous</option>
+                  <option>Anthracite</option>
+                </select>
+              </div>
+              <button type="button" class="btn btn-success mt-4" id="subButton">Submit</button>
+            </form>
+
+            <div id="directEmissionResultBox" class="resultBox"></div>
+          </div>
+
+          <!-- Electricity Use Content -->
+          <div id="electricityUseTab" class="tab-content">
+            <form>
+              <div class="mb-4">
+                <label for="electricity" class="form-label">Electricity Consumed (in kWh):</label>
+                <input type="number" class="form-control" id="electricity">
+              </div>
+              <button type="button" class="btn btn-success mt-4" id="electricityButton">Submit</button>
+            </form>
+
+            <div id="electricityResultBox" class="resultBox"></div>
+          </div>
+
+          <!-- Transport & Others Content -->
+          <div id="transportTab" class="tab-content">
+            <form>
+              <div class="mb-4">
+                <label for="transport" class="form-label">Transport Distance (in km):</label>
+                <input type="number" class="form-control" id="transport">
+              </div>
+              <div class="mb-4">
+                <label for="equipment" class="form-label">Equipment Use (in hours):</label>
+                <input type="number" class="form-control" id="equipment">
+              </div>
+              <div class="mb-4">
+                <label for="waste" class="form-label">Waste Management (in kg):</label>
+                <input type="number" class="form-control" id="waste">
+              </div>
+              <div class="mb-4">
+                <label for="employees" class="form-label">Employee Count:</label>
+                <input type="number" class="form-control" id="employees">
+              </div>
+              <div class="mb-4">
+                <label for="endUse" class="form-label">End Use of Coal (in kg):</label>
+                <input type="number" class="form-control" id="endUse">
+              </div>
+              <button type="button" class="btn btn-success mt-4" id="transportButton">Submit</button>
+            </form>
+
+            <div id="transportResultBox" class="resultBox"></div>
+          </div>
+
+          <!-- Deforestation Content -->
+          <div id="deforestationTab" class="tab-content">
+            <form>
+              <div class="mb-4">
+                <label for="deforestedArea" class="form-label">Deforested Area (in hectares):</label>
+                <input type="number" class="form-control" id="deforestedArea">
+              </div>
+              <button type="button" class="btn btn-success mt-4" id="deforestationButton">Submit</button>
+            </form>
+
+            <div id="deforestationResultBox" class="resultBox"></div>
+          </div>
+
+          <!-- Results Content -->
+          <div id="resultsTab" class="tab-content">
+            <div class="mb-4">
+              <h3 class="text-center text-success mb-3"><b>Carbon Footprint Results</b></h3>
+              <p class="text-center" id="directEmissionResult">Direct Emissions: 0 kg CO<sub>2</sub></p>
+              <p class="text-center" id="electricityResult">Electricity Use: 0 kg CO<sub>2</sub></p>
+              <p class="text-center" id="transportResult">Transport & Others: 0 kg CO<sub>2</sub></p>
+              <p class="text-center" id="deforestationResult">Deforestation: 0 kg CO<sub>2</sub></p>
+              <hr>
+              <h4 class="text-center" id="totalResult">Total: 0 kg CO<sub>2</sub></h4>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
-<script>  
-    const qty = document.querySelector("#qty");
-    const type = document.querySelector("#type");
-    const btn = document.querySelector("#subButton");
-    const result = document.querySelector("#resultBox");
+<script>
+  const tabs = document.querySelectorAll(".tab");
+  const tabContents = document.querySelectorAll(".tab-content");
 
-    btn.addEventListener("click", () => {
-      let emission = calc(qty.value, type.value);
-      result.innerHTML = `CO<sub>2</sub> Emission: ${emission} kg`;
-      result.style.display = "block"; // Show the result box
-      console.log("Button clicked");
+  let directEmission = 0;
+  let electricityEmission = 0;
+  let transportEmission = 0;
+  let deforestationEmission = 0;
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("active"));
+      tabContents.forEach(content => content.classList.remove("active"));
+      tab.classList.add("active");
+      const activeTabContent = document.getElementById(tab.dataset.tab);
+      activeTabContent.classList.add("active");
     });
+  });
 
-    function calc(qty, type) {
-      let pct;
-      if (type === 'Bituminous') {
-        pct = 70;
-      } else if (type === 'Anthracite') {
-        pct = 90;
-      }
-      let netCarb = (pct / 100) * qty;
-      return (netCarb) * 3.67;
+  // Calculation functions and button handlers
+
+  document.querySelector("#subButton").addEventListener("click", () => {
+    directEmission = calc(qty.value, type.value);
+    document.getElementById("directEmissionResultBox").innerHTML = `CO<sub>2</sub> Emission: ${directEmission.toFixed(2)} kg`;
+    document.getElementById("directEmissionResultBox").style.display = "block";
+    updateTotalResult();
+  });
+
+  document.querySelector("#electricityButton").addEventListener("click", () => {
+    electricityEmission = calcElectricity(document.querySelector("#electricity").value);
+    document.getElementById("electricityResultBox").innerHTML = `Electricity Use: ${electricityEmission.toFixed(2)} kg CO<sub>2</sub>`;
+    document.getElementById("electricityResultBox").style.display = "block";
+    updateTotalResult();
+  });
+
+  document.querySelector("#transportButton").addEventListener("click", () => {
+    transportEmission = calcTransport(
+      document.querySelector("#transport").value,
+      document.querySelector("#equipment").value,
+      document.querySelector("#waste").value,
+      document.querySelector("#employees").value,
+      document.querySelector("#endUse").value
+    );
+    document.getElementById("transportResultBox").innerHTML = `Transport & Others: ${transportEmission.toFixed(2)} kg CO<sub>2</sub>`;
+    document.getElementById("transportResultBox").style.display = "block";
+    updateTotalResult();
+  });
+
+  document.querySelector("#deforestationButton").addEventListener("click", () => {
+    deforestationEmission = calcDeforestation(document.querySelector("#deforestedArea").value);
+    document.getElementById("deforestationResultBox").innerHTML = `Deforestation: ${deforestationEmission.toFixed(2)} kg CO<sub>2</sub>`;
+    document.getElementById("deforestationResultBox").style.display = "block";
+    updateTotalResult();
+  });
+
+  function updateTotalResult() {
+    const total = directEmission + electricityEmission + transportEmission + deforestationEmission;
+    document.getElementById("directEmissionResult").innerHTML = `Direct Emissions: ${directEmission.toFixed(2)} kg CO<sub>2</sub>`;
+    document.getElementById("electricityResult").innerHTML = `Electricity Use: ${electricityEmission.toFixed(2)} kg CO<sub>2</sub>`;
+    document.getElementById("transportResult").innerHTML = `Transport & Others: ${transportEmission.toFixed(2)} kg CO<sub>2</sub>`;
+    document.getElementById("deforestationResult").innerHTML = `Deforestation: ${deforestationEmission.toFixed(2)} kg CO<sub>2</sub>`;
+    document.getElementById("totalResult").innerHTML = `Total Carbon Footprint: ${total.toFixed(2)} kg CO<sub>2</sub>`;
+  }
+
+  // Existing calculation functions
+  function calc(qty, type) {
+    let pct;
+    if (type === 'Bituminous') {
+      pct = 70;
+    } else if (type === 'Anthracite') {
+      pct = 90;
     }
+    let netCarb = (pct / 100) * qty;
+    return (netCarb) * 3.67;
+  }
+
+  function calcElectricity(kWh) {
+    return kWh * 0.5; // Placeholder: Adjust with actual conversion factor
+  }
+
+  function calcTransport(transportDistance, equipmentHours, wasteKg, employeeCount, endUseKg) {
+    let transportEmission = transportDistance * 0.3; // Placeholder
+    let equipmentEmission = equipmentHours * 0.4; // Placeholder
+    let wasteEmission = wasteKg * 0.1; // Placeholder
+    let employeeEmission = employeeCount * 0.2; // Placeholder
+    let endUseEmission = endUseKg * 0.5; // Placeholder
+    return transportEmission + equipmentEmission + wasteEmission + employeeEmission + endUseEmission;
+  }
+
+  function calcDeforestation(hectares) {
+    return hectares * 10; // Placeholder: Adjust with actual conversion factor
+  }
 </script>
