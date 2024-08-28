@@ -18,7 +18,7 @@ body {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 30px;
-  margin-top: 20px;
+ 
 }
 
 .header-title {
@@ -72,11 +72,11 @@ body {
 }
 </style>
 
-<div class="container">
+<div class="container py-3">
     <div class="row">
         <div class="col-8 offset-2">
             <div id="calcBox">
-                <div class="mt-5">
+                <div >
                     <h1 class="text-center mb-4 header-title"> Edit Mine </h1>
 
                     <form action="/index/<%= mines.id%>/?_method=PUT" method="post">
@@ -101,7 +101,7 @@ body {
                           </select>
                         </div>
 
-                        <div class="mb-4">
+                        <div class="mb-3">
                             <label for="image" class="form-label">Image URL:</label>
                             <input type="text" class="form-control" id="image" name="Mine[image]" value="<%= mines.image %>">
                         </div>
@@ -117,28 +117,6 @@ body {
 </div>
 
 <script>  
-    const qty = document.querySelector("#qty");
-    const type = document.querySelector("#type");
-    const btn = document.querySelector("#subButton");
-    const result = document.querySelector("#resultBox");
-
-    btn.addEventListener("click", () => {
-      let emission = calc(qty.value, type.value);
-      result.innerHTML = `CO<sub>2</sub> Emission: ${emission} kg`;
-      result.style.display = "block"; // Show the result box
-      console.log("Button clicked");
-    });
-
-    function calc(qty, type) {
-      let pct;
-      if (type === 'Bituminous') {
-        pct = 70;
-      } else if (type === 'Anthracite') {
-        pct = 90;
-      }
-      let netCarb = (pct / 100) * qty;
-      return (netCarb) * 3.67;
-    }
 
     document.getElementById('state').addEventListener('change', function () {
       const state = this.value;
