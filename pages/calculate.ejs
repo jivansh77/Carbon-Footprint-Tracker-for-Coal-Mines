@@ -67,7 +67,6 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   }
 
-  /* Tab styles */
   .tab-container {
     display: flex;
     justify-content: center;
@@ -110,7 +109,6 @@
         <div class="mt-4">
           <h1 class="text-center mb-4 header-title">Carbon Footprint Calculator</h1>
 
-          <!-- Tabs -->
           <div class="tab-container">
             <div class="tab active" data-tab="directEmissionTab">Direct Emissions</div>
             <div class="tab" data-tab="electricityUseTab">Electricity Use</div>
@@ -232,8 +230,6 @@
       activeTabContent.classList.add("active");
     });
   });
-
-  // Calculation functions and button handlers
 
   document.querySelector("#subButton").addEventListener("click", () => {
     directEmission = calc(qty.value, type.value);
