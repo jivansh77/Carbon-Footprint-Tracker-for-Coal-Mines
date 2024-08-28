@@ -1,8 +1,51 @@
 <% layout("../layouts/boilerplate") %>
 
 <div class="container">
-    <h1>
-        Your Submssions:
+    <h1 class="mb-5">Saved Mines:</h1>
+
+        <div>
+            <% for(let m of mines) {%>
+                <div class="card mb-4">
+                    <div class="row g-0">
+                      <div class="col-md-4">
+                        <img src="<%= m.image%>" class="img-fluid rounded-start" alt="Error">
+                      </div>
+                      <div class="col-md-8">
+                        <div class="card-body">
+                          <h5 class="card-title"><%= m.name %></h5>
+                          <p class="card-text"><%  if(m.state === "----Select Your State----") {%>
+                            Not Assigned,
+                        <% } else { %>
+                            <%= m.state %>
+                        <% } %>
         
-    </h1>
+                        <%  if(m.district === "----Select Your District----") {%>
+                            Not Assigned,
+                        <% } else { %>
+                            <%= m.district %>
+                        <% } %></p>
+                          <small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                          <a href="/index/<%=m._id%>"><button class="btn btn-dark mt-4">View</button></a>
+                          <form action="/index?_method=DELETE" method="post" class="d-inline">
+                            <button class="btn btn-danger mt-4">Delete</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            <% } %>
+        </div>
 </div>
+
+<style>
+    .card{
+        transition: 0.1s;
+    }
+
+    .card:hover{
+        border-width: 3px;
+        border-color: rgb(0, 0, 0);
+        background-color: rgb(240, 240, 240);
+        box-shadow: 7px 7px;
+    }
+</style>

@@ -12,7 +12,7 @@ app.engine('ejs', ejsMate);
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
-mongoose.connect('mongodb://localhost:3000/mines', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost:27017/mines')
     .then(() => {
         console.log("MONGO CONNECTION OPEN!!!")
     })
@@ -51,17 +51,16 @@ app.get("/index/:id", async(req,res) =>{
     res.render("show", {mines});
 })
 
-app.get("/index/:id/edit", async(req,res) =>{
-    console.log(req.params)
-    const mines = await Mines.findById(req.params.id);
-    res.render("edit", {mines});
-})
-
 app.delete("/index/:id", async(req,res)=>{
     const mines = await Mines.findByIdAndDelete(req.params.id)
     res.redirect("/index");
 })
 
+app.get("/index/:id/edit", async(req,res) =>{
+    console.log(req.params)
+    const mines = await Mines.findById(req.params.id);
+    res.render("edit", {mines});
+})
 
 
 
