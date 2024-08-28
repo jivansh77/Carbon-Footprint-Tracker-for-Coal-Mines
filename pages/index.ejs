@@ -16,7 +16,7 @@
                           <p class="card-text"><%  if(m.state === "----Select Your State----") {%>
                             Not Assigned,
                         <% } else { %>
-                            <%= m.state %>
+                            <%= m.state %>,
                         <% } %>
         
                         <%  if(m.district === "----Select Your District----") {%>
@@ -26,9 +26,6 @@
                         <% } %></p>
                           <small class="text-body-secondary">Last updated 3 mins ago</small></p>
                           <a href="/index/<%=m._id%>"><button class="btn btn-dark mt-4">View</button></a>
-                          <form action="/index?_method=DELETE" method="post" class="d-inline">
-                            <button class="btn btn-danger mt-4">Delete</button>
-                          </form>
                         </div>
                       </div>
                     </div>
