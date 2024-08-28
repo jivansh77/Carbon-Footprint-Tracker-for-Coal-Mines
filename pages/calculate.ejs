@@ -111,9 +111,9 @@
 
           <div class="tab-container">
             <div class="tab active" data-tab="directEmissionTab">Direct Emissions</div>
-            <div class="tab" data-tab="electricityUseTab">Electricity Use</div>
-            <div class="tab" data-tab="transportTab">Transport & Others</div>
-            <div class="tab" data-tab="deforestationTab">Deforestation</div>
+            <div class="tab" data-tab="electricityUseTab">Energy Consumption</div>
+            <div class="tab" data-tab="transportTab">Supply Chain</div>
+            <div class="tab" data-tab="deforestationTab">Land Use</div>
             <div class="tab" data-tab="resultsTab">Results</div>
           </div>
 
@@ -200,7 +200,7 @@
               <h3 class="text-center text-success mb-3"><b>Carbon Footprint Results</b></h3>
               <p class="text-center" id="directEmissionResult">Direct Emissions: 0 kg CO<sub>2</sub></p>
               <p class="text-center" id="electricityResult">Electricity Use: 0 kg CO<sub>2</sub></p>
-              <p class="text-center" id="transportResult">Transport & Others: 0 kg CO<sub>2</sub></p>
+              <p class="text-center" id="transportResult">Supply Chain: 0 kg CO<sub>2</sub></p>
               <p class="text-center" id="deforestationResult">Deforestation: 0 kg CO<sub>2</sub></p>
               <hr>
               <h4 class="text-center" id="totalResult">Total: 0 kg CO<sub>2</sub></h4>
@@ -233,7 +233,7 @@
 
   document.querySelector("#subButton").addEventListener("click", () => {
     directEmission = calc(qty.value, type.value);
-    document.getElementById("directEmissionResultBox").innerHTML = `CO<sub>2</sub> Emission: ${directEmission.toFixed(2)} kg`;
+    document.getElementById("directEmissionResultBox").innerHTML = `Direct Emissions: ${directEmission.toFixed(2)} kg CO<sub>2</sub>`;
     document.getElementById("directEmissionResultBox").style.display = "block";
     updateTotalResult();
   });
@@ -253,7 +253,7 @@
       document.querySelector("#employees").value,
       document.querySelector("#endUse").value
     );
-    document.getElementById("transportResultBox").innerHTML = `Transport & Others: ${transportEmission.toFixed(2)} kg CO<sub>2</sub>`;
+    document.getElementById("transportResultBox").innerHTML = `Supply Chain and Other Activities: ${transportEmission.toFixed(2)} kg CO<sub>2</sub>`;
     document.getElementById("transportResultBox").style.display = "block";
     updateTotalResult();
   });
@@ -269,7 +269,7 @@
     const total = directEmission + electricityEmission + transportEmission + deforestationEmission;
     document.getElementById("directEmissionResult").innerHTML = `Direct Emissions: ${directEmission.toFixed(2)} kg CO<sub>2</sub>`;
     document.getElementById("electricityResult").innerHTML = `Electricity Use: ${electricityEmission.toFixed(2)} kg CO<sub>2</sub>`;
-    document.getElementById("transportResult").innerHTML = `Transport & Others: ${transportEmission.toFixed(2)} kg CO<sub>2</sub>`;
+    document.getElementById("transportResult").innerHTML = `Supply Chain: ${transportEmission.toFixed(2)} kg CO<sub>2</sub>`;
     document.getElementById("deforestationResult").innerHTML = `Deforestation: ${deforestationEmission.toFixed(2)} kg CO<sub>2</sub>`;
     document.getElementById("totalResult").innerHTML = `Total Carbon Footprint: ${total.toFixed(2)} kg CO<sub>2</sub>`;
   }
