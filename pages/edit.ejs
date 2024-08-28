@@ -78,7 +78,7 @@ body {
             <div id="calcBox">
                 <div class="mt-5">
                     <h1 class="text-center mb-4 header-title"> Edit Mine </h1>
-                    
+
                     <form action="/index/<%= mines.id%>/?_method=PUT" method="post">
                         <div class="mb-4">
                             <label for="name" class="form-label">Name of the Coal Mine:</label>
@@ -106,19 +106,6 @@ body {
                             <input type="text" class="form-control" id="image" name="Mine[image]" value="<%= mines.image %>">
                         </div>
 
-                        <div class="mb-4">
-                            <label for="qty" class="form-label">Coal Quantity (in kg):</label>
-                            <input type="number" class="form-control" id="qty" name="Mine[Quantity]">
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="type" class="form-label">Type of Coal:</label>
-                            <select id="type" class="form-select" name="Mine[coalType]">
-                              <option class="text-secondary" selected>---Select Type of Coal---</option>
-                              <option>Bituminous</option>
-                              <option>Anthracite </option>
-                            </select>
-                        </div>
                         <button class="btn btn-success mt-4" id="subButton">Submit</button>
                     </form>
                     

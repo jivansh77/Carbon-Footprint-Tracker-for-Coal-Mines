@@ -13,13 +13,14 @@
                       <div class="col-md-8">
                         <div class="card-body">
                           <h5 class="card-title"><%= m.name %></h5>
-                          <p class="card-text"><%  if(m.state === "----Select Your State----") {%>
+                          <p class="card-text">
+                        <%  if(m.state === "---Select Your State---") {%>
                             Not Assigned,
                         <% } else { %>
                             <%= m.state %>,
                         <% } %>
         
-                        <%  if(m.district === "----Select Your District----") {%>
+                        <%  if(m.district === "---Select Your District---") {%>
                             Not Assigned,
                         <% } else { %>
                             <%= m.district %>
