@@ -56,10 +56,15 @@ app.delete("/index/:id", async(req,res)=>{
     res.redirect("/index");
 })
 
+app.put("/index/:id", async(req,res)=>{
+    const mines = await Mines.findByIdAndUpdate(req.params.id,req.body.Mine)
+    res.redirect(`/index/${mines.id}`);
+})
+
 app.get("/index/:id/edit", async(req,res) =>{
     console.log(req.params)
     const mines = await Mines.findById(req.params.id);
-    res.render("edit", {mines});
+    res.render("edit", {mines , places});
 })
 
 

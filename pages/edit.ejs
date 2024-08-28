@@ -1,0 +1,177 @@
+<% layout("../layouts/boilerplate") %>
+
+<style>
+body {
+  font-family: 'Roboto', sans-serif;
+  background: #f0f4f8;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  padding: 40px;
+}
+
+#calcBox {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin-top: 20px;
+}
+
+.header-title {
+  font-size: 3rem;
+  color: #222;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.addmine .form-label {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.addmine .form-control, .addmine .form-select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-select#state {
+  margin-bottom: 10px;
+}
+
+#resultBox {
+  display: none;
+  margin-top: 30px;
+  padding: 15px;
+  background: #e9ecef;
+  border-radius: 8px;
+  font-size: 1.25rem;
+  text-align: center;
+  color: #333;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-8 offset-2">
+            <div id="calcBox">
+                <div class="mt-5">
+                    <h1 class="text-center mb-4 header-title"> Edit Mine </h1>
+                    
+                    <form action="/index/<%= mines.id%>/?_method=PUT" method="post">
+                        <div class="mb-4">
+                            <label for="name" class="form-label">Name of the Coal Mine:</label>
+                            <input type="text" class="form-control" id="name" name="Mine[name]" value="<%= mines.name %>">
+                        </div>
+
+                        <div class="mb-4">
+                          <p class="mb-2">Location of the Coal Mine:</p>
+                          <label for="State" class="form-label">State</label>
+                          <select class="form-select" aria-label="State" name="Mine[state]" id="state">
+                              <option value="<%= mines.state %>" selected id="selectedState"><%= mines.state %></option>
+                              <% for(let p of places.states) {%>
+                                  <option value="<%= p.name %>"><%= p.name %></option>
+                              <% } %>
+                          </select>
+                            
+                          <label for="district" class="form-label">District</label>
+                          <select class="form-select" aria-label="district" name="Mine[district]" id="city">
+                              <option value="<%= mines.district %>" selected ><%= mines.district %></option>
+                          </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="image" class="form-label">Image URL:</label>
+                            <input type="text" class="form-control" id="image" name="Mine[image]" value="<%= mines.image %>">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="qty" class="form-label">Coal Quantity (in kg):</label>
+                            <input type="number" class="form-control" id="qty" name="Mine[Quantity]">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="type" class="form-label">Type of Coal:</label>
+                            <select id="type" class="form-select" name="Mine[coalType]">
+                              <option class="text-secondary" selected>---Select Type of Coal---</option>
+                              <option>Bituminous</option>
+                              <option>Anthracite </option>
+                            </select>
+                        </div>
+                        <button class="btn btn-success mt-4" id="subButton">Submit</button>
+                    </form>
+                    
+                    <div id="resultBox"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>  
+    const qty = document.querySelector("#qty");
+    const type = document.querySelector("#type");
+    const btn = document.querySelector("#subButton");
+    const result = document.querySelector("#resultBox");
+
+    btn.addEventListener("click", () => {
+      let emission = calc(qty.value, type.value);
+      result.innerHTML = `CO<sub>2</sub> Emission: ${emission} kg`;
+      result.style.display = "block"; // Show the result box
+      console.log("Button clicked");
+    });
+
+    function calc(qty, type) {
+      let pct;
+      if (type === 'Bituminous') {
+        pct = 70;
+      } else if (type === 'Anthracite') {
+        pct = 90;
+      }
+      let netCarb = (pct / 100) * qty;
+      return (netCarb) * 3.67;
+    }
+
+    document.getElementById('state').addEventListener('change', function () {
+      const state = this.value;
+      const cityDropdown = document.getElementById('city');
+
+      // Clear current cities
+      cityDropdown.innerHTML = '<option value="">---Select Your District---</option>';
+
+      if (state) {
+        fetch(`/getCities?state=${state}`)
+          .then(response => response.json())
+          .then(cities => {
+            cities.forEach(city => {
+              const option = document.createElement('option');
+              option.value = city;
+              option.text = city;
+              cityDropdown.add(option);
+            });
+          })
+          .catch(error => console.error('Error fetching cities:', error));
+      }
+    });
+</script>

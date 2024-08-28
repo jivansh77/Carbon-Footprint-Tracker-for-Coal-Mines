@@ -30,11 +30,12 @@
             </ul>
             <div class="card-body align-items-center">
                 <a href="/index/<%= mines._id%>/edit" class="card-link"><button class="btn btn-success">Edit</button></a>
-                <a href="" class="card-link">
+                
                     <form action="/index/<%= mines._id%>?_method=DELETE" method="post" class="d-inline">
-                        <button class="btn btn-danger">Delete</button>
+                        <a href="" class="card-link"> <button class="btn btn-danger">Delete</button></a>
                     </form>
-                </a>
+                
+                <a href="/index" class="card-link">Back</a>
             </div>
         </div>
     </div>
