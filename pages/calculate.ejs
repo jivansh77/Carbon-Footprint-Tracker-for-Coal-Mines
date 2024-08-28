@@ -69,37 +69,6 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   }
 
-  .tab-container {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-
-  .tab {
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    color: #142114;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #ffffff;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease;
-  }
-
-  .tab.active {
-    background-color: #138757;
-    color: #ffffff;
-  }
-
-  .tab-content {
-    display: none;
-    animation: animate 0.3s ease forwards;
-  }
-
-  .tab-content.active {
-    display: block;
-  }
 
   .progressBar{
     position: relative;
@@ -109,7 +78,7 @@
     align-items: center;
   }
 
-  .progressBar::before{
+  .progressBar::before, .pr{
     content: "";
     position: absolute;
     top: 50%;
@@ -117,7 +86,11 @@
     height: 8px;
     width: 100%;
     background-color: #ddd;
-    
+  }
+
+  .pr{
+    background-color: lightgreen;
+    width: 0%;
   }
 
   .progress-step{
@@ -131,9 +104,29 @@
     z-index: 1;
   }
 
-  .progress-step::before{
-    
+  .progress-step::after{
+    content: attr(data-title);
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    font-size: 0.85rem;
   }
+
+  .progress-step-active{
+    background-color: rgb(58, 237, 58);
+    color: rgb(31, 64, 0);
+  }
+
+.form {
+  margin: 0 auto;
+}
+
+.form-step {
+  display: none;
+}
+
+.form-step-active {
+  display: block;
+}
 
   @keyframes animate {
     from {
@@ -152,141 +145,181 @@
 
 
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-8 offset-2">
-      <div id="calcBox">
-        <div class="mt-4">
-          <h1 class="text-center mb-4 header-title">Carbon Footprint Calculator</h1>
-
-          <!-- Progress Bar -->
-          <div class="progressBar">
-            <div class="progress-step" data-title="Direct Emissions"><svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-minecart-loaded" viewBox="0 0 16 16">
-              <path d="M4 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2m0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4m8-1a1 1 0 1 1 0-2 1 1 0 0 1 0 2m0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4M.115 3.18A.5.5 0 0 1 .5 3h15a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 14 12H2a.5.5 0 0 1-.491-.408l-1.5-8a.5.5 0 0 1 .106-.411zm.987.82 1.313 7h11.17l1.313-7z"/>
-              <path fill-rule="evenodd" d="M6 1a2.498 2.498 0 0 1 4 0c.818 0 1.545.394 2 1 .67 0 1.552.57 2 1h-2c-.314 0-.611-.15-.8-.4-.274-.365-.71-.6-1.2-.6-.314 0-.611-.15-.8-.4a1.497 1.497 0 0 0-2.4 0c-.189.25-.486.4-.8.4-.507 0-.955.251-1.228.638q-.136.194-.308.362H3c.13-.147.401-.432.562-.545a1.6 1.6 0 0 0 .393-.393A2.5 2.5 0 0 1 6 1"/>
-            </svg></div>
-            <div class="progress-step" data-title="Electricity Use"><svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-lightning" viewBox="0 0 16 16">
-              <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641zM6.374 1 4.168 8.5H7.5a.5.5 0 0 1 .478.647L6.78 13.04 11.478 7H8a.5.5 0 0 1-.474-.658L9.306 1z"/>
-            </svg></div>
-            <div class="progress-step" data-title="Transport & Others"><svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-truck" viewBox="0 0 16 16">
-              <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5zm1.294 7.456A2 2 0 0 1 4.732 11h5.536a2 2 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456M12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
-            </svg></div>
-            <div class="progress-step" data-title="Deforestation"><svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-tree" viewBox="0 0 16 16">
-              <path d="M8.416.223a.5.5 0 0 0-.832 0l-3 4.5A.5.5 0 0 0 5 5.5h.098L3.076 8.735A.5.5 0 0 0 3.5 9.5h.191l-1.638 3.276a.5.5 0 0 0 .447.724H7V16h2v-2.5h4.5a.5.5 0 0 0 .447-.724L12.31 9.5h.191a.5.5 0 0 0 .424-.765L10.902 5.5H11a.5.5 0 0 0 .416-.777zM6.437 4.758A.5.5 0 0 0 6 4.5h-.066L8 1.401 10.066 4.5H10a.5.5 0 0 0-.424.765L11.598 8.5H11.5a.5.5 0 0 0-.447.724L12.69 12.5H3.309l1.638-3.276A.5.5 0 0 0 4.5 8.5h-.098l2.022-3.235a.5.5 0 0 0 .013-.507"/>
-            </svg></div>
-            <div class="progress-step" data-title="Results"><svg xmlns="http://www.w3.org/2000/svg" width="2" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
-              <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0"/>
-              <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
-            </svg></div>
-          </div>
-
-          <div class="tab-container">
-            <div class="tab active" data-tab="directEmissionTab">Direct Emissions</div>
-            <div class="tab" data-tab="electricityUseTab">Energy Consumption</div>
-            <div class="tab" data-tab="transportTab">Supply Chain</div>
-            <div class="tab" data-tab="deforestationTab">Land Use</div>
-            <div class="tab" data-tab="resultsTab">Results</div>
-          </div>
-
-          
-
-          <!-- Direct Emission Content -->
-          <div id="directEmissionTab" class="tab-content active">
-            <form>
-              <div class="mb-4">
-                <label for="qty" class="form-label">Coal Quantity (in kg):</label>
-                <input type="number" class="form-control" id="qty">
-              </div>
-
-              <div class="mb-4">
-                <label for="type" class="form-label">Type of Coal:</label>
-                <select id="type" class="form-select">
-                  <option class="text-secondary" selected>---Select Type of Coal---</option>
-                  <option>Bituminous</option>
-                  <option>Anthracite</option>
-                </select>
-              </div>
-              <button type="button" class="btn btn-success mt-4" id="subButton">Submit</button>
-            </form>
-
-            <div id="directEmissionResultBox" class="resultBox"></div>
-          </div>
-
-          <!-- Electricity Use Content -->
-          <div id="electricityUseTab" class="tab-content">
-            <form>
-              <div class="mb-4">
-                <label for="electricity" class="form-label">Electricity Consumed (in kWh):</label>
-                <input type="number" class="form-control" id="electricity">
-              </div>
-              <button type="button" class="btn btn-success mt-4" id="electricityButton">Submit</button>
-            </form>
-
-            <div id="electricityResultBox" class="resultBox"></div>
-          </div>
-
-          <!-- Transport & Others Content -->
-          <div id="transportTab" class="tab-content">
-            <form>
-              <div class="mb-4">
-                <label for="transport" class="form-label">Transport Distance (in km):</label>
-                <input type="number" class="form-control" id="transport">
-              </div>
-              <div class="mb-4">
-                <label for="equipment" class="form-label">Equipment Use (in hours):</label>
-                <input type="number" class="form-control" id="equipment">
-              </div>
-              <div class="mb-4">
-                <label for="waste" class="form-label">Waste Management (in kg):</label>
-                <input type="number" class="form-control" id="waste">
-              </div>
-              <div class="mb-4">
-                <label for="employees" class="form-label">Employee Count:</label>
-                <input type="number" class="form-control" id="employees">
-              </div>
-              <div class="mb-4">
-                <label for="endUse" class="form-label">End Use of Coal (in kg):</label>
-                <input type="number" class="form-control" id="endUse">
-              </div>
-              <button type="button" class="btn btn-success mt-4" id="transportButton">Submit</button>
-            </form>
-
-            <div id="transportResultBox" class="resultBox"></div>
-          </div>
-
-          <!-- Deforestation Content -->
-          <div id="deforestationTab" class="tab-content">
-            <form>
-              <div class="mb-4">
-                <label for="deforestedArea" class="form-label">Deforested Area (in hectares):</label>
-                <input type="number" class="form-control" id="deforestedArea">
-              </div>
-              <button type="button" class="btn btn-success mt-4" id="deforestationButton">Submit</button>
-            </form>
-
-            <div id="deforestationResultBox" class="resultBox"></div>
-          </div>
-
-          <!-- Results Content -->
-          <div id="resultsTab" class="tab-content">
-            <div class="mb-4">
-              <h3 class="text-center text-success mb-3"><b>Carbon Footprint Results</b></h3>
-              <p class="text-center" id="directEmissionResult">Direct Emissions: 0 kg CO<sub>2</sub></p>
-              <p class="text-center" id="electricityResult">Electricity Use: 0 kg CO<sub>2</sub></p>
-              <p class="text-center" id="transportResult">Supply Chain: 0 kg CO<sub>2</sub></p>
-              <p class="text-center" id="deforestationResult">Deforestation: 0 kg CO<sub>2</sub></p>
-              <hr>
-              <h4 class="text-center" id="totalResult">Total: 0 kg CO<sub>2</sub></h4>
+  <form action="" class="form">
+    <div class="row">
+      <div class="col-8 offset-2">
+        <div id="calcBox">
+          <div class="mt-4">
+            <h1 class="text-center mb-4 header-title">Carbon Footprint Calculator</h1>
+            <form action="" class="form">
+  
+            <!-- Progress Bar -->
+            <div class="progressBar text-center">
+              <div class="pr" id="pr"></div>
+              <div class="progress-step progress-step-active" data-title="Coal"><svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-minecart-loaded" viewBox="0 0 16 16">
+                <path d="M4 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2m0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4m8-1a1 1 0 1 1 0-2 1 1 0 0 1 0 2m0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4M.115 3.18A.5.5 0 0 1 .5 3h15a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 14 12H2a.5.5 0 0 1-.491-.408l-1.5-8a.5.5 0 0 1 .106-.411zm.987.82 1.313 7h11.17l1.313-7z"/>
+                <path fill-rule="evenodd" d="M6 1a2.498 2.498 0 0 1 4 0c.818 0 1.545.394 2 1 .67 0 1.552.57 2 1h-2c-.314 0-.611-.15-.8-.4-.274-.365-.71-.6-1.2-.6-.314 0-.611-.15-.8-.4a1.497 1.497 0 0 0-2.4 0c-.189.25-.486.4-.8.4-.507 0-.955.251-1.228.638q-.136.194-.308.362H3c.13-.147.401-.432.562-.545a1.6 1.6 0 0 0 .393-.393A2.5 2.5 0 0 1 6 1"/>
+              </svg></div>
+              <div class="progress-step" data-title="Electricity Use"><svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-lightning" viewBox="0 0 16 16">
+                <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641zM6.374 1 4.168 8.5H7.5a.5.5 0 0 1 .478.647L6.78 13.04 11.478 7H8a.5.5 0 0 1-.474-.658L9.306 1z"/>
+              </svg></div>
+              <div class="progress-step" data-title="Transport & Others"><svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-truck" viewBox="0 0 16 16">
+                <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5zm1.294 7.456A2 2 0 0 1 4.732 11h5.536a2 2 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456M12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+              </svg></div>
+              <div class="progress-step" data-title="Deforestation"><svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-tree" viewBox="0 0 16 16">
+                <path d="M8.416.223a.5.5 0 0 0-.832 0l-3 4.5A.5.5 0 0 0 5 5.5h.098L3.076 8.735A.5.5 0 0 0 3.5 9.5h.191l-1.638 3.276a.5.5 0 0 0 .447.724H7V16h2v-2.5h4.5a.5.5 0 0 0 .447-.724L12.31 9.5h.191a.5.5 0 0 0 .424-.765L10.902 5.5H11a.5.5 0 0 0 .416-.777zM6.437 4.758A.5.5 0 0 0 6 4.5h-.066L8 1.401 10.066 4.5H10a.5.5 0 0 0-.424.765L11.598 8.5H11.5a.5.5 0 0 0-.447.724L12.69 12.5H3.309l1.638-3.276A.5.5 0 0 0 4.5 8.5h-.098l2.022-3.235a.5.5 0 0 0 .013-.507"/>
+              </svg></div>
+              <div class="progress-step" data-title="Results"><svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
+              </svg></div>
             </div>
+            
+  
+            <!-- Direct Emission Content -->
+            <div id="directEmissionTab" class="tab-content form-step form-step-active">
+                <div class="mb-4">
+                  <label for="qty" class="form-label">Coal Quantity (in kg):</label>
+                  <input type="number" class="form-control" id="qty">
+                </div>
+  
+                <div class="mb-4">
+                  <label for="type" class="form-label">Type of Coal:</label>
+                  <select id="type" class="form-select">
+                    <option class="text-secondary" selected>---Select Type of Coal---</option>
+                    <option>Bituminous</option>
+                    <option>Anthracite</option>
+                  </select>
+                </div>
+                <button type="button" class="btn btn-success mt-4 next" id="subButton">next</button>
+  
+              <div id="directEmissionResultBox" class="resultBox"></div>
+            </div>
+  
+            <!-- Electricity Use Content -->
+            <div id="electricityUseTab" class="tab-content form-step">
+                <div class="mb-4">
+                  <label for="electricity" class="form-label">Electricity Consumed (in kWh):</label>
+                  <input type="number" class="form-control" id="electricity">
+                </div>
+                <button type="button" class="btn btn-success mt-4 prev" id="electricityButton">previous</button>
+                <button type="button" class="btn btn-success mt-4 next" id="electricityButtonnext">next</button>
+  
+              <div id="electricityResultBox" class="resultBox"></div>
+            </div>
+  
+            <!-- Transport & Others Content -->
+            <div id="transportTab" class="tab-content form-step">
+                <div class="mb-4">
+                  <label for="transport" class="form-label">Transport Distance (in km):</label>
+                  <input type="number" class="form-control" id="transport">
+                </div>
+                <div class="mb-4">
+                  <label for="equipment" class="form-label">Equipment Use (in hours):</label>
+                  <input type="number" class="form-control" id="equipment">
+                </div>
+                <div class="mb-4">
+                  <label for="waste" class="form-label">Waste Management (in kg):</label>
+                  <input type="number" class="form-control" id="waste">
+                </div>
+                <div class="mb-4">
+                  <label for="employees" class="form-label">Employee Count:</label>
+                  <input type="number" class="form-control" id="employees">
+                </div>
+                <div class="mb-4">
+                  <label for="endUse" class="form-label">End Use of Coal (in kg):</label>
+                  <input type="number" class="form-control" id="endUse">
+                </div>
+                <button type="button" class="btn btn-success mt-4 prev" id="transportButton">previous</button>
+                <button type="button" class="btn btn-success mt-4 next" id="transportButton">next</button>
+              </div>
+  
+              <div id="transportResultBox" class="resultBox"></div>
+            </div>
+  
+            <!-- Deforestation Content -->
+            <div id="deforestationTab" class="tab-content form-step">
+                <div class="mb-4">
+                  <label for="deforestedArea" class="form-label">Deforested Area (in hectares):</label>
+                  <input type="number" class="form-control" id="deforestedArea">
+                </div>
+                <button type="button" class="btn btn-success mt-4 prev" id="deforestationButton">previous</button>
+                <button type="button" class="btn btn-success mt-4 next" id="deforestationButton">Show Result</button>
+              <div id="deforestationResultBox" class="resultBox"></div>
+            </div>
+  
+            <!-- Results Content -->
+            <div id="resultsTab" class="tab-content form-step">
+              <div class="mb-4">
+                <h3 class="text-center text-success mb-3"><b>Carbon Footprint Results</b></h3>
+                <p class="text-center" id="directEmissionResult">Direct Emissions: 0 kg CO<sub>2</sub></p>
+                <p class="text-center" id="electricityResult">Electricity Use: 0 kg CO<sub>2</sub></p>
+                <p class="text-center" id="transportResult">Transport & Others: 0 kg CO<sub>2</sub></p>
+                <p class="text-center" id="deforestationResult">Deforestation: 0 kg CO<sub>2</sub></p>
+                <hr>
+                <h4 class="text-center" id="totalResult">Total: 0 kg CO<sub>2</sub></h4>
+                <button class="btn btn-success mt-4 prev">previous</button>
+              </div>
+            </div>
+
+          </form>
           </div>
         </div>
       </div>
     </div>
-  </div>
 </div>
 
 <script>
   const tabs = document.querySelectorAll(".tab");
   const tabContents = document.querySelectorAll(".tab-content");
+  const formSteps = document.querySelectorAll(".form-step");
+  const prev = document.querySelectorAll(".prev");
+  const next = document.querySelectorAll('.next');
+  const progress = document.querySelector('#pr');
+  const progressSteps = document.querySelectorAll(".progress-step");
+
+  let fstep = 0;
+
+  next.forEach((btn)=>{
+    btn.addEventListener("click", () =>{
+      fstep++;
+      updateFormSteps();
+      updateProgressbar();
+    })
+  })
+
+  prev.forEach((btn)=>{
+    btn.addEventListener("click", () =>{
+      fstep--;
+      updateFormSteps();
+      updateProgressbar();
+    })
+  })
+
+  function updateFormSteps() {
+  formSteps.forEach((formStep) => 
+  {
+    formStep.classList.contains("form-step-active") &&
+      formStep.classList.remove("form-step-active");
+  }
+  );
+
+  formSteps[fstep].classList.add("form-step-active");
+}
+
+function updateProgressbar() {
+  progressSteps.forEach((progressStep, idx) => {
+    if (idx < fstep + 1) {
+      progressStep.classList.add("progress-step-active");
+    } else {
+      progressStep.classList.remove("progress-step-active");
+    }
+  });
+
+  const progressActive = document.querySelectorAll(".progress-step-active");
+
+  progress.style.width =
+    ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
+}
 
   let directEmission = 0;
   let electricityEmission = 0;
