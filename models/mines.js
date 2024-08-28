@@ -11,6 +11,4 @@ const mineSchema = new Schema({
     image: String
 })
 
-mandar
-
 module.exports = mongoose.model('Mine', mineSchema);
