@@ -25,10 +25,6 @@ app.use(express.static('public'));
 app.set("view engine", "ejs");
 app.set('views', path.join(__dirname, 'pages'));
 
-app.get("/", (req, res) =>{
-    res.render("home");
-})
-
 app.get("/home", (req,res) =>{
     res.render("home");
 })
@@ -37,8 +33,33 @@ app.get("/addmine", (req,res) =>{
     res.render("addmine", {places});
 })
 
-app.get("/index", (req,res) =>{
-    res.render("index", {Mines});
+app.post("/index", async(req,res) =>{
+    const mineData = req.body.Mine;
+    const mine = new Mines(mineData);  
+    await mine.save();
+    res.redirect("/index");
+})
+
+app.get("/index", async(req,res) =>{
+    const mines = await Mines.find({});
+    res.render("index", {mines});
+})
+
+app.get("/index/:id", async(req,res) =>{
+    console.log(req.params)
+    const mines = await Mines.findById(req.params.id);
+    res.render("show", {mines});
+})
+
+app.get("/index/:id/edit", async(req,res) =>{
+    console.log(req.params)
+    const mines = await Mines.findById(req.params.id);
+    res.render("edit", {mines});
+})
+
+app.delete("/index/:id", async(req,res)=>{
+    const mines = await Mines.findByIdAndDelete(req.params.id)
+    res.redirect("/index");
 })
 
 
@@ -57,6 +78,6 @@ app.get('/getCities', (req, res) => {
 
 
 
-app.listen("9000", ()=>{
+app.listen("3000", ()=>{
     console.log("SERVER RUNNING.....................");
 })
