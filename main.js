@@ -50,7 +50,6 @@ app.get("/calculate", async(req,res) =>{
 })
 
 app.get("/index/:id", async(req,res) =>{
-    console.log(req.params)
     const mines = await Mines.findById(req.params.id);
     res.render("show", {mines});
 })
