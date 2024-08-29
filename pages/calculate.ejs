@@ -7,17 +7,35 @@
     color: #142114;
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
+  }
+
+  .buton{
+   width: 100%;
+   height: 80%;
+   background-color: #142114;
+   color: white;
+   box-shadow: 0 9px #999;
+  }
+
+  .buton:hover{
+   color: orange;
+   background-color: #142114;
+  }
+
+  .buton:active {
+  background-color: #142114;
+  box-shadow: 0 5px #666;
+  
+  transform: translateY(4px);
   }
 
   .container {
     padding: 40px;
-    position: relative;
-    overflow: hidden;
+
   }
 
   #calcBox {
-    background: #ffffff;
+    background: #eeeeee;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     padding: 30px;
@@ -55,18 +73,6 @@
     border: 1px solid #ddd;
     font-size: 1rem;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .resultBox {
-    display: none;
-    margin-top: 30px;
-    padding: 15px;
-    background: #e9ecef;
-    border-radius: 8px;
-    font-size: 1.25rem;
-    text-align: center;
-    color: #333;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   }
 
 
@@ -144,6 +150,7 @@
 
 
 
+
 <div class="container-fluid">
   <form action="" class="form">
     <div class="row">
@@ -176,79 +183,91 @@
             
   
             <!-- Direct Emission Content -->
-            <div id="directEmissionTab" class="tab-content form-step form-step-active">
+            <div id="directEmissionTab" class="form-step form-step-active">
                 <div class="mb-4">
                   <label for="qty" class="form-label">Coal Quantity (in kg):</label>
-                  <input type="number" class="form-control" id="qty">
+                  <input type="number" class="form-control shadow-sm" id="qty">
                 </div>
   
                 <div class="mb-4">
                   <label for="type" class="form-label">Type of Coal:</label>
-                  <select id="type" class="form-select">
+                  <select id="type" class="form-select shadow-sm">
                     <option class="text-secondary" selected>---Select Type of Coal---</option>
                     <option>Bituminous</option>
                     <option>Anthracite</option>
                   </select>
                 </div>
-                <button type="button" class="btn btn-success mt-4 next" id="subButton">next</button>
-  
-              <div id="directEmissionResultBox" class="resultBox"></div>
-            </div>
+                <button type="button" class="btn mt-4 next buton"><span>Next</span></button>
+              </div>
   
             <!-- Electricity Use Content -->
-            <div id="electricityUseTab" class="tab-content form-step">
+            <div id="electricityUseTab" class="form-step">
                 <div class="mb-4">
                   <label for="electricity" class="form-label">Electricity Consumed (in kWh):</label>
-                  <input type="number" class="form-control" id="electricity">
+                  <input type="number" class="form-control shadow-sm" id="electricity">
                 </div>
-                <button type="button" class="btn btn-success mt-4 prev" id="electricityButton">previous</button>
-                <button type="button" class="btn btn-success mt-4 next" id="electricityButtonnext">next</button>
-  
-              <div id="electricityResultBox" class="resultBox"></div>
-            </div>
+                <div class="mb-4">
+                  <label for="eFactor" class="form-label">Emission Factor:</label>
+                  <input type="number" class="form-control shadow-sm" id="eFactor" value=0.716>
+                  <div class="form-text">Average emission factor as per 2023 is approx. 0.716</div>
+                </div>
+                <div class="row">
+                  <div class="col-4">
+                    <button type="button" class="btn mt-4 prev buton"><span>Previous</span></button>
+                
+                  </div>
+                  <div class="col-4"></div>
+                  <div class="col-4">
+                    <button type="button" class="btn mt-4 next buton"><span>Next</span></button>
+                  </div>
+                </div>
+              </div>
   
             <!-- Transport & Others Content -->
-            <div id="transportTab" class="tab-content form-step">
+            <div id="transportTab" class="form-step">
                 <div class="mb-4">
                   <label for="transport" class="form-label">Transport Distance (in km):</label>
-                  <input type="number" class="form-control" id="transport">
+                  <input type="number" class="form-control shadow-sm" id="transport">
                 </div>
                 <div class="mb-4">
                   <label for="equipment" class="form-label">Equipment Use (in hours):</label>
-                  <input type="number" class="form-control" id="equipment">
+                  <input type="number" class="form-control shadow-sm" id="equipment">
                 </div>
                 <div class="mb-4">
                   <label for="waste" class="form-label">Waste Management (in kg):</label>
-                  <input type="number" class="form-control" id="waste">
+                  <input type="number" class="form-control shadow-sm" id="waste">
                 </div>
                 <div class="mb-4">
                   <label for="employees" class="form-label">Employee Count:</label>
-                  <input type="number" class="form-control" id="employees">
+                  <input type="number" class="form-control shadow-sm" id="employees">
                 </div>
                 <div class="mb-4">
                   <label for="endUse" class="form-label">End Use of Coal (in kg):</label>
-                  <input type="number" class="form-control" id="endUse">
+                  <input type="number" class="form-control shadow-sm" id="endUse">
                 </div>
-                <button type="button" class="btn btn-success mt-4 prev" id="transportButton">previous</button>
-                <button type="button" class="btn btn-success mt-4 next" id="transportButton">next</button>
+                <div class="row">
+                  <div class="col-4">
+                    <button type="button" class="btn mt-4 prev buton"><span>Previous</span></button>
+                  </div>
+                  <div class="col-4"></div>
+                  <div class="col-4">
+                    <button type="button" class="btn mt-4 next buton"><span>Next</span></button>
+                  </div>
+                </div>
               </div>
   
-              <div id="transportResultBox" class="resultBox"></div>
-            </div>
-  
             <!-- Deforestation Content -->
-            <div id="deforestationTab" class="tab-content form-step">
+            <div id="deforestationTab" class="form-step">
                 <div class="mb-4">
                   <label for="deforestedArea" class="form-label">Deforested Area (in hectares):</label>
-                  <input type="number" class="form-control" id="deforestedArea">
+                  <input type="number" class="form-control shadow-sm" id="deforestedArea">
                 </div>
-                <button type="button" class="btn btn-success mt-4 prev" id="deforestationButton">previous</button>
-                <button type="button" class="btn btn-success mt-4 next" id="deforestationButton">Show Result</button>
-              <div id="deforestationResultBox" class="resultBox"></div>
+                <button type="button" class="btn mt-4 prev buton" ><span>Previous</span></button>
+                <button type="button" class="btn mt-4 next buton" >Show Result</button>
             </div>
   
             <!-- Results Content -->
-            <div id="resultsTab" class="tab-content form-step">
+            <div id="resultsTab" class="form-step">
               <div class="mb-4">
                 <h3 class="text-center text-success mb-3"><b>Carbon Footprint Results</b></h3>
                 <p class="text-center" id="directEmissionResult">Direct Emissions: 0 kg CO<sub>2</sub></p>
@@ -257,7 +276,8 @@
                 <p class="text-center" id="deforestationResult">Deforestation: 0 kg CO<sub>2</sub></p>
                 <hr>
                 <h4 class="text-center" id="totalResult">Total: 0 kg CO<sub>2</sub></h4>
-                <button class="btn btn-success mt-4 prev">previous</button>
+                <button class="btn mt-4 prev buton"><span>Previous</span></button>
+                <button class="btn btn-success mt-4 save buton">Save</button>
               </div>
             </div>
 
@@ -314,7 +334,6 @@ function updateProgressbar() {
       progressStep.classList.remove("progress-step-active");
     }
   });
-
   const progressActive = document.querySelectorAll(".progress-step-active");
 
   progress.style.width =
@@ -325,50 +344,6 @@ function updateProgressbar() {
   let electricityEmission = 0;
   let transportEmission = 0;
   let deforestationEmission = 0;
-
-  tabs.forEach(tab => {
-    tab.addEventListener("click", () => {
-      tabs.forEach(t => t.classList.remove("active"));
-      tabContents.forEach(content => content.classList.remove("active"));
-      tab.classList.add("active");
-      const activeTabContent = document.getElementById(tab.dataset.tab);
-      activeTabContent.classList.add("active");
-    });
-  });
-
-  document.querySelector("#subButton").addEventListener("click", () => {
-    directEmission = calc(qty.value, type.value);
-    document.getElementById("directEmissionResultBox").innerHTML = `Direct Emissions: ${directEmission.toFixed(2)} kg CO<sub>2</sub>`;
-    document.getElementById("directEmissionResultBox").style.display = "block";
-    updateTotalResult();
-  });
-
-  document.querySelector("#electricityButton").addEventListener("click", () => {
-    electricityEmission = calcElectricity(document.querySelector("#electricity").value);
-    document.getElementById("electricityResultBox").innerHTML = `Electricity Use: ${electricityEmission.toFixed(2)} kg CO<sub>2</sub>`;
-    document.getElementById("electricityResultBox").style.display = "block";
-    updateTotalResult();
-  });
-
-  document.querySelector("#transportButton").addEventListener("click", () => {
-    transportEmission = calcTransport(
-      document.querySelector("#transport").value,
-      document.querySelector("#equipment").value,
-      document.querySelector("#waste").value,
-      document.querySelector("#employees").value,
-      document.querySelector("#endUse").value
-    );
-    document.getElementById("transportResultBox").innerHTML = `Supply Chain and Other Activities: ${transportEmission.toFixed(2)} kg CO<sub>2</sub>`;
-    document.getElementById("transportResultBox").style.display = "block";
-    updateTotalResult();
-  });
-
-  document.querySelector("#deforestationButton").addEventListener("click", () => {
-    deforestationEmission = calcDeforestation(document.querySelector("#deforestedArea").value);
-    document.getElementById("deforestationResultBox").innerHTML = `Deforestation: ${deforestationEmission.toFixed(2)} kg CO<sub>2</sub>`;
-    document.getElementById("deforestationResultBox").style.display = "block";
-    updateTotalResult();
-  });
 
   function updateTotalResult() {
     const total = directEmission + electricityEmission + transportEmission + deforestationEmission;
