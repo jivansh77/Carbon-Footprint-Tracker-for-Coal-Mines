@@ -3,7 +3,7 @@
 <style>
   body {
     font-family: 'Roboto', sans-serif;
-    background: #E3FAE3;
+    background-image: url(https://wallpapercave.com/wp/wp7501872.jpg);
     color: #142114;
     margin: 0;
     padding: 0;
@@ -22,6 +22,7 @@
    color: orange;
    background-color: #142114;
    box-shadow: 0px 2px 4px 0px orange;
+   text-shadow: rgb(131, 131, 131) 1px 0 10px;
   }
 
   .next:hover::after{
@@ -81,10 +82,11 @@
 
   .progressBar{
     position: relative;
-    margin-bottom: 40px;
+    margin-bottom: 70px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    
   }
 
   .progressBar::before, .pr{
@@ -98,31 +100,37 @@
   }
 
   .pr{
-    background-color: lightgreen;
+    background-color: rgb(0, 0, 0);
     width: 0%;
+    transition: 0.7s;
   }
 
   .progress-step{
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     background-color: #ddd;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1;
+    
   }
 
   .progress-step::after{
     content: attr(data-title);
+    color: #000000;
     position: absolute;
     top: calc(100% + 0.5rem);
-    font-size: 0.85rem;
+    font-size: 15px;
+    font-weight: bold;
+    font-family:Verdana, Geneva, Tahoma, sans-serif
   }
 
   .progress-step-active{
-    background-color: rgb(58, 237, 58);
-    color: rgb(31, 64, 0);
+    background-color: rgb(0, 0, 0);
+    color: orange;
+    font-size: xx-large;
   }
 
 .form {
@@ -135,6 +143,7 @@
 
 .form-step-active {
   display: block;
+  font-weight: bold;
 }
 
   @keyframes animate {
@@ -160,7 +169,7 @@
       <div class="col-8 offset-2">
         <div id="calcBox">
           <div class="mt-4">
-            <h1 class="text-center mb-4 header-title">Carbon Footprint Calculator</h1>
+            <h1 class="text-center mb-5 header-title">Carbon Footprint Calculator</h1>
             <form action="" class="form">
   
             <!-- Progress Bar -->
