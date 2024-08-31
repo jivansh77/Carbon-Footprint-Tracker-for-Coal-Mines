@@ -165,7 +165,6 @@
 
 
 <div class="container-fluid">
-  <form action="" class="form">
     <div class="row">
       <div class="col-8 offset-2">
         <div id="calcBox">
@@ -390,7 +389,7 @@
                   </div>
                   <div class="col-4"></div>
                   <div class="col-4">
-                    <button type="submit" class="btn btn-success mt-4 save buton">Save</button>
+                    <button class="btn btn-success mt-4 save buton">Save</button>
                   </div>
                 </div>
               </div>
@@ -497,11 +496,11 @@ let total;
 
   function updateTotalResult(coalFootprint,elecFootprint,TransFootprint,deforestationFootprint) {
     total = coalFootprint + elecFootprint + TransFootprint + deforestationFootprint;
-    document.getElementById("directEmissionResult").innerHTML = `Direct Emissions: <input class="ms-2 col-3" type="text" value="${coalFootprint.toFixed(4)}" aria-label="Disabled input example" disabled readonly> tCO<sub>2e</sub>`;
-    document.getElementById("electricityResult").innerHTML = `Electricity Use: <input class="ms-2 col-3" type="text" value="${elecFootprint.toFixed(4)}" aria-label="Disabled input example" disabled readonly> tCO<sub>2e</sub>`;
-    document.getElementById("transportResult").innerHTML = `Supply Chain: <input class="ms-2 col-3" type="text" value="${TransFootprint.toFixed(4)}" aria-label="Disabled input example" disabled readonly> tCO<sub>2e</sub>`;
-    document.getElementById("deforestationResult").innerHTML = `Deforestation: <input class="ms-2 col-3" type="text" value="${deforestationFootprint.toFixed(4)}" aria-label="Disabled input example" disabled readonly> tCO<sub>2e</sub>`;
-    document.getElementById("totalResult").innerHTML = `<div class ="text-center fs-3">Total Carbon Footprint: <input class="ms-2 col-3" type="text" value="${total.toFixed(4)}" aria-label="Disabled input example" disabled readonly> tCO<sub>2e</sub></div>`;
+    document.getElementById("directEmissionResult").innerHTML = `Direct Emissions: <input class="ms-2 col-3" type="text" value="${coalFootprint.toFixed(4)}" aria-label="Disabled input example" disabled readonly name="Mine[result.coalFootprint]"> tCO<sub>2e</sub>`;
+    document.getElementById("electricityResult").innerHTML = `Electricity Use: <input class="ms-2 col-3" type="text" value="${elecFootprint.toFixed(4)}" aria-label="Disabled input example" disabled readonly name="Mine[result.electricityFootprint]"> tCO<sub>2e</sub>`;
+    document.getElementById("transportResult").innerHTML = `Supply Chain: <input class="ms-2 col-3" type="text" value="${TransFootprint.toFixed(4)}" aria-label="Disabled input example" disabled readonly name="Mine[result.transportFootprint]"> tCO<sub>2e</sub>`;
+    document.getElementById("deforestationResult").innerHTML = `Deforestation: <input class="ms-2 col-3" type="text" value="${deforestationFootprint.toFixed(4)}" aria-label="Disabled input example" disabled readonly name="Mine[result.deforestationFootprint]"> tCO<sub>2e</sub>`;
+    document.getElementById("totalResult").innerHTML = `<div class ="text-center fs-3">Total Carbon Footprint: <input class="ms-2 col-3" type="text" value="${total.toFixed(4)}" aria-label="Disabled input example" disabled readonly name="Mine[result.totalFootprint]"> tCO<sub>2e</sub></div>`;
   }
 
   document.getElementById('state').addEventListener('change', function () {

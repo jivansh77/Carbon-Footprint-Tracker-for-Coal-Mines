@@ -40,7 +40,7 @@ app.post("/index", async (req, res) => {
         const mineData = req.body.Mine;
         const mine = new Mines(mineData);
         await mine.save();
-        res.redirect("/index");
+        res.send(req.body.Mine);
     } catch (err) {
         console.error("Error adding mine:", err);
         res.status(500).send("Internal Server Error");
@@ -59,10 +59,6 @@ app.get("/index", async (req, res) => {
 
 app.get("/calculate", (req, res) => {
     res.render("calculate", {places});
-});
-
-app.post("/calculate", (req, res) => {
-    res.render("calculate");
 });
 
 app.get("/index/:id", async (req, res) => {
