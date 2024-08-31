@@ -245,10 +245,7 @@
   
             <!-- Direct Emission Content -->
             <div id="directEmissionTab" class="form-step">
-                <div class="mb-4">
-                  <label for="coalqty" class="form-label">Coal Quantity (in kg):</label>
-                  <input type="number" class="form-control shadow-sm" id="coalqty" name="Mine[factors.coalQty]">
-                </div>
+                <p class="text-start fs-4">Enter Coal Quantities (in kg)</p>
   
                 <div class="row mb-2 align-items-center">
                   <label for="lignite" class="col-2 text-end">Lignite:</label>
@@ -379,22 +376,6 @@
 
                 <h3 class="text-center text-success mb-3"><b>Carbon Footprint Results</b></h3>
 
-                <div class="row mb-2 align-items-center">
-                  
-                </div>
-
-                <div class="row mb-2 align-items-center">
-                  
-                </div>
-
-                <div class="row mb-2 align-items-center">
-                  
-                </div>
-
-                <div class="row mb-2 align-items-center">
-                  
-                </div>
-
                 <p class="text-center" id="directEmissionResult">Direct Emissions: <input class="form-control" type="text" value="0.00" aria-label="Disabled input example" disabled readonly>kg CO<sub>2</sub></p>
                 <p class="text-center" id="electricityResult">Electricity Use: <input class="form-control" type="text" value="0.00" aria-label="Disabled input example" disabled readonly>kg CO<sub>2</sub></p>
                 <p class="text-center" id="transportResult">Transport & Others: <input class="form-control" type="text" value="0.00" aria-label="Disabled input example" disabled readonly>kg CO<sub>2</sub></p>
@@ -463,7 +444,6 @@
 }
 
 resultbtn.addEventListener("click", () =>{
-  const coalQty = parseFloat(document.querySelector("#coalqty").value) || 0;
   const Bituminous = parseFloat(document.querySelector("#bitu").value) || 0;
   const Anthracite = parseFloat(document.querySelector("#anthra").value) || 0;
   const Lignite = parseFloat(document.querySelector("#lignite").value) || 0;
