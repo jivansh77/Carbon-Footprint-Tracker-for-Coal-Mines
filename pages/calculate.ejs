@@ -131,7 +131,6 @@
   .progress-step-active{
     background-color: rgb(0, 0, 0);
     color: orange;
-    font-size: xx-large;
   }
 
 .form {
@@ -143,6 +142,7 @@
 }
 
 .form-step-active {
+  margin-top: 90px;
   display: block;
   font-weight: bold;
 }
@@ -176,7 +176,12 @@
             <!-- Progress Bar -->
             <div class="progressBar text-center">
               <div class="pr" id="pr"></div>
-              <div class="progress-step progress-step-active" data-title="Combustion"><svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-minecart-loaded" viewBox="0 0 16 16">
+              <div class="progress-step progress-step-active" data-title="Mine Data"><svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-clipboard2-data" viewBox="0 0 16 16">
+                <path d="M9.5 0a.5.5 0 0 1 .5.5.5.5 0 0 0 .5.5.5.5 0 0 1 .5.5V2a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 2v-.5a.5.5 0 0 1 .5-.5.5.5 0 0 0 .5-.5.5.5 0 0 1 .5-.5z"/>
+                <path d="M3 2.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 0 0-1h-.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1H12a.5.5 0 0 0 0 1h.5a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5z"/>
+                <path d="M10 7a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0zm-6 4a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0zm4-3a1 1 0 0 0-1 1v3a1 1 0 1 0 2 0V9a1 1 0 0 0-1-1"/>
+              </svg></div>
+              <div class="progress-step" data-title="Combustion"><svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-minecart-loaded" viewBox="0 0 16 16">
                 <path d="M4 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2m0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4m8-1a1 1 0 1 1 0-2 1 1 0 0 1 0 2m0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4M.115 3.18A.5.5 0 0 1 .5 3h15a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 14 12H2a.5.5 0 0 1-.491-.408l-1.5-8a.5.5 0 0 1 .106-.411zm.987.82 1.313 7h11.17l1.313-7z"/>
                 <path fill-rule="evenodd" d="M6 1a2.498 2.498 0 0 1 4 0c.818 0 1.545.394 2 1 .67 0 1.552.57 2 1h-2c-.314 0-.611-.15-.8-.4-.274-.365-.71-.6-1.2-.6-.314 0-.611-.15-.8-.4a1.497 1.497 0 0 0-2.4 0c-.189.25-.486.4-.8.4-.507 0-.955.251-1.228.638q-.136.194-.308.362H3c.13-.147.401-.432.562-.545a1.6 1.6 0 0 0 .393-.393A2.5 2.5 0 0 1 6 1"/>
               </svg></div>
@@ -194,55 +199,106 @@
               </svg></div>
             </div>
             
+            <div class=" form-step form-step-active">
+              <div class="mt-4">
+                      <div class="mb-4">
+                          <label for="name" class="form-label">Name of the Coal Mine:</label>
+                          <input type="text" class="form-control" id="name" name="Mine[name]">
+                      </div>
+                      <p class="mb-2 text-center border-bottom">Location of the Coal Mine</p>
+                      <div class="mb-4 row gx-4">
+                        
+                        <div class="col">
+                          <div class="p-2">
+                            <label for="State" class="form-label">State</label>
+                            <select class="form-select" aria-label="State" name="Mine[state]" id="state">
+                            <option selected id="selectedState">---Select Your State---</option>
+                            <% for(let p of places.states) {%>
+                                <option value="<%= p.name %>"><%= p.name %></option>
+                            <% } %>
+                            </select>
+                          </div>
+                        </div>
+                          
+                        <div class="col">
+                          <div class="p-2">
+                            <label for="district" class="form-label">District</label>
+                          <select class="form-select" aria-label="district" name="Mine[district]" id="city">
+                          <option selected >---Select Your District---</option>
+                          </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="mb-2">
+                          <label for="image" class="form-label">Image URL</label>
+                          <input type="text" class="form-control" id="image" name="Mine[image]">
+                      </div>
+
+                      <div class="mb-2">
+                        <label for="desc" class="form-label">Description</label>
+                        <textarea class="form-control" name="Mine[description]" id="desc"></textarea>
+                      </div>
+                      <button type="button" class="btn mt-4 next buton"><span>Next</span></button>
+              </div>
+          </div>
   
             <!-- Direct Emission Content -->
-            <div id="directEmissionTab" class="form-step form-step-active">
+            <div id="directEmissionTab" class="form-step">
                 <div class="mb-4">
                   <label for="coalqty" class="form-label">Coal Quantity (in kg):</label>
-                  <input type="number" class="form-control shadow-sm" id="coalqty" name="Mine[]">
+                  <input type="number" class="form-control shadow-sm" id="coalqty" name="Mine[factors.coalQty]">
                 </div>
   
                 <div class="row mb-2 align-items-center">
                   <label for="lignite" class="col-2 text-end">Lignite:</label>
                   <div class="col-6">
-                    <input type="number" class="form-control shadow-sm" id="lignite" name="Mine[]">
+                    <input type="number" class="form-control shadow-sm" id="lignite" name="Mine[factors.coalType.lignite]">
                   </div>
                   <div class="col-1 p-0">kg.</div>
                 </div>
                 <div class="row mb-2 align-items-center">
                   <label for="subbitu" class="col-2 text-end">Sub-bituminous:</label>
                   <div class="col-6">
-                    <input type="number" class="form-control shadow-sm" id="subbitu" name="Mine[]">
+                    <input type="number" class="form-control shadow-sm" id="subbitu" name="Mine[factors.coalType.subbitu]">
                   </div>
                   <div class="col-1 p-0">kg.</div>
                 </div>
                 <div class="row mb-2 align-items-center">
                   <label for="bitu" class="col-2 text-end">Bituminous:</label>
                   <div class="col-6">
-                    <input type="number" class="form-control shadow-sm" id="bitu" name="Mine[]">
+                    <input type="number" class="form-control shadow-sm" id="bitu" name="Mine[factors.coalType.bitu]">
                   </div>
                   <div class="col-1 p-0">kg.</div>
                 </div>
                 <div class="row mb-2 align-items-center">
                   <label for="anthra" class="col-2 text-end">Anthracite:</label>
                   <div class="col-6">
-                    <input type="number" class="form-control shadow-sm" id="anthra" name="Mine[]">
+                    <input type="number" class="form-control shadow-sm" id="anthra" name="Mine[factors.coalType.anthra]">
                   </div>
                   <div class="col-1 p-0">kg.</div>
                 </div>
-
-                <button type="button" class="btn mt-4 next buton"><span>Next</span></button>
-              </div>
+                <div class="row">
+                  <div class="col-4">
+                    <button type="button" class="btn mt-4 prev buton"><span>Previous</span></button>
+                
+                  </div>
+                  <div class="col-4"></div>
+                  <div class="col-4">
+                    <button type="button" class="btn mt-4 next buton"><span>Next</span></button>
+                  </div>
+                </div>
+                 </div>
   
             <!-- Electricity Use Content -->
             <div id="electricityUseTab" class="form-step">
                 <div class="mb-4">
                   <label for="electricitycon" class="form-label">Electricity Consumed (in kWh):</label>
-                  <input type="number" class="form-control shadow-sm" id="electricitycon">
+                  <input type="number" class="form-control shadow-sm" id="electricitycon" name="Mine[factors.electricityConsume]">
                 </div>
                 <div class="mb-4">
                   <label for="eFactor" class="form-label">Emission Factor:</label>
-                  <input type="number" class="form-control shadow-sm" id="eFactor" value=0.716>
+                  <input type="number" class="form-control shadow-sm" id="eFactor" value=0.716 name="Mine[factors.eFactor]">
                   <div class="form-text">Average emission factor as per 2023 is approx. 0.716</div>
                 </div>
                 <div class="row">
@@ -266,9 +322,9 @@
                       <div class="p-2">
                         <div class="text-center border-bottom">Diesel</div>
                         <label for="ddistance" class="form-label mt-3">Distance Travelled:</label>
-                        <input type="number" class="form-control shadow-sm" id="ddistance">
+                        <input type="number" class="form-control shadow-sm" id="ddistance" name="Mine[factors.ddistance]">
                         <label for="deff" class="form-label mt-3">Fuel efficiency of vehicle:</label>
-                        <input type="number" class="form-control shadow-sm" id="deff">
+                        <input type="number" class="form-control shadow-sm" id="deff" name="Mine[factors.dfueleff]">
                       </div>
                     </div>
                     
@@ -276,9 +332,9 @@
                       <div class="p-2">
                         <div class="text-center border-bottom">Petrol</div>
                         <label for="pdistance" class="form-label mt-3">Distance Travelled:</label>
-                        <input type="number" class="form-control shadow-sm" id="pdistance">
+                        <input type="number" class="form-control shadow-sm" id="pdistance" name="Mine[factors.pdistance]">
                         <label for="peff" class="form-label mt-3">Fuel efficiency of vehicle:</label>
-                        <input type="number" class="form-control shadow-sm" id="peff">
+                        <input type="number" class="form-control shadow-sm" id="peff" name="Mine[factors.pfueleff]">
                       </div>
                     </div>
                   </div>
@@ -298,28 +354,64 @@
             <div id="deforestationTab" class="form-step">
                 <div class="mb-4">
                   <label for="deforestedArea" class="form-label">Deforested Area (in hectares):</label>
-                  <input type="number" class="form-control shadow-sm" id="deforestedArea">
+                  <input type="number" class="form-control shadow-sm" id="deforestedArea" name="Mine[factors.deforestedArea]">
                 </div>
                 <div class="mb-4">
                   <label for="cStock" class="form-label"> Carbon Stock per Hectare:</label>
-                  <input type="number" class="form-control shadow-sm" id="cStock" value=150>
+                  <input type="number" class="form-control shadow-sm" id="cStock" value=150 name="Mine[factors.cStock]">
                 </div>
-                <button type="button" class="btn mt-4 prev buton" ><span>Previous</span></button>
-                <button type="button" class="btn mt-4 next buton rbutton">Show Result</button>
+                <div class="row">
+                  <div class="col-4">
+                    <button type="button" class="btn mt-4 prev buton" ><span>Previous</span></button>
+                  </div>
+                  <div class="col-4"></div>
+                  <div class="col-4">
+                    <button type="button" class="btn mt-4 next buton rbutton">Show Result</button>
+                  </div>
+                </div>
+                
+                
             </div>
   
             <!-- Results Content -->
             <div id="resultsTab" class="form-step">
               <div class="mb-4">
+
                 <h3 class="text-center text-success mb-3"><b>Carbon Footprint Results</b></h3>
-                <p class="text-center" id="directEmissionResult">Direct Emissions: 0 kg CO<sub>2</sub></p>
-                <p class="text-center" id="electricityResult">Electricity Use: 0 kg CO<sub>2</sub></p>
-                <p class="text-center" id="transportResult">Transport & Others: 0 kg CO<sub>2</sub></p>
-                <p class="text-center" id="deforestationResult">Deforestation: 0 kg CO<sub>2</sub></p>
+
+                <div class="row mb-2 align-items-center">
+                  
+                </div>
+
+                <div class="row mb-2 align-items-center">
+                  
+                </div>
+
+                <div class="row mb-2 align-items-center">
+                  
+                </div>
+
+                <div class="row mb-2 align-items-center">
+                  
+                </div>
+
+                <p class="text-center" id="directEmissionResult">Direct Emissions: <input class="form-control" type="text" value="0.00" aria-label="Disabled input example" disabled readonly>kg CO<sub>2</sub></p>
+                <p class="text-center" id="electricityResult">Electricity Use: <input class="form-control" type="text" value="0.00" aria-label="Disabled input example" disabled readonly>kg CO<sub>2</sub></p>
+                <p class="text-center" id="transportResult">Transport & Others: <input class="form-control" type="text" value="0.00" aria-label="Disabled input example" disabled readonly>kg CO<sub>2</sub></p>
+                <p class="text-center" id="deforestationResult">Deforestation: <input class="form-control" type="text" value="0.00" aria-label="Disabled input example" disabled readonly>kg CO<sub>2</sub></p>
                 <hr>
-                <h4 class="text-center" id="totalResult">Total: 0 kg CO<sub>2</sub></h4>
-                <button class="btn mt-4 prev buton"><span>Previous</span></button>
-                <button class="btn btn-success mt-4 save buton">Save</button>
+                <h4 class="text-center bold" id="totalResult">Total: <input class="form-control" type="text" value="0.00" aria-label="Disabled input example" disabled readonly> kg CO<sub>2</sub></h4>
+                
+                
+                <div class="row">
+                  <div class="col-4">
+                    <button type="button" class="btn mt-4 prev buton"><span>Previous</span></button>
+                  </div>
+                  <div class="col-4"></div>
+                  <div class="col-4">
+                    <button type="submit" class="btn btn-success mt-4 save buton">Save</button>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -425,13 +517,34 @@ let total;
 
   function updateTotalResult(coalFootprint,elecFootprint,TransFootprint,deforestationFootprint) {
     total = coalFootprint + elecFootprint + TransFootprint + deforestationFootprint;
-    document.getElementById("directEmissionResult").innerHTML = `Direct Emissions: ${coalFootprint.toFixed(4)} tCO<sub>2e</sub>`;
-    document.getElementById("electricityResult").innerHTML = `Electricity Use: ${elecFootprint.toFixed(4)} tCO<sub>2e</sub>`;
-    document.getElementById("transportResult").innerHTML = `Supply Chain: ${TransFootprint.toFixed(4)} tCO<sub>2e</sub>`;
-    document.getElementById("deforestationResult").innerHTML = `Deforestation: ${deforestationFootprint.toFixed(4)} tCO<sub>2e</sub>`;
-    document.getElementById("totalResult").innerHTML = `Total Carbon Footprint: ${total.toFixed(4)} tCO<sub>2e</sub>`;
+    document.getElementById("directEmissionResult").innerHTML = `Direct Emissions: <input class="ms-2 col-3" type="text" value="${coalFootprint.toFixed(4)}" aria-label="Disabled input example" disabled readonly> tCO<sub>2e</sub>`;
+    document.getElementById("electricityResult").innerHTML = `Electricity Use: <input class="ms-2 col-3" type="text" value="${elecFootprint.toFixed(4)}" aria-label="Disabled input example" disabled readonly> tCO<sub>2e</sub>`;
+    document.getElementById("transportResult").innerHTML = `Supply Chain: <input class="ms-2 col-3" type="text" value="${TransFootprint.toFixed(4)}" aria-label="Disabled input example" disabled readonly> tCO<sub>2e</sub>`;
+    document.getElementById("deforestationResult").innerHTML = `Deforestation: <input class="ms-2 col-3" type="text" value="${deforestationFootprint.toFixed(4)}" aria-label="Disabled input example" disabled readonly> tCO<sub>2e</sub>`;
+    document.getElementById("totalResult").innerHTML = `<div class ="text-center fs-3">Total Carbon Footprint: <input class="ms-2 col-3" type="text" value="${total.toFixed(4)}" aria-label="Disabled input example" disabled readonly> tCO<sub>2e</sub></div>`;
   }
 
+  document.getElementById('state').addEventListener('change', function () {
+      const state = this.value;
+      const cityDropdown = document.getElementById('city');
+
+      // Clear current cities
+      cityDropdown.innerHTML = '<option value="">---Select Your District---</option>';
+
+      if (state) {
+        fetch(`/getCities?state=${state}`)
+          .then(response => response.json())
+          .then(cities => {
+            cities.forEach(city => {
+              const option = document.createElement('option');
+              option.value = city;
+              option.text = city;
+              cityDropdown.add(option);
+            });
+          })
+          .catch(error => console.error('Error fetching cities:', error));
+      }
+    });
 
   
 
