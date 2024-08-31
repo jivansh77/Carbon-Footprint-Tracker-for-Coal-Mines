@@ -25,14 +25,20 @@ const mineSchema = new Schema({
         electricityConsume: Number,
         eFactor: Number,
         fuelUse: {
-            diesel: Number,
-            petrol: Number,
+            ddistance: Number,
+            pdistance: Number,
             dfueleff: Number,
             pfueleff:Number
         },
-        employeeCount: Number,
         deforestedArea: Number,
         cStock: Number
+    },
+    result: {
+        coalFootprint: Number,
+        electricityFootprint: Number,
+        transportFootprint: Number,
+        deforestationFootprint: Number,
+        totalFootprint: Number
     }
 })
 
