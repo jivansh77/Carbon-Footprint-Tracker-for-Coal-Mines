@@ -1,11 +1,11 @@
 <% layout("../layouts/boilerplate") %>
 
 <div class="container-fluid">
-    <div class="row mt-5">
-        <div class="col-6 offset-3">
+    <div class="row mt-4">
+        <div class="col-12 col-md-6">
             <div class="card">
-                <div class="ratio ratio-16x9">
-                    <img src="<%= mines.image %>" class="card-img-top" alt="Not found">
+                <div>
+                    <img src="<%= mines.image %>" class="card-img-top" alt="">
                 </div>
                 <div class="card-body">
                     <h3 class="card-title"><%= mines.name%></h3>
@@ -42,12 +42,77 @@
                     <a href="/index" class="card-link">Back</a>
                 </div>
             </div>
-        </div>
+</div>
+ 
+    <div class="col-12 col-md-6">
+        <div class="card mb-3">
+            
+                <div class="card-body">
+                  <h2 class="card-title text-center">Footprint Details</h2>
+                  <div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item fs-3">Total Footprint : <%= mines.result.totalFootprint %></li>
+                      <li class="list-group-item">
+                        <div class="card">
+                            <div class="card-header">
+                              Featured
+                            </div>
+                            <ul class="list-group list-group-flush">
+                              <li class="list-group-item">An item</li>
+                              <li class="list-group-item">A second item</li>
+                              <li class="list-group-item">A third item</li>
+                            </ul>
+                        </div>
+                        <div  id="chartContainer"></div>
+                      </li>
+                      <li class="list-group-item">A third item</li>
+                    </ul>
+                  </div>
+                </div>
+              
+          </div>
     </div>
 </div>
+</div>
+
+
+
 
 <style>
     svg{
         margin-bottom: 5px;
     }
+
+    .row{
+        width: 100%;
+        height: 100vh;
+    }
 </style>
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+       let lignite = <%= mines.factors.coalType.lignite %>
+
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Lignite',     11],
+          ['Sub-Bituminous',      2],
+          ['Bituminous',  2],
+          ['Anthracite', 2]
+
+        ]);
+
+        var options = {
+          title: 'My Daily Activities',
+          is3D: true,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('chartContainer'));
+        chart.draw(data, options);
+      }
+    </script>

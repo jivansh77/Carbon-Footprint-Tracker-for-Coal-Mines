@@ -370,6 +370,22 @@
             </div>
   
             <!-- Results Content -->
+
+            <!-- placeholder for database -->
+             
+                  <!-- Direct Emissions -->          
+                    <input type="hidden" name="Mine[result.coalFootprint]" value="0.00" id="hiddenDirectEmissions">                 
+                  <!-- Electricity Emissions -->                  
+                    <input type="hidden" name="Mine[result.electricityFootprint]" value="0.00" id="hiddenElectricityEmissions">                  
+                  <!-- Transport Emissions -->                  
+                    <input type="hidden" name="Mine[result.transportFootprint]" value="0.00" id="hiddenTransportEmissions">
+                  <!-- Deforestation -->                                     
+                    <input type="hidden" name="Mine[result.deforestationFootprint]" value="0.00" id="hiddenDeforestationEmissions">
+                    <!-- total -->
+                    <input type="hidden" name="Mine[result.totalFootprint]" value="0.00" id="hiddenTotalFootprint">
+                  
+
+
             <div id="resultsTab" class="form-step">
               <div class="mb-4">
 
@@ -442,6 +458,12 @@
   formSteps[fstep].classList.add("form-step-active");
 }
 
+let coalf;
+let elecf;
+let transf;
+let deforestf;
+let total;
+
 resultbtn.addEventListener("click", () =>{
   const Bituminous = parseFloat(document.querySelector("#bitu").value) || 0;
   const Anthracite = parseFloat(document.querySelector("#anthra").value) || 0;
@@ -464,17 +486,21 @@ resultbtn.addEventListener("click", () =>{
   let apct = 0.90;
 
   let coalFootprint = (((lpct * Lignite) + (sbpct * subBituminous) + (bpct * Bituminous) + (apct * Anthracite))*3.67)/1000;
+  coalf = coalFootprint.toFixed(4);
 
   // ELECTRICITY CALCULATION
   let elecFootprint = (eFactor * elecConsump)/1000;
+  elecf = elecFootprint.toFixed(4);
 
   //TRANSPORT CALCULATION
   let dieselFootprint = ((ddistance * (deff/100) * 2.67)/1000);
   let petrolFootprint = ((pdistance * (peff/100) * 2.31)/1000);
   let TransFootprint = dieselFootprint + petrolFootprint;
+  transf = TransFootprint.toFixed(4);
 
   //DEFORESTATION CALCULATION
   let deforestationFootprint = (deforestedArea * cStock * 3.67)/1000;
+  deforestf = deforestationFootprint.toFixed(4);
   updateTotalResult(coalFootprint,elecFootprint,TransFootprint,deforestationFootprint);
 })
 
@@ -492,8 +518,6 @@ function updateProgressbar() {
     ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
 }
 
-let total;
-
   function updateTotalResult(coalFootprint,elecFootprint,TransFootprint,deforestationFootprint) {
     total = coalFootprint + elecFootprint + TransFootprint + deforestationFootprint;
     document.getElementById("directEmissionResult").innerHTML = `Direct Emissions: <input class="ms-2 col-3" type="text" value="${coalFootprint.toFixed(4)}" aria-label="Disabled input example" disabled readonly name="Mine[result.coalFootprint]"> tCO<sub>2e</sub>`;
@@ -501,6 +525,12 @@ let total;
     document.getElementById("transportResult").innerHTML = `Supply Chain: <input class="ms-2 col-3" type="text" value="${TransFootprint.toFixed(4)}" aria-label="Disabled input example" disabled readonly name="Mine[result.transportFootprint]"> tCO<sub>2e</sub>`;
     document.getElementById("deforestationResult").innerHTML = `Deforestation: <input class="ms-2 col-3" type="text" value="${deforestationFootprint.toFixed(4)}" aria-label="Disabled input example" disabled readonly name="Mine[result.deforestationFootprint]"> tCO<sub>2e</sub>`;
     document.getElementById("totalResult").innerHTML = `<div class ="text-center fs-3">Total Carbon Footprint: <input class="ms-2 col-3" type="text" value="${total.toFixed(4)}" aria-label="Disabled input example" disabled readonly name="Mine[result.totalFootprint]"> tCO<sub>2e</sub></div>`;
+
+    document.getElementById('hiddenDirectEmissions').value = coalFootprint.toFixed(4);
+    document.getElementById('hiddenElectricityEmissions').value =  elecFootprint.toFixed(4);
+    document.getElementById('hiddenTransportEmissions').value = TransFootprint.toFixed(4);
+    document.getElementById('hiddenDeforestationEmissions').value = deforestationFootprint.toFixed(4);
+    document.getElementById('hiddenTotalFootprint').value = total.toFixed(4);
   }
 
   document.getElementById('state').addEventListener('change', function () {
@@ -525,7 +555,8 @@ let total;
       }
     });
 
-  
+    
+
 
 
 </script>

@@ -30,17 +30,12 @@ app.get("/home", (req, res) => {
     res.render("home");
 })
 
-
-app.get("/addmine", (req, res) => {
-    res.render("addmine", { places });
-});
-
 app.post("/index", async (req, res) => {
     try {
         const mineData = req.body.Mine;
         const mine = new Mines(mineData);
         await mine.save();
-        res.send(req.body.Mine);
+        res.redirect("/index");
     } catch (err) {
         console.error("Error adding mine:", err);
         res.status(500).send("Internal Server Error");
