@@ -1,20 +1,37 @@
 <% layout("../layouts/boilerplate") %>
 
+<style>
+
+</style>
+
+<input type="number" id="lignite" value="<%= mines.factors.coalType.lignite %>" hidden>
+<input type="number" id="subbitu" value="<%= mines.factors.coalType.subbitu %>" hidden>
+<input type="number" id="bitu" value="<%= mines.factors.coalType.bitu %>" hidden>
+<input type="number" id="anthra" value="<%= mines.factors.coalType.anthra %>" hidden>
+
+<input type="number" id="coalFootprint" value="<%= mines.result.coalFootprint %>" hidden>
+<input type="number" id="electricityFootprint" value="<%= mines.result.electricityFootprint %>" hidden>
+<input type="number" id="transportFootprint" value="<%= mines.result.transportFootprint %>" hidden>
+<input type="number" id="deforestationFootprint" value="<%= mines.result.deforestationFootprint %>" hidden>
+
+
 <div class="container-fluid">
     <div class="row mt-4">
-        <div class="col-12 col-md-6">
-            <div class="card">
+        <div class="col">
+            <div class="card p-0 information">
+              <h2 class="card-title text-center mb-3">Mine information</h2>
                 <div>
                     <img src="<%= mines.image %>" class="card-img-top" alt="">
                 </div>
                 <div class="card-body">
-                    <h3 class="card-title"><%= mines.name%></h3>
+                  
+                    <h3 class="card-title text-center"><%= mines.name%></h3>
                     <p class="card-text">
                         <%= mines.description %>
                     </p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-secondary">
+                    <li class="list-group-item text-secondary loc">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
                             <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
                           </svg>
@@ -44,28 +61,110 @@
             </div>
 </div>
  
-    <div class="col-12 col-md-6">
-        <div class="card mb-3">
+    <div class="col">
+        <div class="card mb-3 footprintBox">
             
                 <div class="card-body">
-                  <h2 class="card-title text-center">Footprint Details</h2>
+                  <h2 class="card-title text-center">Footprint Analysis</h2>
                   <div>
                     <ul class="list-group list-group-flush">
-                      <li class="list-group-item fs-3">Total Footprint : <%= mines.result.totalFootprint %></li>
+                      <div class="row d-flex align-items-center border">
+                        <div class="col-12 col-md-5 border-end">
+                          <li class="list-group-item fs-3 text-center border border-0">Total Footprint: <span class="text-success" id="totalFootprint"><%= mines.result.totalFootprint %></span> tCO<sub>2e</sub></li>
+                        </div>
+                        <div class="col-12 col-md-7">
+                          <div id="totalChart"></div>
+                        </div>
+                      </div>
+                      <li class="list-group-item">
+                        <div class="row d-flex align-items-center border">
+                          <div class="col-12 col-md-5 p-0 border-end">
+                            <div class="card border-0">
+                              <div class="card-header fs-5">
+                                Combustion FootPrint: <span class="text-success"><%= mines.result.coalFootprint %></span> tCO<sub>2e</sub>
+                              </div>
+                              <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                  Lignite: <span class="text-primary"><%= mines.factors.coalType.lignite %></span> kg.
+                                </li>
+                                <li class="list-group-item">
+                                  Sub-Bituminous: <span class="text-primary"><%= mines.factors.coalType.subbitu %></span> kg.
+                                </li>
+                                <li class="list-group-item">
+                                  Bituminous: <span class="text-primary"><%= mines.factors.coalType.bitu %></span> kg.
+                                </li>
+                                <li class="list-group-item">
+                                  Anthracite: <span class="text-primary"><%= mines.factors.coalType.anthra %></span> kg.
+                                </li>
+                                <li class="list-group-item text-center">
+                                  Total Quantity: <span class="text-primary"><%= mines.factors.coalType.anthra + mines.factors.coalType.bitu + mines.factors.coalType.subbitu + mines.factors.coalType.lignite%></span> kg.
+                                </li>
+                              </ul>
+                          </div>
+                          </div>
+                          <div class="col-12 col-md-7">
+                            <div  id="coalChart"></div>
+                          </div>
+                        </div>
+                      </li>
+
+                      <!-- electriccity -->
+
                       <li class="list-group-item">
                         <div class="card">
-                            <div class="card-header">
-                              Featured
+                            <div class="card-header fs-5">
+                              Electricity FootPrint: <span class="text-success"><%= mines.result.electricityFootprint %></span> tCO<sub>2e</sub>
                             </div>
                             <ul class="list-group list-group-flush">
-                              <li class="list-group-item">An item</li>
-                              <li class="list-group-item">A second item</li>
-                              <li class="list-group-item">A third item</li>
+                              <li class="list-group-item">
+                                Electricity Consumed: <span class="text-primary"><%= mines.factors.electricityConsume %></span> kWh.
+                              </li>
+                              <li class="list-group-item">
+                                Emission Factor: <span class="text-primary"><%= mines.factors.eFactor %></span>.
+                              </li>
                             </ul>
                         </div>
-                        <div  id="chartContainer"></div>
                       </li>
-                      <li class="list-group-item">A third item</li>
+
+                      <!-- Transport -->
+                      <li class="list-group-item">
+                        <li class="list-group-item">
+                          <div class="card">
+                              <div class="card-header fs-5">
+                                Transport FootPrint: <span class="text-success"><%= mines.result.transportFootprint %></span> tCO<sub>2e</sub>
+                              </div>
+                              <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                  Distance travelled through Diesel: <span class="text-primary"><%= mines.factors.fuelUse.ddistance %></span> km.
+                                </li>
+                                <li class="list-group-item">
+                                  Distance travelled through Petrol: <span class="text-primary"><%= mines.factors.fuelUse.pdistance %></span> km.
+                                </li>
+                              </ul>
+                          </div>
+                        </li>
+                      </li>
+
+                      <!-- Deforestation -->
+                      <li class="list-group-item">
+                        <li class="list-group-item">
+                          <div class="card">
+                              <div class="card-header fs-5">
+                                Deforestation FootPrint: <span class="text-success"><%= mines.result.deforestationFootprint %></span> tCO<sub>2e</sub>
+                              </div>
+                              <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                 Deforested Area: <span class="text-primary"><%= mines.factors.deforestedArea %></span> hectares.
+                                </li>
+                                <li class="list-group-item">
+                                 Carbon stock per hectare: <span class="text-primary"><%= mines.factors.cStock %></span>.
+                                </li>
+                              </ul>
+                          </div>
+                        </li>
+                      </li>
+
+
                     </ul>
                   </div>
                 </div>
@@ -85,34 +184,81 @@
 
     .row{
         width: 100%;
-        height: 100vh;
+    }
+
+    .rect{
+      width: auto;
+    }
+
+    .information, .loc{
+      height: 100%;
+    }
+    .footPrintBox{
+      height: 100%;
     }
 </style>
 
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
+<script type="text/javascript">
+  // Get the values from the elements
+  let lignite = parseFloat(document.querySelector('#lignite').value) || 0;
+  let subbitu = parseFloat(document.querySelector('#subbitu').value) || 0;
+  let bitu = parseFloat(document.querySelector('#bitu').value) || 0;
+  let anthra = parseFloat(document.querySelector('#anthra').value) || 0;
+  // Load the Google Charts library
+  google.charts.load("current", {packages:["corechart"]});
+  google.charts.setOnLoadCallback(drawChart);
 
-       let lignite = <%= mines.factors.coalType.lignite %>
+  function drawChart() {
+    // Prepare the data
+    var data = google.visualization.arrayToDataTable([
+      ['Type of Coal', 'Quantity'],
+      ['Lignite', lignite],
+      ['Sub-Bituminous', subbitu],
+      ['Bituminous', bitu],
+      ['Anthracite', anthra]
+    ]);
 
-      google.charts.load("current", {packages:["corechart"]});
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Lignite',     11],
-          ['Sub-Bituminous',      2],
-          ['Bituminous',  2],
-          ['Anthracite', 2]
+    // Set chart options
+    var options = {
+      title: 'Coal Types Distribution',
+      is3D: true,
+    };
 
-        ]);
+    // Draw the chart
+    var chart = new google.visualization.PieChart(document.getElementById('coalChart'));
+    chart.draw(data, options);
+  }
+</script>
 
-        var options = {
-          title: 'My Daily Activities',
-          is3D: true,
-        };
+<script>
+  let coalFootprint = parseFloat(document.querySelector('#coalFootprint').value) || 0;
+  let electricityFootprint = parseFloat(document.querySelector('#electricityFootprint').value) || 0;
+  let transportFootprint = parseFloat(document.querySelector('#transportFootprint').value) || 0;
+  let deforestationFootprint = parseFloat(document.querySelector('#deforestationFootprint').value) || 0;
+  // Load the Google Charts library
+  google.charts.load("current", {packages:["corechart"]});
+  google.charts.setOnLoadCallback(drawChart);
 
-        var chart = new google.visualization.PieChart(document.getElementById('chartContainer'));
-        chart.draw(data, options);
-      }
-    </script>
+  function drawChart() {
+    // Prepare the data
+    var data = google.visualization.arrayToDataTable([
+      ['Type of Coal', 'Quantity'],
+      ['Combustion Footprint', coalFootprint],
+      ['Electricity Footprint', electricityFootprint],
+      ['Transport Footprint', transportFootprint],
+      ['Deforestation Footprint', deforestationFootprint]
+    ]);
+
+    // Set chart options
+    var options = {
+      title: 'Carbon Footprint Distribution',
+      is3D: true,
+    };
+
+    // Draw the chart
+    var chart = new google.visualization.PieChart(document.getElementById('totalChart'));
+    chart.draw(data, options);
+  }
+</script>
