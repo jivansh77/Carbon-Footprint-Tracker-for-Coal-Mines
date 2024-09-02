@@ -29,11 +29,15 @@
                                 <%= m.state %>
                             <% } %>
                         </p>
-                          <small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                          
                           <a href="/index/<%=m._id%>" class="stretched-link"></a>
+                        </div>
+                        <div class="card-footer">
+                          <p class="text-success">Carbon Footprint: <%= m.result.totalFootprint %> tCO<sub>e2</sub></p>
                         </div>
                       </div>
                     </div>
+                    
                   </div>
             <% } %>
         </div>
