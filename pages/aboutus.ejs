@@ -1,0 +1,199 @@
+<% layout("../layouts/boilerplate") %>
+
+<style>
+
+.heading {
+    display: flex;
+    justify-content: center;
+}
+.heading h1 {
+    font-size: 55px;
+    color: rgb(255, 166, 0);
+    margin-top: 50px;
+    position: relative;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+.heading h1:hover{
+    color: orangered;
+    transform: scale(1.1);
+}
+
+.heading h1:hover::after{
+    animation-name: h1anime1;
+    animation-duration: 5s;
+    background-color: orangered;
+}
+
+.heading h1::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 5px;
+    background-color:red;
+    animation-name: h1anime;
+    animation-duration: 10s;
+}
+@keyframes h1anime {
+    0%{
+        width: 0;
+        left: 0;
+        bottom: 0;
+    }
+    50%{
+        width: 100%;
+        left: 0;
+        bottom: 0;
+    }
+    100%{
+        width: 0;
+        left: 100%;
+        bottom: 0;
+    }
+    
+}
+@keyframes h1anime1 {
+    0%{
+        width: 0;
+        left: 0;
+        bottom: 0;
+    }
+    50%{
+        width: 100%;
+        left: 0;
+        bottom: 0;
+    }
+    100%{
+        width: 0;
+        left: 100%;
+        bottom: 0;
+    }
+    
+}
+
+.hero-img {
+    flex: 1;
+    width: 600px;
+    animation: fadedown 4s ease;
+}
+
+img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin: auto;
+    transition: 0.3s ease;
+}
+img:hover{
+    transform: scale(1.1);
+}
+
+.hero-contact {
+    flex: 1;
+    width: 600px;
+    margin: 0 50px;
+    animation: fadeup 2s ease;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 90px;
+    color:brown;
+}
+
+.hero-contact h2 {
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.hero-contact p {
+    font-size: 20px;
+    margin-bottom: 40px;
+    line-height: 1.5;
+}
+
+.hero-contact button a{
+    text-decoration: none;
+    color: white;
+
+}
+.hero-contact button {
+    display: inline-block;
+    padding: 10px 20px;
+    color: white;
+    font-size: 20px;
+    font-weight: 800;
+    border: none;
+    border-radius: 10px;
+    background-color: red;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.hero-contact button:hover {
+    background-color: rgb(255, 60, 0);
+    transform: scale(1.1);
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .hero-contact {
+        width: 90%;
+        margin-bottom: 50px;
+    }
+
+    .hero-img {
+        width: 90%;
+        margin: auto;
+    }
+
+    .hero-contact button {
+        margin: auto;
+    }
+}
+
+@keyframes fadeup {
+    0% {
+        opacity: 1;
+        transform: translateY(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+
+}
+
+@keyframes fadedown {
+    0% {
+        opacity: 1;
+        transform: translatex(-50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translatex(0px);
+    }
+
+}
+</style>
+
+    <div class="hero container-fluid">
+        <div class="row d-flex align-items-center">
+            <div class="heading my-3">
+                <h1>About Us</h1>
+            </div>
+            <div class="col">
+                    <div class="hero-contact text-center">
+                        <h2 class="text-center">Our Mission</h2>
+                        <p>Our Mission is to use this website in the journey by implementing a  combination of strategies like reducing emissions from mining activities, adopting cleaner technologies ,helping quantify a mine's carbon footprint and evaluate potential pathways to carbon neutrality.</p>
+                        <button class="hero-button"> <a href="">Get Started</a></button>
+                    </div>
+            </div>
+            <div class="col">
+                <img src="./13535236_Work_4.jpg" alt="">                
+            </div>
+        </div>
+    </div>
