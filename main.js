@@ -67,6 +67,10 @@ app.get("/calculate",(req, res) => {
     res.render("calculate", {places});
 });
 
+app.get("/index/:id/suggestions",(req, res) => {
+    res.render("suggestions");
+});
+
 app.get("/index/:id", async (req, res) => {
     try {
         const mines = await Mines.findById(req.params.id);
