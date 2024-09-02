@@ -1,0 +1,83 @@
+<% layout("../layouts/boilerplate") %>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    color: #333;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    background: #eee;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.recommendations {
+    margin-top: 20px;
+}
+
+.recommendations ul li a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.recommendations ul li a:hover {
+    text-decoration: underline;
+}
+
+</style>
+
+<div class="container">
+  <h1>Personalized Suggestions to Offset Your Carbon Footprint</h1>
+  <p>Based on your input, here are some tailored strategies:</p>
+  <ul>
+      <% suggestions.forEach(suggestion => { %>
+          <li><%= suggestion %></li>
+      <% }); %>
+  </ul>
+
+  <div class="recommendations">
+      <h2>Further Recommendations</h2>
+      <p>Explore more options for reducing your carbon footprint:</p>
+      <ul>
+          <li><a href="#">Adopt Renewable Energy Solutions</a></li>
+          <li><a href="#">Join Carbon Offset Programs</a></li>
+          <li><a href="#">Implement Energy-Efficient Practices</a></li>
+          <!-- Add more links as necessary -->
+      </ul>
+  </div>
+</div>

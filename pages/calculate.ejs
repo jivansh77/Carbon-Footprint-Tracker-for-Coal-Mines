@@ -407,6 +407,10 @@
                   <div class="col-4">
                     <button class="btn btn-success mt-4 save buton">Save</button>
                   </div>
+                  <div class="col-4"></div>
+                  <div class="col-4">
+                    <button type="button" class="btn mt-4 buton" onclick="window.location.href='/suggestions'"><span>Offset Now</span></button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -478,7 +482,8 @@ resultbtn.addEventListener("click", () =>{
   const peff = parseFloat(document.querySelector("#peff").value) || 1;
   const deforestedArea = parseFloat(document.querySelector("#deforestedArea").value) || 0;
   const cStock = parseFloat(document.querySelector("#cStock").value) || 150;
-
+  const transportation = ddistance + pdistance;
+  
   // COMBUSTION CALCULATION
   let lpct = 0.30;
   let sbpct = 0.40;

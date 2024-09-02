@@ -6,12 +6,17 @@ const mongoose = require('mongoose');
 const Mines = require('./models/mines');
 const ejsMate = require('ejs-mate');
 const places = require('./data/india-places');
+const {spawn} = require('child_process');
+const bodyParser = require('body-parser');
 
 app.engine('ejs', ejsMate);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static('pages'));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(express.static('public'));
 
 mongoose.connect('mongodb://localhost:27017/mines', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
@@ -52,8 +57,31 @@ app.get("/index", async (req, res) => {
     }
 });
 
-app.get("/calculate", (req, res) => {
+app.route("/calculate").get((req, res) => {
     res.render("calculate", {places});
+    
+    const python = spawn('python3', ['ml/ml_model.py', coalQty, elecConsump, transportation, deforestedArea]);
+    python.stdout.on('data', (data) => {
+        try {
+            const result = JSON.parse(data.toString());
+            res.json(result);
+        } catch (error) {
+            console.error("Error parsing JSON from Python script:", error);
+            res.status(500).send("Internal Server Error: Failed to parse response from Python script");
+        }
+    });
+
+    python.stderr.on('data', (data) => {
+        console.error(`Error from Python script: ${data}`);
+        res.status(500).send("Internal Server Error: Python script encountered an error");
+    });
+
+    python.on('exit', (code) => {
+        console.log(`Python script exited with code ${code}`);
+        if (code !== 0) {
+            res.status(500).send("Internal Server Error: Python script did not exit cleanly");
+        }
+    });
 });
 
 app.get("/index/:id", async (req, res) => {
@@ -106,6 +134,15 @@ app.get("/index/:id/edit", async (req, res) => {
         console.error("Error fetching mine for edit:", err);
         res.status(500).send("Internal Server Error");
     }
+});
+
+app.get('/suggestions', (req, res) => {
+    const { strategy_label } = req.query;
+    let suggestions = req.query.suggestions;
+    if (!Array.isArray(suggestions)) {
+        suggestions = [];
+    }
+    res.render("suggestions", { strategy_label, suggestions });
 });
 
 app.get('/getCities', (req, res) => {
