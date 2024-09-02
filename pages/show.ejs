@@ -1,8 +1,5 @@
 <% layout("../layouts/boilerplate") %>
 
-<a href="/index" class="ms-4 mt-4"><div class="btn btn-primary">Go back</div></a>
-
-
 <input type="number" id="deff" value="<%= mines.factors.fuelUse.dfueleff %>" hidden>
 <input type="number" id="peff" value="<%= mines.factors.fuelUse.pfueleff %>" hidden>
 
@@ -11,13 +8,13 @@
     <div class="row mt-4">
         <div class="col-12 col-md-6">
             <div class="card p-0 information">
-              <h2 class="card-title text-center mb-4 mt-3">Mine information</h2>
+              <h2 class="card-title text-center mb-4 mt-3"><b>Mine Information</b></h2>
                 <div>
                     <img src="<%= mines.image %>" class="card-img-top" alt="">
                 </div>
                 <div class="card-body">
                   
-                    <h3 class="card-title text-center"><%= mines.name%></h3>
+                    <h3 class="card-title text-center text-dark"><%= mines.name%></h3>
                     <p class="card-text">
                         <%= mines.description %>
                     </p>
@@ -49,7 +46,7 @@
         <div class="card mb-3 footprintBox">
             
                 <div class="card-body">
-                  <h2 class="card-title text-center mb-3">Footprint Analysis</h2>
+                  <h2 class="card-title text-center mb-3"><b>Footprint Analysis</b></h2>
                   <div>
                     <ul class="list-group list-group-flush">
                       <div class="row d-flex align-items-center border totalbox">
@@ -187,40 +184,174 @@
 
 
 <style>
-    svg{
-        margin-bottom: 5px;
-    }
+  body {
+      background-color: #f4f4f4; /* Light gray background */
+      color: #333; /* Dark text for readability */
+      font-family: Arial, sans-serif;
+  }
 
-    .indicator{
-      width: 100%;
-    }
+  .container {
+      margin-top: 20px;
+  }
 
-    .rect{
-      width: auto;
-    }
+  .card {
+      border: none;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+  }
 
-    .information, .loc{
-      height: 100%;
-    }
-    .footPrintBox{
-      height: 100%;
-    }
+  .card-img-top {
+      max-height: 200px;
+      object-fit: cover;
+      border-bottom: 1px solid #ddd;
+  }
 
-    input{      
-      color: rgb(0, 148, 0);
-      text-align: center;
-      padding: 0;
-    }
+  .card-body {
+      padding: 20px;
+  }
 
-    .totalbox input{
-      width: 100%;
-    }
+  .card-title {
+      color: #f39c12; /* Accent color for titles */
+      font-size: 2em;
+      margin-bottom: 1em;
+  }
 
-    .list-group-item{
+  .card-text {
+      font-size: 1em;
+      line-height: 1.5;
+  }
+
+  .list-group-item {
       font-weight: bold;
-    }
+      background-color: #fff;
+      border: none;
+      padding: 10px 15px;
+  }
 
+  .list-group-item svg {
+      vertical-align: middle;
+      margin-right: 5px;
+  }
+
+  .list-group-item input {
+      background: transparent;
+      border: none;
+      font-weight: bold;
+      color: #333;
+      width: auto;
+      display: inline-block;
+  }
+
+  .footprintBox {
+      background-color: #fff;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .totalbox {
+      border-bottom: 1px solid #ddd;
+  }
+
+  .btn {
+      border-radius: 5px;
+      font-weight: bold;
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+  }
+
+  .btn-primary {
+      background-color: #f39c12;
+      border-color: #f39c12;
+      color: #fff;
+  }
+
+  .btn-primary:hover {
+      background-color: #e67e22;
+      border-color: #e67e22;
+  }
+
+  .btn-danger {
+      background-color: #e74c3c;
+      border-color: #e74c3c;
+      color: #fff;
+  }
+
+  .btn-danger:hover {
+      background-color: #c0392b;
+      border-color: #c0392b;
+  }
+
+  .btn-success {
+      background-color: #2ecc71;
+      border-color: #2ecc71;
+      color: #fff;
+  }
+
+  .btn-success:hover {
+      background-color: #27ae60;
+      border-color: #27ae60;
+  }
+
+  .btn-warning {
+      background-color: #f1c40f;
+      border-color: #f1c40f;
+      color: #333;
+  }
+
+  .btn-warning:hover {
+      background-color: #f39c12;
+      border-color: #f39c12;
+  }
+
+  .indicator {
+      width: 100%;
+  }
+
+  .row {
+      margin-bottom: 20px;
+  }
+
+  #totalChart, #coalChart {
+      width: 100%;
+      height: 300px;
+  }
+
+  input {
+    color: rgb(0, 148, 0);
+    text-align: center;
+    padding: 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: auto; /* Adjust width as necessary */
+    display: inline-block; /* Ensure they don't stretch */
+    margin: 0; /* Remove margins */
+}
+
+  .information, .loc, .footPrintBox {
+      height: 100%;
+  }
+
+  .totalbox input {
+      width: 100%;
+  }
+
+  .card-header {
+      font-size: 1.25em;
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #ddd;
+      padding: 10px;
+  }
+
+  .card-body, .list-group-item {
+    margin: 0;
+    padding: 10px;
+}
 </style>
+
 
 <script>
     const Bituminous = parseFloat(document.querySelector("#bitu").value) || 0;

@@ -7,22 +7,21 @@
     justify-content: center;
 }
 .heading h1 {
-    font-size: 55px;
-    color: rgb(255, 166, 0);
+    font-size: 3rem;
     margin-top: 50px;
     position: relative;
     cursor: pointer;
     transition: 0.3s ease;
 }
 .heading h1:hover{
-    color: orangered;
+    color: rgb(255, 166, 0);
     transform: scale(1.1);
 }
 
 .heading h1:hover::after{
     animation-name: h1anime1;
     animation-duration: 5s;
-    background-color: orangered;
+    background-color: rgb(255, 166, 0);
 }
 
 .heading h1::after {
@@ -30,7 +29,7 @@
     position: absolute;
     width: 0;
     height: 5px;
-    background-color:red;
+    background-color:rgb(255, 166, 0);
     animation-name: h1anime;
     animation-duration: 10s;
 }
@@ -95,16 +94,17 @@ img:hover{
     animation: fadeup 2s ease;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 90px;
-    color:brown;
+    color:#333
 }
 
 .hero-contact h2 {
-    font-size: 25px;
+    color: #f39c12;
+    font-size: 1.85rem;
     margin-bottom: 20px;
 }
 
 .hero-contact p {
-    font-size: 20px;
+    font-size: 1.2rem;
     margin-bottom: 40px;
     line-height: 1.5;
 }
@@ -193,12 +193,12 @@ img:hover{
     <div class="hero container-fluid">
         <div class="row d-flex align-items-center mb-5">
             <div class="heading my-3">
-                <h1>About Us</h1>
+                <h1><b>About Us</b></h1>
             </div>
             <div class="col">
-                    <div class="hero-contact text-center">
-                        <h2 class="text-center">Our Mission</h2>
-                        <p>Our Mission is to use this website in the journey by implementing a  combination of strategies like reducing emissions from mining activities, adopting cleaner technologies ,helping quantify a mine's carbon footprint and evaluate potential pathways to carbon neutrality.</p>
+                    <div class="hero-contact text-center mt-3">
+                        <h2 class="text-center"><b>Our Mission</b></h2>
+                        <p>Our mission is to empower the mining industry to transition towards a sustainable and carbon-neutral future. This website serves as a comprehensive platform designed to help coal mines quantify their carbon footprint, reduce emissions, and adopt cleaner technologies. By providing tools to implement effective carbon management strategies, we aim to assist mining operations in their journey toward carbon neutrality. Our objectives are to facilitate the reduction of emissions from mining activities, promote the adoption of innovative clean technologies, and provide actionable insights for offsetting carbon emissions. Through this approach, we strive to foster a more environmentally responsible mining sector.</p>
                     </div>
             </div>
             <div class="col">
@@ -231,7 +231,7 @@ img:hover{
             <div class="card">
                 <img src="..." class="card-img-top" alt="...">
                 <div class="card-body">
-                  <h5 class="card-title text-center">Tanishka</h5>
+                  <h5 class="card-title text-center">Tanishka Chavan</h5>
                 </div>
             </div>
             <div class="card">
