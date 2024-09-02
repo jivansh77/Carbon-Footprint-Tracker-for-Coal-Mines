@@ -8,6 +8,7 @@ const ejsMate = require('ejs-mate');
 const places = require('./data/india-places');
 const {spawn} = require('child_process');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 app.engine('ejs', ejsMate);
 
@@ -17,6 +18,7 @@ app.use(express.static('pages'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
+app.use(cors());
 
 mongoose.connect('mongodb://localhost:27017/mines', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {

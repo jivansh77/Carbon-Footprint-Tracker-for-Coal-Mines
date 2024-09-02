@@ -1,7 +1,7 @@
 <% layout("../layouts/boilerplate") %>
 
 <div class="container">
-    <h1 class="mb-5">Saved Mines:</h1>
+    <h1 class="mb-5">Saved Mines</h1>
 
         <div>
             <% for(let m of mines) {%>
@@ -44,17 +44,75 @@
 </div>
 
 <style>
-    .card {
-      transition: 0.1s;
-      box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
-      }
+  body {
+    background-image: url("https://img.freepik.com/free-vector/white-with-low-poly-network-connection_1017-29753.jpg?t=st=1725306260~exp=1725309860~hmac=8888afcd8736d0fa759e5a40bcebee93b796c6ee6555eff330a2c2418c2d8107&w=826");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
 
-    .card:hover {
-      box-shadow: 3px 3px 2px 3px rgb(0, 0, 0);
-      background-color: rgb(240, 240, 240);
-    }
+  .container {
+      padding: 30px;
+  }
 
-    svg{
-        margin-bottom: 5px;
-    }
+  h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 40px;
+      text-align: center;
+  }
+
+  /* Card Styles */
+  .card {
+      border: none;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .card:hover {
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      background-color: #f9f9f9;
+  }
+
+  .card-img-top {
+      border-bottom: 2px solid #f39c12;
+  }
+
+  .card-body {
+      padding: 20px;
+  }
+
+  .card-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+  }
+
+  .card-text {
+      font-size: 1rem;
+      color: #666;
+  }
+
+  .card-footer {
+      background-color: #f4f4f4;
+      padding: 15px;
+      border-top: 1px solid #ddd;
+  }
+
+  .text-success {
+      color: #28a745;
+      font-weight: bold;
+  }
+
+  .ratio-4x3 {
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+  }
+
+  svg {
+      margin-bottom: 4px;
+      vertical-align: middle;
+  }
 </style>
