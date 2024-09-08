@@ -41,6 +41,10 @@ app.get("/about", (req, res) => {
     res.render("aboutus");
 })
 
+app.get("/suggest", (req, res) => {
+    res.render("suggest");
+})
+
 app.post("/index", async (req, res) => {
     try {
         const mineData = req.body.Mine;

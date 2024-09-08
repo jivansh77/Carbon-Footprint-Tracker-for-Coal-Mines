@@ -1,0 +1,190 @@
+<% layout("../layouts/boilerplate") %>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+        color: #333;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .header {
+        color: #333;
+        padding: 1rem 0;
+        text-align: center;
+    }
+
+    .header h1 {
+        margin: 0;
+        font-size: 3rem;
+    }
+
+    .content {
+        padding: 2rem;
+    }
+
+    .steps {
+        margin-top: 2rem;
+    }
+
+    .step {
+        background: #fff;
+        border-radius: 8px;
+        padding: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1.5rem;
+    }
+
+    .step h2 {
+        color: #f39c12;
+        font-size: 1.5rem;
+    }
+
+    .btn-primary {
+        background-color: #f39c12;
+        border: none;
+        color: #fff;
+        padding: 0.75rem 1.5rem;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background-color: #e67e22;
+    }
+
+    .call-to-action {
+        margin-top: 2.5rem;
+        text-align: center;
+    }
+
+    .featured-projects {
+        margin-top: 3rem;
+        padding: 2rem;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .featured-projects h2 {
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .project-card {
+        display: flex;
+        align-items: center;
+        background: #f9f9f9;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+    }
+
+    .project-card img {
+        border-radius: 8px;
+        width: 150px;
+        height: 100px;
+        object-fit: cover;
+        margin-right: 1rem;
+    }
+
+    .project-card-content {
+        flex: 1;
+    }
+
+    .project-card h3 {
+        color: #333;
+        margin: 0;
+        font-size: 1.25rem;
+    }
+
+    .project-card p {
+        color: #666;
+        margin: 0.5rem 0;
+    }
+
+    .project-card a {
+        color: #f39c12;
+        text-decoration: none;
+    }
+
+    .project-card a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<header class="header">
+    <div class="container">
+        <h1 class="mt-4"><b>Offset Your Carbon Footprint</b></h1>
+    </div>
+</header>
+
+<div class="container content">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="steps">
+                <div class="step">
+                    <h2><b>Step 1: Calculate Your Carbon Footprint</b></h2>
+                    <p>Before you can offset your carbon footprint, you need to calculate it. You can do this using our Carbon Footprint Calculator. This will give you an accurate measurement of your emissions based on your activities and energy consumption.</p>
+                </div>
+                
+                <div class="step">
+                    <h2><b>Step 2: Explore Offset Options</b></h2>
+                    <p>Once you know your carbon footprint, you can choose from various offset options. These may include investing in renewable energy projects, supporting reforestation efforts, or purchasing carbon credits. Learn more about each option and how they help reduce emissions.</p>
+                </div>
+
+                <div class="step">
+                    <h2><b>Step 3: Make a Commitment</b></h2>
+                    <p>After selecting your offset options, make a commitment to offset your emissions. You can purchase carbon credits or donate to projects that help reduce greenhouse gases. This is a crucial step in contributing to a more sustainable future.</p>
+                </div>
+
+                <div class="step">
+                    <h2><b>Step 4: Track Your Impact</b></h2>
+                    <p>Track the impact of your offsetting efforts. Many offset providers offer tools to track the progress of your contributions. Keeping track helps you stay motivated and ensures that your efforts are making a difference.</p>
+                </div>
+
+                <div class="call-to-action">
+                    <a href="/calculate" class="btn-primary btn-lg">Start Calculating Now</a>
+                </div>
+            </div>
+
+            <!-- Featured Projects Section -->
+            <div class="featured-projects">
+                <h2><b>Featured Offset Projects</b></h2>
+                <div class="project-card">
+                    <img src="https://via.placeholder.com/150x100" alt="Project Image">
+                    <div class="project-card-content">
+                        <h3>Renewable Energy Project</h3>
+                        <p>Support this project to fund renewable energy sources that reduce greenhouse gas emissions. <a href="#">Learn more</a></p>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <img src="https://via.placeholder.com/150x100" alt="Project Image">
+                    <div class="project-card-content">
+                        <h3>Reforestation Initiative</h3>
+                        <p>Help fund reforestation efforts that capture CO2 and restore natural habitats. <a href="#">Learn more</a></p>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <img src="https://via.placeholder.com/150x100" alt="Project Image">
+                    <div class="project-card-content">
+                        <h3>Carbon Credit Program</h3>
+                        <p>Purchase carbon credits to offset your emissions and support verified carbon reduction projects. <a href="#">Learn more</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
