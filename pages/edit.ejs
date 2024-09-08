@@ -96,7 +96,7 @@ body {
                 <div >
                     <h1 class="text-center mb-4 header-title"> Edit Mine </h1>
 
-                    <form action="/index/<%= mines.id%>/?_method=PUT" method="post">
+                    <form action="/index/<%= mines.id%>/?_method=PUT" method="post" id="formedit">
                         <div class="mb-4">
                             <label for="name" class="form-label">Name of the Coal Mine:</label>
                             <input type="text" class="form-control" id="name" name="Mine[name]" value="<%= mines.name %>">
@@ -231,6 +231,12 @@ body {
 
 
 
+                        <input name="Mine[result.coalFootprint]" step="0.0001" type="number" id="coalFootprint" value="<%= mines.result.coalFootprint %>" hidden>
+                        <input name="Mine[result.electricityFootprint]" step="0.0001" type="number" id="electricityFootprint" value="<%= mines.result.electricityFootprint %>" hidden>
+                        <input name="Mine[result.transportFootprint]" step="0.0001" type="number" id="transportFootprint" value="<%= mines.result.transportFootprint %>" hidden>
+                        <input name="Mine[result.deforestationFootprint]" step="0.0001" type="number" id="deforestationFootprint" value="<%= mines.result.deforestationFootprint %>" hidden>
+                        <input name="Mine[result.totalFootprint]" step="0.0001" type="number" class=" text-center" id="totalFootprint" value="<%= mines.result.totalFootprint %>" hidden>
+
                         <div class="row text-center">
                           <div class="col">
                             
@@ -276,4 +282,50 @@ body {
 
 
     
+</script>
+
+<script>
+  document.getElementById('formedit').addEventListener('submit', (event) => {
+  event.preventDefault(); // Prevent the default form submission
+
+  // Gather values for calculation
+  const Bituminous = parseFloat(document.querySelector("#bitu").value) || 0;
+  const Anthracite = parseFloat(document.querySelector("#anthra").value) || 0;
+  const Lignite = parseFloat(document.querySelector("#lignite").value) || 0;
+  const subBituminous = parseFloat(document.querySelector("#subbitu").value) || 0;
+
+  const electricityConsume = parseFloat(document.querySelector("#electricitycon").value) || 0;
+  const eFactor = parseFloat(document.querySelector("#eFactor").value) || 0.716;
+  const ddistance = parseFloat(document.querySelector("#ddistance").value) || 0;
+  const pdistance = parseFloat(document.querySelector("#pdistance").value) || 0;
+  const deff = parseFloat(document.querySelector("#deff").value) || 1;
+  const peff = parseFloat(document.querySelector("#peff").value) || 1;
+  const deforestedArea = parseFloat(document.querySelector("#deforestedArea").value) || 0;
+  const cStock = parseFloat(document.querySelector("#cStock").value) || 150;
+
+  // Perform calculations
+  let lpct = 0.30;
+  let sbpct = 0.40;
+  let bpct = 0.75;
+  let apct = 0.90;
+
+  let coalfootprint = (((lpct * Lignite) + (sbpct * subBituminous) + (bpct * Bituminous) + (apct * Anthracite))*3.67)/1000;
+  let elecFootprint = (eFactor * electricityConsume)/1000;
+  let dieselFootprint = ((ddistance * (deff/100) * 2.67)/1000);
+  let petrolFootprint = ((pdistance * (peff/100) * 2.31)/1000);
+  let TransFootprint = dieselFootprint + petrolFootprint;
+  let deforestationfootprint = (deforestedArea * cStock * 3.67)/1000;
+
+  // Update hidden fields
+  document.getElementById('coalFootprint').value = coalfootprint.toFixed(4);
+  document.getElementById('electricityFootprint').value = elecFootprint.toFixed(4);
+  document.getElementById('transportFootprint').value = TransFootprint.toFixed(4);
+  document.getElementById('deforestationFootprint').value = deforestationfootprint.toFixed(4);
+  document.getElementById('totalFootprint').value = (coalfootprint + elecFootprint + TransFootprint + deforestationfootprint).toFixed(4);
+
+  // Programmatically submit the form
+  event.target.submit();
+});
+
+
 </script>
