@@ -10,7 +10,7 @@ const mineSchema = new Schema({
     footprint: {
         directEmission: Number,
         electricityUse: Number,
-        trnasport: Number,
+        transport: Number,
         deforestation: Number,
         total: Number
     },
@@ -31,7 +31,8 @@ const mineSchema = new Schema({
             pfueleff:Number
         },
         deforestedArea: Number,
-        cStock: Number
+        cStock: Number,
+        transportation: Number
     },
     result: {
         coalFootprint: Number,

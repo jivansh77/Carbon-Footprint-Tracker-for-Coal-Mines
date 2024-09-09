@@ -170,7 +170,7 @@
         <div id="calcBox">
           <div class="mt-4">
             <h1 class="text-center mb-5 header-title ">Know Your Footprint</h1>
-            <form action="/index" class="form" method="post">
+            <form action="/index" class="form" id="myForm" method="post">
   
             <!-- Progress Bar -->
             <div class="progressBar text-center">
@@ -409,7 +409,7 @@
                   </div>
                   <div class="col-4"></div>
                   <div class="col-4">
-                    <button type="button" class="btn mt-4 buton" onclick="window.location.href='/suggestions'"><span>Offset Now</span></button>
+                    <button type="submit" class="btn mt-4 buton"><span>Offset Now</span></button>
                   </div>
                 </div>
               </div>
@@ -560,8 +560,16 @@ function updateProgressbar() {
       }
     });
 
-    
+    document.getElementById('myForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        // Retrieve form data
+        const coalQty = document.getElementById('lignite').value;
+        const elecConsump = document.getElementById('electricitycon').value;
+        const transportation = document.getElementById('ddistance').value;
+        const deforestedArea = document.getElementById('deforestedArea').value;
 
-
-
+        // Redirect to Streamlit app with query parameters
+        window.location.href = `http://localhost:8501/?coalQty=${encodeURIComponent(coalQty)}&elecConsump=${encodeURIComponent(elecConsump)}&transportation=${encodeURIComponent(transportation)}&deforestedArea=${encodeURIComponent(deforestedArea)}`;
+    });
 </script>
