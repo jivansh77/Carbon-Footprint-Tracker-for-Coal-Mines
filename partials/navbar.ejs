@@ -1,11 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 <style>
-.nav-link:hover{
+.nav-link:hover, .globe-icon:hover{
     color: white;
     text-shadow: rgb(165, 140, 29) 1px 0 10px;
     text-decoration: underline;
   }
 
-.nav-link{
+.nav-link, .globe-icon{
   transition: 0.5s;
 }
 
@@ -48,7 +59,30 @@ svg{
   padding: auto;
   margin-bottom: 5px;
 }
+
+.translate-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  margin-right: 1rem;
+}
+
+.globe-icon {
+  font-size: 1.8rem;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.google-translate-dropdown {
+  display: none;
+}
+
+.show-translate {
+  display: block;
+}
 </style>
+</head>
 
   
 </div>
@@ -96,14 +130,20 @@ svg{
           </svg></a>
         </li>
       </ul>
-      
+      <div class="translate-container">
+        <a href="#"><i class="fas fa-globe globe-icon" onclick="toggleTranslateDropdown()"></i></a>
+        <div id="google_translate_element" class="google-translate-dropdown"></div>
+      </div>
     </div>
-    
   </div>
 </nav>
 
-
-
+<script>
+  function toggleTranslateDropdown() {
+    var dropdown = document.getElementById('google_translate_element');
+    dropdown.classList.toggle('show-translate');
+  }
+</script>
 
 <script>
   window.embeddedChatbotConfig = {
@@ -135,3 +175,4 @@ svg{
     }
   });
 </script>
+</html>
