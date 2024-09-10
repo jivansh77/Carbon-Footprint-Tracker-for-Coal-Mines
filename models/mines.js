@@ -32,7 +32,6 @@ const mineSchema = new Schema({
         },
         deforestedArea: Number,
         cStock: Number,
-        transportation: Number
     },
     result: {
         coalFootprint: Number,

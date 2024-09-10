@@ -560,16 +560,22 @@ function updateProgressbar() {
       }
     });
 
-    document.getElementById('myForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        
-        // Retrieve form data
-        const coalQty = document.getElementById('lignite').value;
-        const elecConsump = document.getElementById('electricitycon').value;
-        const transportation = document.getElementById('ddistance').value;
-        const deforestedArea = document.getElementById('deforestedArea').value;
+  document.getElementById('myForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    // Retrieve form data and calculate coalQty and transportation
+    const Lignite = parseFloat(document.getElementById('lignite').value) || 0;
+    const Bitu = parseFloat(document.getElementById('bitu').value) || 0;
+    const Subbitu = parseFloat(document.getElementById('subbitu').value) || 0;
+    const Anthra = parseFloat(document.getElementById('anthra').value) || 0;
+    const coalQty = Lignite + Bitu + Subbitu + Anthra;
+    const Ddistance = parseFloat(document.getElementById('ddistance').value) || 0;
+    const Pdistance = parseFloat(document.getElementById('pdistance').value) || 0;
+    const transportation = Ddistance + Pdistance;
+    const elecConsump = parseFloat(document.getElementById('electricitycon').value) || 0;
+    const deforestedArea = parseFloat(document.getElementById('deforestedArea').value) || 0;
 
-        // Redirect to Streamlit app with query parameters
-        window.location.href = `http://localhost:8501/?coalQty=${encodeURIComponent(coalQty)}&elecConsump=${encodeURIComponent(elecConsump)}&transportation=${encodeURIComponent(transportation)}&deforestedArea=${encodeURIComponent(deforestedArea)}`;
-    });
+    // Redirect to Streamlit app with query parameters
+    window.location.href = `http://localhost:8501/?coalQty=${encodeURIComponent(coalQty)}&elecConsump=${encodeURIComponent(elecConsump)}&transportation=${encodeURIComponent(transportation)}&deforestedArea=${encodeURIComponent(deforestedArea)}`;
+  });
 </script>

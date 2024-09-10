@@ -53,8 +53,6 @@ def predict_strategy(coalQty, elecConsump, transportation, deforestedArea, thres
     for prob_list in probas:
         binary_predictions = []
         for prob in prob_list:
-            # If the prob array has two elements, access the second element (prob[1])
-            # Otherwise, just append 0 or 1 based on the first value
             if len(prob) > 1:
                 binary_predictions.append(1 if prob[1] > threshold else 0)
             else:
@@ -64,48 +62,50 @@ def predict_strategy(coalQty, elecConsump, transportation, deforestedArea, thres
     # Flatten predictions into a single list
     predictions = [item for sublist in predictions for item in sublist]
 
-    # Map binary predictions to strategy labels
+    # Strategy mapping
     strategy_map = {
-        'Switch to renewables': [ 
-            "Suggestion 1: Install solar panels on your premises to harness solar energy.",
-            "Suggestion 2: Invest in wind energy by installing wind turbines if feasible.",
-            "Suggestion 3: Explore geothermal energy options for heating and cooling.",
-            "Suggestion 4: Purchase green energy from renewable sources through your energy supplier."
+        'Switching to renewables': [
+            "Install solar panels on your premises to harness solar energy.",
+            "Invest in wind energy by installing wind turbines if feasible.",
+            "Explore geothermal energy options for heating and cooling.",
+            "Purchase green energy from renewable sources through your energy supplier."
         ],
-        'Adopt electric vehicles': [ 
-            "Suggestion 1: Replace your gasoline or diesel vehicles with electric vehicles (EVs).",
-            "Suggestion 2: Install EV charging stations at your facility or home.",
-            "Suggestion 3: Encourage the use of public transportation or carpooling to reduce reliance on personal vehicles.",
-            "Suggestion 4: Explore incentives and rebates for purchasing electric vehicles."
+        'Adopting electric vehicles': [
+            "Replace your gasoline or diesel vehicles with electric vehicles (EVs).",
+            "Install EV charging stations at your facility or home.",
+            "Encourage the use of public transportation or carpooling to reduce reliance on personal vehicles.",
+            "Explore incentives and rebates for purchasing electric vehicles."
         ],
-        'Afforestation': [  
-            "Suggestion 1: Participate in local tree planting initiatives and support reforestation projects.",
-            "Suggestion 2: Partner with organizations focused on forest conservation and management.",
-            "Suggestion 3: Encourage the use of sustainable land management practices to prevent deforestation.",
-            "Suggestion 4: Support policies and programs that promote the growth of urban green spaces."
+        'Afforestation': [
+            "Participate in local tree planting initiatives and support reforestation projects.",
+            "Partner with organizations focused on forest conservation and management.",
+            "Encourage the use of sustainable land management practices to prevent deforestation.",
+            "Support policies and programs that promote the growth of urban green spaces."
         ],
-        'Implement methane capture': [  
-            "Suggestion 1: Install methane capture systems at landfills to collect and utilize methane gas.",
-            "Suggestion 2: Implement anaerobic digesters in agricultural operations to capture methane from organic waste.",
-            "Suggestion 3: Use captured methane as a renewable energy source for heating or electricity generation.",
-            "Suggestion 4: Support and invest in technologies that improve the efficiency of methane capture and utilization."
+        'Implementing methane capture': [
+            "Install methane capture systems at landfills to collect and utilize methane gas.",
+            "Implement anaerobic digesters in agricultural operations to capture methane from organic waste.",
+            "Use captured methane as a renewable energy source for heating or electricity generation.",
+            "Support and invest in technologies that improve the efficiency of methane capture and utilization."
         ],
-        'Estimate Carbon Credits': [ 
-            "Suggestion 1: Calculate your carbon footprint to understand the amount of carbon credits you need.",
-            "Suggestion 2: Invest in certified carbon offset projects such as renewable energy or reforestation initiatives.",
-            "Suggestion 3: Monitor and verify the performance of carbon offset projects to ensure they meet standards.",
-            "Suggestion 4: Explore opportunities to generate your own carbon credits through sustainability projects."
+        'Estimating Carbon Credits': [
+            "Calculate your carbon footprint to understand the amount of carbon credits you need.",
+            "Invest in certified carbon offset projects such as renewable energy or reforestation initiatives.",
+            "Monitor and verify the performance of carbon offset projects to ensure they meet standards.",
+            "Explore opportunities to generate your own carbon credits through sustainability projects."
         ],
-        'label_6': [  # General Strategies
-            "Suggestion 1: Improve energy efficiency across all operations to reduce overall carbon emissions.",
-            "Suggestion 2: Implement waste reduction strategies and enhance recycling efforts.",
-            "Suggestion 3: Engage with stakeholders to promote sustainability and environmental responsibility.",
-            "Suggestion 4: Continuously monitor and report on your environmental impact to track progress and make improvements."
+        'General Suggestions': [
+            "Improve energy efficiency across all operations to reduce overall carbon emissions.",
+            "Implement waste reduction strategies and enhance recycling efforts.",
+            "Engage with stakeholders to promote sustainability and environmental responsibility.",
+            "Continuously monitor and report on your environmental impact to track progress and make improvements."
         ]
     }
 
-    # Get the strategy labels based on binary predictions
-    active_labels = [label for label, is_active in zip(strategy_map.keys(), predictions) if is_active]
+    if coalQty == 0 and elecConsump == 0 and transportation == 0 and deforestedArea == 0:
+        active_labels = ['General Suggestions']
+    else:
+        active_labels = [label for label, is_active in zip(strategy_map.keys(), predictions) if is_active]
 
     # Collect suggestions for each active strategy
     suggestions = [strategy_map.get(label, ["No suggestions available for this label."]) for label in active_labels]
@@ -116,12 +116,18 @@ def predict_strategy(coalQty, elecConsump, transportation, deforestedArea, thres
     }
 
 # Streamlit app configuration
-st.set_page_config(page_title="Carbon Footprint Suggestions", layout="centered")
+st.set_page_config(page_title="Carbon Footprint Suggestions", layout="wide")
 
-# Main Title
-st.markdown("<h1 style='text-align: center; color: #f39c12;'>Personalized Suggestions to Offset Your Carbon Footprint</h1>", unsafe_allow_html=True)
-
-st.write("Based on your input, here are some tailored strategies to help you reduce your carbon footprint:")
+st.markdown("""
+    <style>
+        .reportview-container {
+            margin-top: -2em;
+        }
+        #MainMenu {visibility: hidden;}
+        .stAppDeployButton {display:none;}
+        #stDecoration {display:none;}
+    </style>
+""", unsafe_allow_html=True)
 
 # Function to safely convert strings to floats, handling invalid inputs
 def safe_float_conversion(value):
@@ -139,10 +145,15 @@ elecConsump = safe_float_conversion(params.get('elecConsump', ''))
 transportation = safe_float_conversion(params.get('transportation', ''))
 deforestedArea = safe_float_conversion(params.get('deforestedArea', ''))
 
-# Check if all inputs are valid numbers (i.e., not None)
-if None not in [coalQty, elecConsump, transportation, deforestedArea]:
-    # If all inputs are valid, proceed with prediction
-    with st.container():
+# Create two columns for the layout
+left_column, right_column = st.columns([2.1, 1.1])
+
+# Display content in the left column
+with left_column:
+    st.markdown("<h1 style='margin-top: -0.5em; margin-bottom: 0.3em; color: #f39c12;'>Personalized Suggestions to Offset Your Carbon Footprint</h1>", unsafe_allow_html=True)
+
+    if None not in [coalQty, elecConsump, transportation, deforestedArea]:
+        # If all inputs are valid, proceed with prediction
         st.subheader("Tailored Suggestions:")
 
         # Display suggestions
@@ -155,27 +166,56 @@ if None not in [coalQty, elecConsump, transportation, deforestedArea]:
             for suggestion in suggestions:
                 st.write(f"- {suggestion}")
 
-else:
-    st.error("Invalid input values. Please enter valid numbers.")
+    else:
+        st.error("Invalid input values. Please enter valid numbers.")
+
+with right_column:
+    st.markdown(
+        """
+        <style>
+        .custom-image {
+            margin-top: -0.5em;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+    st.image("sugg.jpg", use_column_width=False, width=450)
 
 # Recommendations section
-with st.container():
-    st.subheader("Further Recommendations")
-    st.write("Explore more options for reducing your carbon footprint:")
-    st.write("- [Adopt Renewable Energy Solutions](#)")
-    st.write("- [Join Carbon Offset Programs](#)")
-    st.write("- [Implement Energy-Efficient Practices](#)")
+st.subheader("Further Recommendations")
+st.write("Explore more options for reducing your carbon footprint:")
+st.write("- [Adopt Renewable Energy Solutions](#)")
+st.write("- [Join Carbon Offset Programs](#)")
+st.write("- [Implement Energy-Efficient Practices](#)")
 
-# Add a button to go back to the specified URL
+# Add buttons for "Calculate Again"
 st.markdown(
     """
-    <div style="text-align: center; margin-top: 20px;">
+    <div style="text-align: center; margin-top: 30px;">
         <a href="http://localhost:3000/calculate">
             <button style="background-color: #f39c12; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; font-size: 16px; cursor: pointer;">
                 Calculate Again
+            </button>
+        </a>
+        <a href="http://localhost:3000/home">
+            <button style="background-color: #3498db; color: #fff; border: none; padding: 10px 48px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-left: 20px;">
+                Home
+            </button>
+        </a>
+        <a href="http://localhost:3000/index">
+            <button style="background-color: #188753; color: #fff; border: none; padding: 10px 33px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-left: 20px;">
+                Offset Now
             </button>
         </a>
     </div>
     """,
     unsafe_allow_html=True
 )
+
+# Footer section
+st.markdown("""
+    <footer style="text-align: center; margin-top: 50px;">
+        <p style="font-size: 14px;">&copy; 2024 MineTrace. All rights reserved.</p>
+    </footer>
+""", unsafe_allow_html=True)
