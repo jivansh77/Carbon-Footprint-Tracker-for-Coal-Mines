@@ -146,7 +146,7 @@ transportation = safe_float_conversion(params.get('transportation', ''))
 deforestedArea = safe_float_conversion(params.get('deforestedArea', ''))
 
 # Create two columns for the layout
-left_column, right_column = st.columns([2.1, 1.1])
+left_column, right_column = st.columns([2.1, 1.2])
 
 # Display content in the left column
 with left_column:
@@ -180,7 +180,7 @@ with right_column:
         """,
         unsafe_allow_html=True
     )
-    st.image("sugg.jpg", use_column_width=False, width=450)
+    st.image("sug.jpg", use_column_width=False, width=500)
 
 # Recommendations section
 st.subheader("Further Recommendations")
@@ -205,7 +205,7 @@ st.markdown(
         </a>
         <a href="http://localhost:3000/index">
             <button style="background-color: #188753; color: #fff; border: none; padding: 10px 33px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-left: 20px;">
-                Offset Now
+                View Data
             </button>
         </a>
     </div>
