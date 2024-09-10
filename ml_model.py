@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.multioutput import MultiOutputClassifier
@@ -19,8 +20,8 @@ X = data[['coalQty', 'elecConsump', 'transportation', 'deforestedArea']]
 # Split the data into training and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Train a MultiOutputClassifier
-model = MultiOutputClassifier(RandomForestClassifier(n_estimators=100, random_state=42))
+# Train a MultiOutputClassifier with class balancing
+model = MultiOutputClassifier(RandomForestClassifier(n_estimators=100, random_state=42, class_weight='balanced'))
 model.fit(X_train, y_train)
 
 # Save model to file
@@ -32,8 +33,10 @@ def load_model():
     with open('ml_model.pkl', 'rb') as model_file:
         return pickle.load(model_file)
 
-def predict_strategy(coalQty, elecConsump, transportation, deforestedArea):
+def predict_strategy(coalQty, elecConsump, transportation, deforestedArea, threshold=0.18):
     model = load_model()
+    
+    # Prepare input data
     input_data = pd.DataFrame({
         'coalQty': [coalQty],
         'elecConsump': [elecConsump],
@@ -41,8 +44,25 @@ def predict_strategy(coalQty, elecConsump, transportation, deforestedArea):
         'deforestedArea': [deforestedArea]
     })
 
-    predictions = model.predict(input_data)
-    predicted_labels = predictions[0]
+    # Get probabilities for each output label from MultiOutputClassifier
+    probas = model.predict_proba(input_data)
+
+    # Convert probabilities into binary predictions with dynamic thresholding
+    predictions = []
+    
+    for prob_list in probas:
+        binary_predictions = []
+        for prob in prob_list:
+            # If the prob array has two elements, access the second element (prob[1])
+            # Otherwise, just append 0 or 1 based on the first value
+            if len(prob) > 1:
+                binary_predictions.append(1 if prob[1] > threshold else 0)
+            else:
+                binary_predictions.append(1 if prob[0] > threshold else 0)
+        predictions.append(binary_predictions)
+
+    # Flatten predictions into a single list
+    predictions = [item for sublist in predictions for item in sublist]
 
     # Map binary predictions to strategy labels
     strategy_map = {
@@ -85,8 +105,9 @@ def predict_strategy(coalQty, elecConsump, transportation, deforestedArea):
     }
 
     # Get the strategy labels based on binary predictions
-    active_labels = [label for label, is_active in zip(strategy_map.keys(), predicted_labels) if is_active]
+    active_labels = [label for label, is_active in zip(strategy_map.keys(), predictions) if is_active]
 
+    # Collect suggestions for each active strategy
     suggestions = [strategy_map.get(label, ["No suggestions available for this label."]) for label in active_labels]
 
     return {
@@ -102,38 +123,39 @@ st.markdown("<h1 style='text-align: center; color: #f39c12;'>Personalized Sugges
 
 st.write("Based on your input, here are some tailored strategies to help you reduce your carbon footprint:")
 
-# Access query parameters
+# Function to safely convert strings to floats, handling invalid inputs
+def safe_float_conversion(value):
+    try:
+        return float(value)
+    except (ValueError, TypeError):
+        return None
+
+# Access query parameters using the updated method
 params = st.query_params
-coalQty = params.get('coalQty', ['0'])[0]
-elecConsump = params.get('elecConsump', ['0'])[0]
-transportation = params.get('transportation', ['0'])[0]
-deforestedArea = params.get('deforestedArea', ['0'])[0]
 
-# Convert input parameters to float
-try:
-    coalQty = float(coalQty)
-    elecConsump = float(elecConsump)
-    transportation = float(transportation)
-    deforestedArea = float(deforestedArea)
+# Extract query parameters or default to empty string
+coalQty = safe_float_conversion(params.get('coalQty', ''))
+elecConsump = safe_float_conversion(params.get('elecConsump', ''))
+transportation = safe_float_conversion(params.get('transportation', ''))
+deforestedArea = safe_float_conversion(params.get('deforestedArea', ''))
 
-    if coalQty and elecConsump and transportation and deforestedArea:
-        # Create a container for displaying suggestions
-        with st.container():
-            st.subheader("Tailored Suggestions:")
-            
-            # Display suggestions
-            result = predict_strategy(coalQty, elecConsump, transportation, deforestedArea)
-            st.write(f"**Strategy Labels:** {', '.join(result['strategy_labels'])}")
-            
-            # Show the list of suggestions
-            for label, suggestions in zip(result['strategy_labels'], result['suggestions']):
-                st.write(f"**For {label}:**")
-                for suggestion in suggestions:
-                    st.write(f"- {suggestion}")
+# Check if all inputs are valid numbers (i.e., not None)
+if None not in [coalQty, elecConsump, transportation, deforestedArea]:
+    # If all inputs are valid, proceed with prediction
+    with st.container():
+        st.subheader("Tailored Suggestions:")
 
-    else:
-        st.error("Please provide all input values.")
-except ValueError:
+        # Display suggestions
+        result = predict_strategy(coalQty, elecConsump, transportation, deforestedArea)
+        st.write(f"**Strategy Labels:** {', '.join(result['strategy_labels'])}")
+
+        # Show the list of suggestions
+        for label, suggestions in zip(result['strategy_labels'], result['suggestions']):
+            st.write(f"**For {label}:**")
+            for suggestion in suggestions:
+                st.write(f"- {suggestion}")
+
+else:
     st.error("Invalid input values. Please enter valid numbers.")
 
 # Recommendations section
