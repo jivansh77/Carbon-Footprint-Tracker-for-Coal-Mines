@@ -409,7 +409,7 @@
                   </div>
                   <div class="col-4"></div>
                   <div class="col-4">
-                    <button type="submit" class="btn mt-4 buton"><span>Offset Now</span></button>
+                    <button class="btn mt-4 buton suggestion"><span>Offset Now</span></button>
                   </div>
                 </div>
               </div>
@@ -560,9 +560,10 @@ function updateProgressbar() {
       }
     });
 
-  document.getElementById('myForm').addEventListener('submit', function(event) {
+  const suggestionsButton = document.querySelector('.suggestion');
+  suggestionsButton.addEventListener('click', function(event) {
     event.preventDefault();
-    
+
     // Retrieve form data and calculate coalQty and transportation
     const Lignite = parseFloat(document.getElementById('lignite').value) || 0;
     const Bitu = parseFloat(document.getElementById('bitu').value) || 0;
