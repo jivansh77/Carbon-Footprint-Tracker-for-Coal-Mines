@@ -193,7 +193,7 @@
     </div>
 
     <div class="col">
-      <a href="/index/<%= mines._id%>/suggestions" class="me-3"><button class="btn btn-warning indicator">Suggestions</button></a>
+      <button class="btn btn-warning indicator">Suggestions</button>
     </div>
   </div>
 </div>
@@ -361,4 +361,20 @@
     footpage.classList.add('displaypage');
     infopage.classList.remove('displaypage');
   })
+</script>
+
+<script>
+  const suggestionsButton = document.querySelector('.btn-warning.indicator');
+
+  suggestionsButton.addEventListener('click', function(event) {
+    event.preventDefault();
+    let coalQty = lignite + bitu + subbitu + anthra;
+    let elecConsump = parseFloat(document.querySelector('#electricityConsume').innerText) || 0;
+    let pdistance = parseFloat(document.querySelector('#pdistance').innerText) || 0;
+    let ddistance = parseFloat(document.querySelector('#ddistance').innerText) || 0;
+    let transportation = ddistance + pdistance;
+    let deforestedArea = parseFloat(document.querySelector('#deforestedArea').innerText) || 0;
+
+    window.location.href = `http://localhost:8501/?coalQty=${encodeURIComponent(coalQty)}&elecConsump=${encodeURIComponent(elecConsump)}&transportation=${encodeURIComponent(transportation)}&deforestedArea=${encodeURIComponent(deforestedArea)}`;
+  });
 </script>
