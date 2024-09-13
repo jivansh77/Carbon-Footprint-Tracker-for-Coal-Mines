@@ -31,10 +31,6 @@
   </div>
 </div>
 
-
-
-
-
 <div class="container">
     <div class="row mt-4">
         <div class="col-10 offset-1 information hidden">
@@ -374,7 +370,12 @@
     let ddistance = parseFloat(document.querySelector('#ddistance').innerText) || 0;
     let transportation = ddistance + pdistance;
     let deforestedArea = parseFloat(document.querySelector('#deforestedArea').innerText) || 0;
+    let coalf = parseFloat(document.querySelector('#coalFootprint').innerText) || 0;
+    let elecf = parseFloat(document.querySelector('#electricityFootprint').innerText) || 0;
+    let transf = parseFloat(document.querySelector('#transportFootprint').innerText) || 0;
+    let deforestf = parseFloat(document.querySelector('#deforestationFootprint').innerText) || 0;
+    let total= parseFloat(document.querySelector('#totalFootprint').innerText) || 0;
 
-    window.location.href = `http://localhost:8501/?coalQty=${encodeURIComponent(coalQty)}&elecConsump=${encodeURIComponent(elecConsump)}&transportation=${encodeURIComponent(transportation)}&deforestedArea=${encodeURIComponent(deforestedArea)}`;
+    window.location.href = `http://localhost:8501/?coalQty=${encodeURIComponent(coalQty)}&elecConsump=${encodeURIComponent(elecConsump)}&transportation=${encodeURIComponent(transportation)}&deforestedArea=${encodeURIComponent(deforestedArea)}&coalf=${encodeURIComponent(coalf)}&elecf=${encodeURIComponent(elecf)}&transf=${encodeURIComponent(transf)}&deforestf=${encodeURIComponent(deforestf)}&total=${encodeURIComponent(total)}`;
   });
 </script>

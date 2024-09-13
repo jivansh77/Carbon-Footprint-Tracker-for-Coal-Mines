@@ -5,6 +5,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.multioutput import MultiOutputClassifier
 import pickle
 import streamlit as st
+import matplotlib.pyplot as plt
 
 # Load data and train model
 data = pd.read_csv('mine_data3.csv')
@@ -116,7 +117,7 @@ def predict_strategy(coalQty, elecConsump, transportation, deforestedArea, thres
     }
 
 # Streamlit app configuration
-st.set_page_config(page_title="Carbon Footprint Suggestions", layout="wide")
+st.set_page_config(page_title="Personalized Suggestions", layout="wide")
 
 st.markdown("""
     <style>
@@ -144,6 +145,11 @@ coalQty = safe_float_conversion(params.get('coalQty', ''))
 elecConsump = safe_float_conversion(params.get('elecConsump', ''))
 transportation = safe_float_conversion(params.get('transportation', ''))
 deforestedArea = safe_float_conversion(params.get('deforestedArea', ''))
+coalf = safe_float_conversion(params.get('coalf', ''))
+elecf = safe_float_conversion(params.get('elecf', ''))
+transf = safe_float_conversion(params.get('transf', ''))
+deforestf = safe_float_conversion(params.get('deforestf', ''))
+total = safe_float_conversion(params.get('total', ''))
 
 # Create two columns for the layout
 left_column, right_column = st.columns([2.1, 1.2])
@@ -151,6 +157,13 @@ left_column, right_column = st.columns([2.1, 1.2])
 # Display content in the left column
 with left_column:
     st.markdown("<h1 style='margin-top: -0.5em; margin-bottom: 0.3em; color: #f39c12;'>Personalized Suggestions to Offset Your Carbon Footprint</h1>", unsafe_allow_html=True)
+
+    st.subheader("Your Carbon Footprint:")
+    st.markdown(f"""Direct Emissions - :green[{coalf} tCO2e]""")
+    st.write(f"""Electricity Emissions - :green[{elecf} tCO2e]""")
+    st.write(f"""Transport Emissions - :green[{transf} tCO2e]""")
+    st.write(f"""Deforestation Emissions - :green[{deforestf} tCO2e]""")
+    st.write(f"""**Total Emissions - :green[{total} tCO2e]**""")
 
     if None not in [coalQty, elecConsump, transportation, deforestedArea]:
         # If all inputs are valid, proceed with prediction
@@ -170,20 +183,26 @@ with left_column:
         st.error("Invalid input values. Please enter valid numbers.")
 
 with right_column:
-    st.markdown(
-        """
-        <style>
-        .custom-image {
-            margin-top: -0.5em;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-    st.image("sug.jpg", use_column_width=False, width=500)
+    # Optionally, display another graph or summary
+    st.subheader("Graphical Overview")
+    fig, ax = plt.subplots()
+    labels = ['Direct Emissions', 'Electricity Emissions', 'Transportation Emissions', 'Deforestation Emissions']
+    sizes = [coalf, elecf, transf, deforestf]
+    ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+    ax.axis('equal')  # Equal aspect ratio ensures that pie chart is drawn as a circle.
+    st.pyplot(fig)
+
+    # Display a bar chart for the input values
+    st.subheader("Input Values Visualization")
+    input_data = {
+        'Parameter': ['Coal Quantity', 'Electricity Consumption', 'Transportation', 'Deforested Area'],
+        'Values': [coalQty, elecConsump, transportation, deforestedArea]
+    }
+    input_df = pd.DataFrame(input_data)
+    st.bar_chart(input_df.set_index('Parameter'))
 
 # Recommendations section
-st.subheader("Further Recommendations")
+st.subheader("Further Recommendations:")
 st.write("Explore more options for reducing your carbon footprint:")
 st.write("- [Adopt Renewable Energy Solutions](#)")
 st.write("- [Join Carbon Offset Programs](#)")

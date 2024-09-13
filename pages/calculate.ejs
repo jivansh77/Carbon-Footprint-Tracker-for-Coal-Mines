@@ -482,7 +482,6 @@ resultbtn.addEventListener("click", () =>{
   const peff = parseFloat(document.querySelector("#peff").value) || 1;
   const deforestedArea = parseFloat(document.querySelector("#deforestedArea").value) || 0;
   const cStock = parseFloat(document.querySelector("#cStock").value) || 150;
-  const transportation = ddistance + pdistance;
   
   // COMBUSTION CALCULATION
   let lpct = 0.30;
@@ -572,11 +571,41 @@ function updateProgressbar() {
     const coalQty = Lignite + Bitu + Subbitu + Anthra;
     const Ddistance = parseFloat(document.getElementById('ddistance').value) || 0;
     const Pdistance = parseFloat(document.getElementById('pdistance').value) || 0;
+    const deff = parseFloat(document.querySelector('#deff').value) || 1;
+    const peff = parseFloat(document.querySelector('#peff').value) || 1;
     const transportation = Ddistance + Pdistance;
     const elecConsump = parseFloat(document.getElementById('electricitycon').value) || 0;
+    const eFactor = parseFloat(document.querySelector('#eFactor').value) || 0.716;
     const deforestedArea = parseFloat(document.getElementById('deforestedArea').value) || 0;
+    const cStock = parseFloat(document.querySelector('#cStock').value) || 150;
+
+    // COMBUSTION CALCULATION
+    let lpct = 0.30;
+    let sbpct = 0.40;
+    let bpct = 0.75;
+    let apct = 0.90;
+
+    let coalFootprint = (((lpct * Lignite) + (sbpct * Subbitu) + (bpct * Bitu) + (apct * Anthra))*3.67)/1000;
+    coalf = coalFootprint.toFixed(4);
+
+    // ELECTRICITY CALCULATION
+    let elecFootprint = (eFactor * elecConsump)/1000;
+    elecf = elecFootprint.toFixed(4);
+
+    //TRANSPORT CALCULATION
+    let dieselFootprint = ((Ddistance * (deff/100) * 2.67)/1000);
+    let petrolFootprint = ((Pdistance * (peff/100) * 2.31)/1000);
+    let TransFootprint = dieselFootprint + petrolFootprint;
+    transf = TransFootprint.toFixed(4);
+
+    //DEFORESTATION CALCULATION
+    let deforestationFootprint = (deforestedArea * cStock * 3.67)/1000;
+    deforestf = deforestationFootprint.toFixed(4);
+
+    //TOTAL CALCULATION
+    total = (coalFootprint + elecFootprint + TransFootprint + deforestationFootprint).toFixed(4);
 
     // Redirect to Streamlit app with query parameters
-    window.location.href = `http://localhost:8501/?coalQty=${encodeURIComponent(coalQty)}&elecConsump=${encodeURIComponent(elecConsump)}&transportation=${encodeURIComponent(transportation)}&deforestedArea=${encodeURIComponent(deforestedArea)}`;
+    window.location.href = `http://localhost:8501/?coalQty=${encodeURIComponent(coalQty)}&elecConsump=${encodeURIComponent(elecConsump)}&transportation=${encodeURIComponent(transportation)}&deforestedArea=${encodeURIComponent(deforestedArea)}&coalf=${encodeURIComponent(coalf)}&elecf=${encodeURIComponent(elecf)}&transf=${encodeURIComponent(transf)}&deforestf=${encodeURIComponent(deforestf)}&total=${encodeURIComponent(total)}`;
   });
 </script>
