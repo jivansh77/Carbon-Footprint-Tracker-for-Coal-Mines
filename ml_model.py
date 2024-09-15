@@ -119,7 +119,7 @@ def predict_strategy(coalQty, elecConsump, transportation, deforestedArea, thres
     }
 
 # Streamlit app configuration
-st.set_page_config(page_title="Personalized Suggestions", layout="wide")
+st.set_page_config(page_title="Personalized Suggestions", layout="wide", page_icon="pages/icon2.png")
 
 st.markdown("""
     <style>
