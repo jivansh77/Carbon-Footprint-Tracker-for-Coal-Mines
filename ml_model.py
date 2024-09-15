@@ -5,6 +5,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.multioutput import MultiOutputClassifier
 import pickle
 import streamlit as st
+import io
+import base64
 import matplotlib.pyplot as plt
 
 # Load data and train model
@@ -127,6 +129,9 @@ st.markdown("""
         #MainMenu {visibility: hidden;}
         .stAppDeployButton {display:none;}
         #stDecoration {display:none;}
+        .stSlider [data-baseweb=slider] {
+        width: 70%;
+        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -136,6 +141,10 @@ def safe_float_conversion(value):
         return float(value)
     except (ValueError, TypeError):
         return None
+
+# Function to calculate carbon reduction based on trees planted
+def calculate_tree_carbon_offset(num_trees):
+    return num_trees * 0.021
 
 # Access query parameters using the updated method
 params = st.query_params
@@ -156,9 +165,9 @@ left_column, right_column = st.columns([2.1, 1.2])
 
 # Display content in the left column
 with left_column:
-    st.markdown("<h1 style='margin-top: -0.5em; margin-bottom: 0.3em; color: #f39c12;'>Personalized Suggestions to Offset Your Carbon Footprint</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='margin-top: -0.5em; margin-bottom: 0.3em; color: #f39c12; font-size: 3.5rem;'>Personalized Suggestions to Offset Your Carbon Footprint</h1>", unsafe_allow_html=True)
 
-    st.subheader("Your Carbon Footprint:")
+    st.markdown("<h2>Your Carbon Footprint:</h2>", unsafe_allow_html=True)
     st.markdown(f"""Direct Emissions - :green[{coalf} tCO2e]""")
     st.write(f"""Electricity Emissions - :green[{elecf} tCO2e]""")
     st.write(f"""Transport Emissions - :green[{transf} tCO2e]""")
@@ -167,7 +176,7 @@ with left_column:
 
     if None not in [coalQty, elecConsump, transportation, deforestedArea]:
         # If all inputs are valid, proceed with prediction
-        st.subheader("Tailored Suggestions:")
+        st.markdown("<h2>Tailored Suggestions:</h2>", unsafe_allow_html=True)
 
         # Display suggestions
         result = predict_strategy(coalQty, elecConsump, transportation, deforestedArea)
@@ -175,9 +184,23 @@ with left_column:
 
         # Show the list of suggestions
         for label, suggestions in zip(result['strategy_labels'], result['suggestions']):
-            st.write(f"**For {label}:**")
+            st.markdown(f"<h4>For {label},</h4>", unsafe_allow_html=True)
             for suggestion in suggestions:
                 st.write(f"- {suggestion}")
+            if label == 'Afforestation':
+                st.markdown("<h4 style='color: green; font-size: 1.2rem;'>How does planting trees affect your Carbon Footprint?</h4>", unsafe_allow_html=True)
+                num_trees = st.slider('Number of trees to plant:', min_value=0, max_value=5000, value=0, step=100)
+                carbon_footprint_placeholder = st.empty()
+                if num_trees > 0:
+                    carbon_reduction = calculate_tree_carbon_offset(num_trees)
+                    new_deforestf = deforestf - carbon_reduction
+                    new_total_cf = total - carbon_reduction
+                    new_deforestf = max(new_deforestf, 0)
+                    new_total_cf = max(new_total_cf, 0)
+                    st.write(f"**Number of trees planted - {num_trees}**")
+                    st.write(f"**Carbon reduction from trees - :green[{carbon_reduction:.2f} tCO2e]**")
+                    st.write(f"**New Deforestation Emissions after Afforestation - :green[{new_deforestf:.2f} tCO2e]**")
+                    st.write(f"**New Total Emissions after Afforestation - :green[{new_total_cf:.2f} tCO2e]**")
 
     else:
         st.error("Invalid input values. Please enter valid numbers.")
@@ -202,7 +225,7 @@ with right_column:
     st.bar_chart(input_df.set_index('Parameter'))
 
 # Recommendations section
-st.subheader("Further Recommendations:")
+st.markdown("<h2>Further Recommendations:</h2>", unsafe_allow_html=True)
 st.write("Explore more options for reducing your carbon footprint:")
 st.write("- [Adopt Renewable Energy Solutions](#)")
 st.write("- [Join Carbon Offset Programs](#)")
