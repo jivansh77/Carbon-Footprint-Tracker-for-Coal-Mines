@@ -9,6 +9,7 @@ const places = require('./data/india-places');
 const {spawn} = require('child_process');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const marketplaceRoutes = require('./marketplace/marketplace');
 
 app.engine('ejs', ejsMate);
 
@@ -66,8 +67,6 @@ app.get("/index", async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 });
-
-
 
 app.get("/calculate",(req, res) => {
     res.render("calculate", {places});
@@ -141,6 +140,8 @@ app.get('/getCities', (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 });
+
+app.use('/marketplace', marketplaceRoutes);
 
 app.listen("3000", () => {
     console.log("SERVER RUNNING.....................");

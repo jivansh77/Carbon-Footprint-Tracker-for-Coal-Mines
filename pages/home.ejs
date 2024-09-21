@@ -200,23 +200,29 @@ body {
 }
 
 .Header-Hero-background {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./bgpic.jpg");
-    background-repeat: no-repeat;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./bgpic.jpeg");
+    background-repeat: repeat-x;
     background-size: cover;
-    height: 100vh;
+    height: 90vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    animation: moveBackground 90s linear infinite; /* Smooth continuous animation */
+}
+
+@keyframes moveBackground {
+    0% {
+        background-position: 0 0; /* Start position */
+    }
+    100% {
+        background-position: -4000px 0; /* Move it to the left (adjust the value based on image width) */
+    }
 }
 
 .hero {
     text-align: center;
     color: #fff;
 }
-
-
-
-
 
 .cta-buttons a {
     text-decoration: none;

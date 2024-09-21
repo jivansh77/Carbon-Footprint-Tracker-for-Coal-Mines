@@ -1,0 +1,426 @@
+<% layout("../layouts/boilerplate") %>
+
+<style>
+  :root {
+    --primary-color: #f39c12;
+    --secondary-color: #333;
+    --background-color: #f4f4f4;
+    --text-color: #333;
+    --card-background: #FFFFFF;
+}
+  
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+  }
+  
+  body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+  }
+  
+  .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+  }
+  
+  .header {
+      text-align: center;
+  }
+  
+  .header h1 {
+      font-size: 3rem;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+  }
+  
+  .header p {
+      font-size: 1.1rem;
+      color: var(--text-color);
+      opacity: 0.8;
+  }
+  
+  .card {
+      background-color: var(--card-background);
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      transition: transform 0.3s ease;
+  }
+  
+  .card:hover {
+      transform: translateY(-5px);
+  }
+  
+  .card h2 {
+      font-size: 1.5rem;
+      color: var(--secondary-color);
+      margin-bottom: 1rem;
+  }
+  
+  .input-group {
+      display: flex;
+      margin-bottom: 1rem;
+  }
+  
+  .input-group input {
+      flex-grow: 1;
+      padding: 0.5rem;
+      border: 1px solid #D1D5DB;
+      border-radius: 4px 0 0 4px;
+      font-size: 1rem;
+  }
+  
+  .input-group button {
+      padding: 0.5rem 1rem;
+      background-color: var(--secondary-color);
+      color: #fff;
+      border: none;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+  }
+  
+  .input-group button:hover {
+      background-color: #2563EB;
+  }
+  
+  .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+  }
+  
+  .info-item {
+      background-color: #F9FAFB;
+      padding: 1rem;
+      border-radius: 4px;
+      text-align: center;
+  }
+  
+  .info-item h3 {
+      font-size: 1.2rem;
+      color: var(--secondary-color);
+      margin-bottom: 0.5rem;
+  }
+  
+  .info-item p {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary-color);
+  }
+  
+  .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background-color: var(--primary-color);
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+      margin-bottom: 2rem;
+  }
+  
+  .btn:hover {
+      background-color: #e67e22;
+  }
+  
+  .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+  }
+  
+  .impact-item {
+      display: flex;
+      align-items: center;
+      background-color: #F9FAFB;
+      padding: 1rem;
+      border-radius: 4px;
+  }
+  
+  .impact-item svg {
+      width: 40px;
+      height: 40px;
+      margin-right: 1rem;
+      fill: var(--secondary-color);
+  }
+  
+  .impact-item p {
+      font-size: 1.1rem;
+  }
+  
+  @media (max-width: 768px) {
+      .info-grid, .impact-grid {
+          grid-template-columns: 1fr;
+      }
+  }
+  .credit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+  }
+
+  .credit-card {
+      background-color: #f4f4f4;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+  }
+
+  .credit-card h3 {
+      font-size: 1.2rem;
+      color: var(--secondary-color);
+      margin-bottom: 0.5rem;
+  }
+
+  .credit-card p {
+      margin-bottom: 0.5rem;
+  }
+
+  .credit-card .price {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+  }
+
+  .credit-card button {
+      margin-top: auto;
+      padding: 0.5rem;
+      background-color: var(--secondary-color);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+  }
+
+  .credit-card button:hover {
+      background-color: #2563EB;
+  }
+
+  .cart {
+      background-color: #FFFFFF;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+      margin-top: 1rem;
+  }
+
+  .cart h3 {
+      font-size: 1.2rem;
+      color: var(--secondary-color);
+      margin-bottom: 0.5rem;
+  }
+
+  .cart-items {
+      margin-bottom: 1rem;
+  }
+
+  .cart-total {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+  }
+</style>
+
+<div class="container">
+  <header class="header">
+      <h1 class="mt-4"><b>Carbon Credit Marketplace</b></h1>
+      <p>Offset your emissions and trade carbon credits</p>
+  </header>
+  
+  <div class="card">
+      <h2>What are Carbon Credits?</h2>
+      <p>Carbon credits represent a permit or certificate that allows a company to emit a certain amount of carbon dioxide or other greenhouse gases. One carbon credit typically equals one ton of CO2. Companies can buy credits to offset their emissions or sell surplus credits if they emit less than their allowance.</p>
+  </div>
+
+  <div class="card">
+      <h2>Carbon Credit Calculator</h2>
+      <div class="input-group">
+          <input type="number" id="emissions" placeholder="Enter your CO2 emissions (tons)">
+          <button onclick="calculateCredits()">Calculate</button>
+      </div>
+      <p id="creditResult" style="display: none;">You need to purchase <span id="creditAmount"></span> carbon credits to offset your emissions.</p>
+  </div>
+
+  <div class="card">
+    <h2>Carbon Credit Marketplace</h2>
+    <div class="info-grid">
+        <div class="info-item">
+            <h3>Your Balance</h3>
+            <p><span id="coinBalance"></span> coins</p>
+        </div>
+    </div>
+    <button onclick="buyCoins()" class="btn">Buy Coins</button>
+    
+    <div id="creditMarketplace" class="credit-grid">
+        <!-- Credit cards will be dynamically inserted here -->
+    </div>
+
+    <div class="cart">
+        <h3>Shopping Cart</h3>
+        <div id="cartItems" class="cart-items">
+            <!-- Cart items will be dynamically inserted here -->
+        </div>
+        <div class="cart-total">Total: <span id="cartTotal">0</span> coins</div>
+        <button onclick="checkout()" class="btn">Checkout</button>
+    </div>
+</div>
+
+  <div class="card">
+      <h2>Track Carbon Credits</h2>
+      <canvas id="creditChart" width="400" height="200"></canvas>
+  </div>
+
+  <div class="card">
+      <h2>Environmental Impact</h2>
+      <div class="impact-grid">
+          <div class="impact-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M17,8C8,10,5.9,16.17,3.82,21.34L5.71,22l1-2.3A4.49,4.49,0,0,0,8,20C19,20,22,3,22,3,21,5,14,5.25,9,6.25S2,11.5,2,13.5a6.22,6.22,0,0,0,1.75,3.75C7,8,17,8,17,8Z"/>
+              </svg>
+              <p><span id="treesPlanted">0</span> trees planted</p>
+          </div>
+          <div class="impact-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M3.55,18.54L4.96,19.95L6.76,18.16L5.34,16.74M11,22.45C11.32,22.45 13,22.45 13,22.45V19.5H11M12,5.5A6,6 0 0,0 6,11.5A6,6 0 0,0 12,17.5A6,6 0 0,0 18,11.5C18,8.18 15.31,5.5 12,5.5M20,12.5H23V10.5H20M17.24,18.16L19.04,19.95L20.45,18.54L18.66,16.74M20.45,4.46L19.04,3.05L17.24,4.84L18.66,6.26M13,0.55H11V3.5H13M4,10.5H1V12.5H4M6.76,4.84L4.96,3.05L3.55,4.46L5.34,6.26L6.76,4.84Z"/>
+              </svg>
+              <p><span id="solarEnergy">0</span> kWh of solar energy</p>
+          </div>
+      </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  let coinBalance = 0;
+  let cart = [];
+  let credits = 0;
+  updateCoinBalance();
+
+  function calculateCredits() {
+    credits = parseInt(document.getElementById('emissions').value);
+    document.getElementById('creditResult').style.display = 'block';
+    document.getElementById('creditAmount').textContent = credits;
+  }
+
+  function buyCoins() {
+      const amount = prompt("How many coins would you like to buy?");
+      if (amount && !isNaN(amount)) {
+          coinBalance += parseInt(amount);
+          updateCoinBalance();
+          alert(`Successfully purchased ${amount} coins!`);
+      }
+  }
+
+  function updateCoinBalance() {
+      document.getElementById('coinBalance').textContent = coinBalance;
+  }
+
+  function addToCart(id, name, price) {
+      cart.push({ id, name, price });
+      updateCart();
+  }
+
+  function updateCart() {
+      const cartItems = document.getElementById('cartItems');
+      const cartTotal = document.getElementById('cartTotal');
+      
+      cartItems.innerHTML = '';
+      let total = 0;
+
+      cart.forEach(item => {
+          cartItems.innerHTML += `<p>${item.name} - ${item.price} coins</p>`;
+          total += item.price;
+      });
+
+      cartTotal.textContent = total;
+  }
+  
+  function checkout() {
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
+    if (cart.length === 0) {
+      alert('Your cart is empty. Please add items to the cart before checking out.');
+      return;
+    }
+    if (coinBalance >= total) {
+      coinBalance -= total;
+      updateCoinBalance();
+      cart = [];
+      updateCart();
+      alert('Purchase successful!');
+      updateImpact();
+    } else {
+      alert('Insufficient coins. Please buy more coins.');
+    }
+  }
+
+  async function fetchCreditListings() {
+    try {
+      const response = await fetch('/marketplace/api/credits');
+      const listings = await response.json();
+      return listings;
+    } catch (error) {
+      console.error('Error fetching credit listings');
+      return [];
+    }
+  }
+
+  async function displayCreditListings() {
+    const marketplace = document.getElementById('creditMarketplace');
+    const listings = await fetchCreditListings();
+    marketplace.innerHTML = '';
+
+    listings.forEach(listing => {
+      const card = document.createElement('div');
+      card.className = 'credit-card';
+      card.innerHTML = `
+          <h3>${listing.name}</h3>
+          <p>${listing.description}</p>
+          <p class="price">${listing.price} coins / tonne</p>
+          <button onclick="addToCart('${listing.id}', '${listing.name}', ${listing.price})">Add to Cart</button>
+      `;
+      marketplace.appendChild(card);
+    });
+  }
+  displayCreditListings();
+
+  function updateImpact() {
+    document.getElementById('treesPlanted').textContent = 50;
+    document.getElementById('solarEnergy').textContent = 1000;
+  }
+
+  const ctx = document.getElementById('creditChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['2019', '2020', '2021', '2022', '2023', '2024'],
+            datasets: [{
+                label: 'Carbon Credits',
+                data: [3.72, 4.22, 4.04, 7.37, 6.97, 6.53],
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>

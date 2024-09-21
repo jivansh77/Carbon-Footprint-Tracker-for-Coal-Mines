@@ -130,7 +130,44 @@ st.markdown("""
         .stAppDeployButton {display:none;}
         #stDecoration {display:none;}
         .stSlider [data-baseweb=slider] {
-        width: 70%;
+            width: 70%;
+        }
+        .stSelectbox > div[data-baseweb="select"] > div {
+	        background-color: #fff;
+            width: 70%;
+            cursor: pointer;
+	    }
+        div[data-baseweb="popover"] {
+            box-shadow: none;
+        }
+        div[data-baseweb="popover"] ul[data-testid="stSelectboxVirtualDropdown"] {
+            width: 70%;
+            background-color: #fff;
+        }
+        div[data-no-focus-lock="true"] {
+            background-color: #f4f4f4;
+        }
+        div[data-baseweb="popover"] ul[data-testid="stSelectboxVirtualDropdown"] li {
+            background-color: #fff;
+            color: #333;
+            padding: 10px;
+        }
+        div[data-baseweb="popover"] ul[data-testid="stSelectboxVirtualDropdown"] li:hover {
+            background-color: #f39c12;
+        }
+        button.learn-more-btn {
+            background-color: #fff;
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button.learn-more-btn:hover {
+            background-color: #f39c12;
+        }
+        .buton {
+            list-style-type: none;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -168,11 +205,11 @@ with left_column:
     st.markdown("<h1 style='margin-top: -0.5em; margin-bottom: 0.3em; color: #f39c12; font-size: 3.5rem;'>Personalized Suggestions to Offset Your Carbon Footprint</h1>", unsafe_allow_html=True)
 
     st.markdown("<h2>Your Carbon Footprint:</h2>", unsafe_allow_html=True)
-    st.markdown(f"""Direct Emissions - :green[{coalf} tCO2e]""")
-    st.write(f"""Electricity Emissions - :green[{elecf} tCO2e]""")
-    st.write(f"""Transport Emissions - :green[{transf} tCO2e]""")
-    st.write(f"""Deforestation Emissions - :green[{deforestf} tCO2e]""")
-    st.write(f"""**Total Emissions - :green[{total} tCO2e]**""")
+    st.markdown(f"""Direct Emissions - :green[{coalf} tCO<sub>2</sub>e]""", unsafe_allow_html=True)
+    st.markdown(f"""Electricity Emissions - :green[{elecf} tCO<sub>2</sub>e]""", unsafe_allow_html=True)
+    st.markdown(f"""Transport Emissions - :green[{transf} tCO<sub>2</sub>e]""", unsafe_allow_html=True)
+    st.markdown(f"""Deforestation Emissions - :green[{deforestf} tCO<sub>2</sub>e]""", unsafe_allow_html=True)
+    st.markdown(f"""**Total Emissions - :green[{total} tCO<sub>2</sub>e]**""", unsafe_allow_html=True)
 
     if None not in [coalQty, elecConsump, transportation, deforestedArea]:
         # If all inputs are valid, proceed with prediction
@@ -197,11 +234,44 @@ with left_column:
                     new_total_cf = total - carbon_reduction
                     new_deforestf = max(new_deforestf, 0)
                     new_total_cf = max(new_total_cf, 0)
-                    st.write(f"**Number of trees planted - {num_trees}**")
-                    st.write(f"**Carbon reduction from trees - :green[{carbon_reduction:.2f} tCO2e]**")
-                    st.write(f"**New Deforestation Emissions after Afforestation - :green[{new_deforestf:.2f} tCO2e]**")
-                    st.write(f"**New Total Emissions after Afforestation - :green[{new_total_cf:.2f} tCO2e]**")
+                    st.markdown(f"**Number of trees planted - {num_trees}**", unsafe_allow_html=True)
+                    st.markdown(f"**Carbon reduction from trees - :green[{carbon_reduction:.2f} tCO<sub>2</sub>e]**", unsafe_allow_html=True)
+                    st.markdown(f"**New Deforestation Emissions after Afforestation - :green[{new_deforestf:.2f} tCO<sub>2</sub>e]**", unsafe_allow_html=True)
+                    st.markdown(f"**New Total Emissions after Afforestation - :green[{new_total_cf:.2f} tCO<sub>2</sub>e]**", unsafe_allow_html=True)
 
+            if label == 'Estimating Carbon Credits':
+                st.markdown("""
+                    <ul class="buton">
+                        <li>
+                            <a href="http://localhost:3000/marketplace">
+                                <button class="learn-more-btn">
+                                    Visit Carbon Credit Marketplace
+                                </button>
+                            </a>
+                        </li>
+                    </ul>
+                """, unsafe_allow_html=True)
+
+            if label == 'Switching to renewables':
+                renewable_options = ["Solar", "Wind", "Geothermal", "Hydro"]
+                selected_renewable = st.selectbox('Choose your renewable energy option:', renewable_options)
+
+            if label == 'Adopting electric vehicles':
+                ev_options = ["Electric Haul Trucks", "Electric Dump Trucks", "Electric Wheel Loaders", "Electric Underground Loaders", "Electric Underground Trucks"]
+                selected_ev = st.selectbox('Choose your electric vehicle:', ev_options)
+
+            if label == 'Implementing methane capture':
+                st.markdown("""
+                    <ul class="buton">
+                        <li>
+                            <a href="http://localhost:3000/methane">
+                                <button class="learn-more-btn">
+                                    Learn More
+                                </button>
+                            </a>
+                        </li>
+                    </ul>
+                """, unsafe_allow_html=True)
     else:
         st.error("Invalid input values. Please enter valid numbers.")
 
@@ -225,7 +295,7 @@ with right_column:
     st.bar_chart(input_df.set_index('Parameter'))
 
 # Recommendations section
-st.markdown("<h2>Further Recommendations:</h2>", unsafe_allow_html=True)
+st.markdown("<h2>Tips and Resources:</h2>", unsafe_allow_html=True)
 st.write("Explore more options for reducing your carbon footprint:")
 st.write("- [Adopt Renewable Energy Solutions](#)")
 st.write("- [Join Carbon Offset Programs](#)")
@@ -236,17 +306,17 @@ st.markdown(
     """
     <div style="text-align: center; margin-top: 30px;">
         <a href="http://localhost:3000/calculate">
-            <button style="background-color: #f39c12; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; font-size: 16px; cursor: pointer;">
+            <button style="background-color: #f39c12; color: black; border: none; padding: 10px 20px; border-radius: 5px; font-size: 16px; cursor: pointer;">
                 Calculate Again
             </button>
         </a>
         <a href="http://localhost:3000/home">
-            <button style="background-color: #3498db; color: #fff; border: none; padding: 10px 48px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-left: 20px;">
+            <button style="background-color: #3498db; color: black; border: none; padding: 10px 48px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-left: 20px;">
                 Home
             </button>
         </a>
         <a href="http://localhost:3000/index">
-            <button style="background-color: #188753; color: #fff; border: none; padding: 10px 33px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-left: 20px;">
+            <button style="background-color: #188753; color: black; border: none; padding: 10px 33px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-left: 20px;">
                 View Data
             </button>
         </a>

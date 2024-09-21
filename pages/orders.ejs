@@ -1,0 +1,14 @@
+<% layout("../layouts/boilerplate") %>
+<div class="container">
+    <h1>Your Transaction History</h1>
+    <ul>
+        <% transactions.forEach(transaction => { %>
+            <li>
+                Transaction Type: <%= transaction.transactionType %><br>
+                Credits Bought: <%= transaction.creditsBought %><br>
+                Credits Sold: <%= transaction.creditsSold %><br>
+                Coins Used: <%= transaction.coinsUsed %>
+            </li>
+        <% }); %>
+    </ul>
+</div>
