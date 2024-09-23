@@ -308,6 +308,7 @@
   let coinBalance = 0;
   let cart = [];
   let credits = 0;
+  let count=0;
   updateCoinBalance();
 
   function calculateCredits() {
@@ -358,10 +359,11 @@
     if (coinBalance >= total) {
       coinBalance -= total;
       updateCoinBalance();
+      count += cart.length;
+      updateImpact(count);
       cart = [];
       updateCart();
       alert('Purchase successful!');
-      updateImpact();
     } else {
       alert('Insufficient coins. Please buy more coins.');
     }
@@ -397,9 +399,9 @@
   }
   displayCreditListings();
 
-  function updateImpact() {
-    document.getElementById('treesPlanted').textContent = 50;
-    document.getElementById('solarEnergy').textContent = 1000;
+  function updateImpact(count) {
+    document.getElementById('treesPlanted').textContent = 50 * count;
+    document.getElementById('solarEnergy').textContent = 1000 * count;
   }
 
   const ctx = document.getElementById('creditChart').getContext('2d');
