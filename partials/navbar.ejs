@@ -29,6 +29,23 @@
   font-family: "Jersey 10", sans-serif;
   font-size: 45px;
 }
+
+.navbar .nav-button {
+  font-size: 0.87rem;
+  padding: 0.5rem 0.5rem;
+  margin-left: 220px;
+  margin-top: 5px;
+  background-color: #f39c12;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.navbar .nav-button:hover {
+  background-color: #e38d10;
+}
+
 .dbot{
     display: block;
     position: fixed;
@@ -146,6 +163,9 @@ svg{
             <path d="M7.001 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0"/>
           </svg></a>
         </li>
+        <div class="auth-links">
+            <li><button onclick="window.location.href='/login';" class="nav-button">Login/SignUp</button></li>
+        </div>
       </ul>
       <div class="translate-container">
         <a href="#"><i class="fas fa-globe globe-icon" onclick="toggleTranslateDropdown()"></i></a>

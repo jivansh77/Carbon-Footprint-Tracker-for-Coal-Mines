@@ -353,7 +353,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-  let coinBalance = 0;
+  const userId = '<%= user._id %>';
+  let coinBalance = '<%= user.coinBalance %>';
   let cart = [];
   let credits = 0;
   let count=0;
@@ -365,62 +366,139 @@
     document.getElementById('creditAmount').textContent = credits;
   }
 
-  function buyCoins() {
-      const amount = prompt("How many coins would you like to buy?");
-      if (amount && !isNaN(amount)) {
-          coinBalance += parseInt(amount);
-          updateCoinBalance();
-          alert(`Successfully purchased ${amount} coins!`);
-      }
+  async function buyCoins() {
+    const amount = prompt("How many coins would you like to buy?");
+    if (amount && !isNaN(amount)) {
+        try {
+            const response = await fetch('/marketplace/api/buyCoins', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ amount: parseInt(amount) })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                coinBalance = data.newBalance;
+                updateCoinBalance();
+                alert(`Successfully purchased ${amount} coins!`);
+            } else {
+                alert('Failed to buy coins: ' + data.message);
+            }
+        } 
+        catch (error) {
+            console.error('Error:', error);
+            alert('Error buying coins.');
+        }
+    }
   }
 
   function updateCoinBalance() {
       document.getElementById('coinBalance').textContent = coinBalance;
   }
 
-  function addToCart(id, name, price) {
-      cart.push({ id, name, price });
-      updateCart();
-  }
-
-  function removeFromCart(id, name, price) {
-    cart.splice({ id, name, price }, 1);
-    updateCart();
-  }
-
-  function updateCart() {
-      const cartItems = document.getElementById('cartItems');
-      const cartTotal = document.getElementById('cartTotal');
-      
-      cartItems.innerHTML = '';
-      let total = 0;
-
-      cart.forEach(item => {
-          cartItems.innerHTML += `
-          <p>${item.name} - ${item.price} coins</p>
-          <button onclick="removeFromCart('${item.id}', '${item.name}', ${item.price})" class="remove">Remove</button>`;
-          total += item.price;
+  async function addToCart(id, name, price) {
+    const quantity = 1; // You can allow users to select the quantity if needed
+    try {
+      const response = await fetch('/marketplace/api/cart/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        credentials: 'include', // Important for including session cookies
+        body: JSON.stringify({ creditListingId: id, quantity })
       });
-
-      cartTotal.textContent = total;
-  }
-  
-  function checkout() {
-    const total = cart.reduce((sum, item) => sum + item.price, 0);
-    if (cart.length === 0) {
-      alert('Your cart is empty. Please add items to the cart before checking out.');
-      return;
+      const data = await response.json();
+      if (response.ok) {
+        alert('Item added to cart');
+        updateCart(); // Refresh the cart display
+      } else {
+        alert('Failed to add item to cart: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      alert('Error adding to cart.');
     }
-    if (coinBalance >= total) {
-      coinBalance -= total;
-      updateCoinBalance();
-      count += cart.length;
-      updateImpact(count);
-      cart = [];
-      updateCart();
-      alert('Purchase successful!');
-    } else {
-      alert('Insufficient coins. Please buy more coins.');
+  }
+
+  async function removeFromCart(creditListingId) {
+    try {
+      const response = await fetch('/marketplace/api/cart/remove', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ creditListingId })
+      });
+      const data = await response.json();
+      if (response.ok) {
+        updateCart();
+      } else {
+        alert('Failed to remove item from cart: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Error removing from cart:', error);
+      alert('Error removing from cart.');
+    }
+  }
+
+  async function updateCart() {
+    try {
+      const response = await fetch('/marketplace/api/cart');
+      const data = await response.json();
+      if (response.ok) {
+        const cartItems = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+        cartItems.innerHTML = '';
+        let total = 0;
+
+        if (data && data.items && data.items.length > 0)
+        {
+          data.items.forEach(item => {
+            cartItems.innerHTML += `
+              <p>${item.creditListing.name} - ${item.creditListing.price} coins x ${item.quantity}</p>
+              <button onclick="removeFromCart('${item.creditListing._id}')" class="remove">Remove</button>`;
+            total += item.creditListing.price * item.quantity;
+          });
+        } 
+        else {
+          cartItems.innerHTML = '<p>Your cart is empty.</p>';
+        }
+        cartTotal.textContent = total;
+      } else {
+        console.error('Failed to fetch cart:', data.message);
+      }
+    } catch (error) {
+      console.error('Error fetching cart:', error);
+    }
+  }
+
+
+  updateCart();
+  
+  async function checkout() {
+    try {
+      const response = await fetch('/marketplace/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const data = await response.json();
+      if (response.ok) {
+        coinBalance = data.newBalance;
+        updateCoinBalance();
+        alert('Purchase successful!');
+        count += cart.length;
+        updateImpact(count);
+        updateCart();
+      } else {
+        alert('Checkout failed: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Error during checkout:', error);
+      alert('Error during checkout.');
     }
   }
 
@@ -447,7 +525,7 @@
           <h3>${listing.name}</h3>
           <p>${listing.description}</p>
           <p class="price">${listing.price} coins / tonne</p>
-          <button onclick="addToCart('${listing.id}', '${listing.name}', ${listing.price})">Add to Cart</button>
+          <button onclick="addToCart('${listing._id}', '${listing.name}', ${listing.price})">Add to Cart</button>
       `;
       marketplace.appendChild(card);
     });

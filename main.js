@@ -3,15 +3,21 @@ const app = express();
 const path = require('path');
 const methodOverride = require('method-override');
 const mongoose = require('mongoose');
-const Mines = require('./models/mines');
 const ejsMate = require('ejs-mate');
-const places = require('./data/india-places');
-const {spawn} = require('child_process');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+
+const Mines = require('./models/mines');
+const User = require('./models/user');
+const places = require('./data/india-places');
 const marketplaceRoutes = require('./marketplace/marketplace');
+const authRoutes = require('./auth/auth');
 
 app.engine('ejs', ejsMate);
+app.set("view engine", "ejs");
+app.set('views', path.join(__dirname, 'pages'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
@@ -20,6 +26,28 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use(cors());
+
+app.use(session({
+    secret: 'keyboard cat', // Replace with a strong secret key
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: 'mongodb://localhost:27017/mines' }),
+    cookie: { maxAge: 1000 * 60 * 60 * 24 } // Session expires after 1 day
+}));
+
+app.use(async (req, res, next) => {
+    if (req.session.userId) {
+        try {
+            const user = await User.findById(req.session.userId);
+            res.locals.currentUser = user;
+        } catch (err) {
+            console.error(err);
+        }
+    } else {
+        res.locals.currentUser = null;
+    }
+    next();
+});
 
 mongoose.connect('mongodb://localhost:27017/mines', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
@@ -30,9 +58,7 @@ mongoose.connect('mongodb://localhost:27017/mines', { useNewUrlParser: true, use
         console.log(err);
     });
 
-app.use(express.static('public'));
-app.set("view engine", "ejs");
-app.set('views', path.join(__dirname, 'pages'));
+app.use('/', authRoutes);
 
 app.get("/home", (req, res) => {
     res.render("home");
