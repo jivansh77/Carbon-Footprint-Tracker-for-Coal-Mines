@@ -479,6 +479,9 @@
   
   async function checkout() {
     try {
+      const cartResponse = await fetch('/marketplace/api/cart');
+      const cartData = await cartResponse.json();
+      const itemCount = cartData.items.length;
       const response = await fetch('/marketplace/api/checkout', {
         method: 'POST',
         headers: {
@@ -490,7 +493,7 @@
         coinBalance = data.newBalance;
         updateCoinBalance();
         alert('Purchase successful!');
-        count += cart.length;
+        count += itemCount;
         updateImpact(count);
         updateCart();
       } else {
