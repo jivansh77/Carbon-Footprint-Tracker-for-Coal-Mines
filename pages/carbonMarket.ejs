@@ -227,6 +227,18 @@
       margin-bottom: 0.5rem;
   }
 
+  button.remove {
+      margin-bottom: 10px;
+      padding: 0.5rem 1rem;
+      width: auto;
+      background-color: var(--secondary-color);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+  }
+
   .carbonPrices a{
     display: none;
   }
@@ -371,6 +383,11 @@
       updateCart();
   }
 
+  function removeFromCart(id, name, price) {
+    cart.splice({ id, name, price }, 1);
+    updateCart();
+  }
+
   function updateCart() {
       const cartItems = document.getElementById('cartItems');
       const cartTotal = document.getElementById('cartTotal');
@@ -379,7 +396,9 @@
       let total = 0;
 
       cart.forEach(item => {
-          cartItems.innerHTML += `<p>${item.name} - ${item.price} coins</p>`;
+          cartItems.innerHTML += `
+          <p>${item.name} - ${item.price} coins</p>
+          <button onclick="removeFromCart('${item.id}', '${item.name}', ${item.price})" class="remove">Remove</button>`;
           total += item.price;
       });
 
