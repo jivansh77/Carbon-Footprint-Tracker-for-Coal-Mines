@@ -7,19 +7,12 @@
     --background-color: #f4f4f4;
     --text-color: #333;
     --card-background: #FFFFFF;
-}
-  
-  * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
   }
   
   body {
-      font-family: 'Poppins', sans-serif;
+      font-family: sans-serif !important;
       background-color: var(--background-color);
       color: var(--text-color);
-      line-height: 1.6;
   }
   
   .container {
@@ -33,9 +26,9 @@
   }
   
   .header h1 {
-      font-size: 3rem;
+      font-size: 3.5rem;
       color: var(--primary-color);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.7rem;
   }
   
   .header p {
@@ -54,14 +47,15 @@
       transition: transform 0.3s ease;
   }
   
-  .card:hover {
-      transform: translateY(-5px);
-  }
-  
   .card h2 {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       color: var(--secondary-color);
       margin-bottom: 1rem;
+      font-weight: bold;
+  }
+
+  .text {
+    font-size: 1rem !important; 
   }
   
   .input-group {
@@ -232,6 +226,42 @@
       font-weight: bold;
       margin-bottom: 0.5rem;
   }
+
+  .carbonPrices a{
+    display: none;
+  }
+
+  .chart-widget-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+
+  #creditChart {
+    flex: 1; 
+    max-width: 50%;
+  }
+
+  #carbon-prices * {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #carbon-prices {
+    flex: 1;
+    margin-left: 20px;
+    max-width: 45%;
+    min-width: 300px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    height: auto; 
+    box-sizing: border-box; 
+    overflow: hidden;
+  }
 </style>
 
 <div class="container">
@@ -242,7 +272,7 @@
   
   <div class="card">
       <h2>What are Carbon Credits?</h2>
-      <p>Carbon credits represent a permit or certificate that allows a company to emit a certain amount of carbon dioxide or other greenhouse gases. One carbon credit typically equals one ton of CO2. Companies can buy credits to offset their emissions or sell surplus credits if they emit less than their allowance.</p>
+      <p class="text">Carbon credits represent a permit or certificate that allows a company to emit a certain amount of carbon dioxide or other greenhouse gases. One carbon credit typically equals one ton of CO2. Companies can buy credits to offset their emissions or sell surplus credits if they emit less than their allowance.</p>
   </div>
 
   <div class="card">
@@ -279,8 +309,14 @@
 </div>
 
   <div class="card">
-      <h2>Track Carbon Credits</h2>
+    <h2>Track Carbon Credits</h2>
+    <div class="chart-widget-container">
       <canvas id="creditChart" width="400" height="200"></canvas>
+      <div id="carbon-prices" class="carbonPrices">
+        <script type="text/javascript" src="https://carboncredits.com/live-carbon-prices/index.js.php" async="">
+        </script>
+      </div>
+    </div>
   </div>
 
   <div class="card">
