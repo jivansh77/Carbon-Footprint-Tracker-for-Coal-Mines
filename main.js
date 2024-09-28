@@ -86,7 +86,7 @@ app.post("/index", isAuthenticated, async (req, res) => {
         console.log(geox)
         const geoData = await maptilerClient.geocoding.forward((geox), { limit: 1 });        
         const mineData = req.body.Mine;
-        const mine = new Mines(mineData);
+        const mine = new Mines(mineData); 
         mine.geometry = geoData.features[0].geometry;
         await mine.save();
         res.redirect("/index");
@@ -147,10 +147,14 @@ app.delete("/index/:id", async (req, res) => {
 
 app.put("/index/:id", async (req, res) => {
     try {
+        const geox = (req.body.Mine.district +", " + req.body.Mine.state);
         const mines = await Mines.findByIdAndUpdate(req.params.id, req.body.Mine, { new: true });
+        const geoData = await maptilerClient.geocoding.forward((geox), { limit: 1 });   
+        mines.geometry = geoData.features[0].geometry;
         if (!mines) {
             return res.status(404).send("Mine not found");
         }
+        await mines.save();
         res.redirect(`/index/${mines.id}`);
     } catch (err) {
         console.error("Error updating mine:", err);

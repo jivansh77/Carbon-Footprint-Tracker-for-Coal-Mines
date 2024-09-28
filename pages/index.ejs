@@ -13,7 +13,7 @@
                     <img src="/notfound.jpg" class="img-fluid rounded-start ratio ratio-4x3 border" alt="Error">
                 </div>
                 <p>
-                    <h3><%= currentUser.username %></h3>
+                    <h3>Raj Singh</h3>
                 </p>
                 <p class="card-text">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
@@ -50,19 +50,36 @@
     </div>
 
     <div class="row">
-        <div class="card p-2 text-center d-flex align-items-center justify-content-center">
-            <h2 class="mt-2 fw-bold">Total CO<sub>2e</sub> emissions</h2>
-            <span class="text-success fs-1 my-2">
-               
-                <% let tot=0; for(let m of mines) { %>
-                    <% if (!isNaN(m.result.totalFootprint) && m.result.totalFootprint !== null) { %>
-                        <% tot += parseFloat(m.result.totalFootprint).toFixed(2) *1; %>
+        <div class="col">
+            <div class="card h-100 p-2 text-center d-flex align-items-center justify-content-center">
+                <h2 class="mt-2 fw-bold">Total CO<sub>2e</sub> emissions</h2>
+                <span class="text-success fs-1 my-2">
+                   
+                    <% let tot=0; for(let m of mines) { %>
+                        <% if (!isNaN(m.result.totalFootprint) && m.result.totalFootprint !== null) { %>
+                            <% tot += parseFloat(m.result.totalFootprint).toFixed(2) *1; %>
+                        <% } %>
                     <% } %>
-                <% } %>
-                <%= tot %> 
-            </span>
-            <span class="fs-3">metric tons CO<sub>2e</sub>.</span>
+                    <%= tot %> 
+                </span>
+                <span class="fs-3">metric tons CO<sub>2e</sub>.</span>
+            </div>
         </div>
+
+        <div class="col">
+            <div class="card h-100 p-2 text-center d-flex align-items-center justify-content-center">
+            <div>
+                <h2 class="mt-2 fw-bold">Total Cost Savings</h2>
+                <span class="fs-1 fw-bold"> ₹ </span>
+                <span class="text-success fs-1 my-2">
+                23522
+                </span>
+            </div>
+        </div>
+        </div>
+    
+        
+        
     </div>
 
 
@@ -201,7 +218,7 @@ const map = new maptilersdk.Map({
     container: 'map',
     style: maptilersdk.MapStyle.BRIGHT,
     center: [79, 22],
-    zoom: 2
+    zoom: 3
 });
 
 map.on('load', function () {
