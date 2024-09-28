@@ -1,15 +1,5 @@
 const mongoose = require('mongoose');
 
-// User Schema
-const UserSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  passwordHash: { type: String, required: true },
-  coinBalance: { type: Number, default: 0 },
-  createdAt: { type: Date, default: Date.now },
-  lastLogin: { type: Date }
-});
-
 // Credit Listing Schema
 const CreditListingSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -45,9 +35,8 @@ const CartSchema = new mongoose.Schema({
 });
 
 // Create models
-const User = mongoose.model('User', UserSchema);
 const CreditListing = mongoose.model('CreditListing', CreditListingSchema);
 const Transaction = mongoose.model('Transaction', TransactionSchema);
 const Cart = mongoose.model('Cart', CartSchema);
 
-module.exports = { User, CreditListing, Transaction, Cart };
+module.exports = { CreditListing, Transaction, Cart };
