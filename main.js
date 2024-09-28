@@ -1,3 +1,8 @@
+if(process.env.NODE_ENV != 'production')
+    {
+        require('dotenv').config();
+    }
+
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -8,6 +13,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const maptilerClient = require("@maptiler/client");
+maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 
 const Mines = require('./models/mines');
 const User = require('./models/user');
@@ -74,8 +81,12 @@ app.get("/suggest", (req, res) => {
 
 app.post("/index", async (req, res) => {
     try {
+        const geox = (req.body.Mine.district +", " + req.body.Mine.state);
+        console.log(geox)
+        const geoData = await maptilerClient.geocoding.forward((geox), { limit: 1 });        
         const mineData = req.body.Mine;
         const mine = new Mines(mineData);
+        mine.geometry = geoData.features[0].geometry;
         await mine.save();
         res.redirect("/index");
     } catch (err) {
