@@ -1,7 +1,76 @@
 <% layout("../layouts/boilerplate") %>
 
+<h1 class="mb-3 mt-3">Dashboard</h1>
+<hr class="border border-warning border-1 opacity-100">
+
 <div class="container">
-    <h1 class="mb-5">Saved Mines</h1>
+
+    <div class="row mb-5">
+        <div class="col-4">
+            <div class="card p-2 text-center d-flex align-items-center justify-content-center h-100">
+                <h2 class="fw-semibold"> Carbon Credits Available</h2>
+                <h1 class="text-warning mt-4">43234</h1> 
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="card p-2 text-center d-flex align-items-center justify-content-center h-100">
+                <h2 class="fw-semibold">Mines Registered</h2>
+                <h1 class="mt-4 text-primary"><%= mines.length %></h1>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="card p-2 text-center d-flex align-items-center justify-content-center h-100">
+                <h2 class="fw-semibold">Profile</h2>
+                <div class="col-md-4 mb-2">
+                    <img src="/notfound.jpg" class="img-fluid rounded-start ratio ratio-4x3 border" alt="Error">
+                </div>
+                <p>
+                    <h3>Raj Singh</h3>
+                </p>
+                <p class="card-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+                    </svg>
+                    <% if(mines[0].district === "----Select Your District----") {%>
+                        Not Assigned,
+                    <% } else { %>
+                        <%= mines[0].district %>,
+                    <% } %>
+
+                    <% if(mines[0].state === "----Select Your State----") {%>
+                        Not Assigned
+                    <% } else { %>
+                        <%= mines[0].state %>
+                    <% } %>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="card p-2 text-center d-flex align-items-center justify-content-center">
+            <h2 class="mt-2 fw-bold">Total CO<sub>2e</sub> emissions</h2>
+            <span class="text-success fs-1 my-2">
+               
+                <% let tot=0; for(let m of mines) { %>
+                    <% if (!isNaN(m.result.totalFootprint) && m.result.totalFootprint !== null) { %>
+                        <% tot += parseFloat(m.result.totalFootprint); %>
+                    <% } %>
+                <% } %>
+                <%= tot %> 
+            </span>
+            <span class="fs-3">metric tons CO<sub>2e</sub>.</span>
+        </div>
+    </div>
+
+
+    <hr class="border border-warning border-1 opacity-100">
+
+    <span class="text-center fs-1 fw-bold d-flex justify-content-center">Your Mines</span>
+    
+    <hr class="border border-warning border-1 opacity-100">
 
         <div>
             <% for(let m of mines) {%>
@@ -17,13 +86,13 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
                                 <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
                             </svg>
-                            <% if(m.district === "---Select Your District---") {%>
+                            <% if(m.district === "----Select Your District----") {%>
                                 Not Assigned,
                             <% } else { %>
                                 <%= m.district %>,
                             <% } %>
     
-                            <% if(m.state === "---Select Your State---") {%>
+                            <% if(m.state === "----Select Your State----") {%>
                                 Not Assigned
                             <% } else { %>
                                 <%= m.state %>
@@ -47,7 +116,7 @@
   body {
     /* background-image: url("https://img.freepik.com/free-vector/white-with-low-poly-network-connection_1017-29753.jpg?t=st=1725306260~exp=1725309860~hmac=8888afcd8736d0fa759e5a40bcebee93b796c6ee6555eff330a2c2418c2d8107&w=826"); */
     background-size: cover;
-    background-color: rgb(213, 213, 213);
+    background-color: rgb(231, 228, 228);
   }
 
   .container {
