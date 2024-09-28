@@ -37,14 +37,14 @@ app.use(session({
 
 app.use(async (req, res, next) => {
     if (req.session.userId) {
-        try {
-            const user = await User.findById(req.session.userId);
-            res.locals.currentUser = user;
-        } catch (err) {
-            console.error(err);
-        }
+      try {
+        const user = await User.findById(req.session.userId);
+        res.locals.currentUser = user;
+      } catch (err) {
+        console.error(err);
+      }
     } else {
-        res.locals.currentUser = null;
+      res.locals.currentUser = null;
     }
     next();
 });

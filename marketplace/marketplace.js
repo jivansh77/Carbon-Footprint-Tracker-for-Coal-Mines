@@ -5,8 +5,17 @@ const { CreditListing, Transaction, Cart } = require('../models/credit');
 const User = require('../models/user');
 const isAuthenticated = require('../auth/auth');
 
-router.get('/', isAuthenticated, (req, res) => {
-  res.render('carbonMarket', { user: res.locals.currentUser });
+router.get('/', isAuthenticated, async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      return res.redirect('/login');
+    }
+    res.render('carbonMarket', { user });
+  } catch (error) {
+    console.error('Error in /marketplace route handler:', error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 // Get credit listings
