@@ -37,7 +37,7 @@
 
 .navbar .nav-button {
   font-size: 0.87rem;
-  padding: 0.5rem 0.5rem;
+  padding: 0.5rem 1rem;
   margin-top: 5px;
   margin-left: 16px;
   background-color: #f39c12;
@@ -173,9 +173,17 @@ svg{
             <path d="M7.001 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0"/>
           </svg></a>
         </li>
-        <div class="auth-links">
-            <li><button onclick="window.location.href='/login';" class="nav-button">Login/SignUp</button></li>
-        </div>
+        <% if (currentUser) { %>
+          <li>
+            <form action="/logout" method="GET" style="display: inline;">
+              <button type="submit" class="nav-button">Logout</button>
+            </form>
+          </li>
+        <% } else { %>
+          <li>
+            <button onclick="window.location.href='/login';" class="nav-button">Login/SignUp</button>
+          </li>
+        <% } %>
       </ul>
       <div class="translate-container">
         <a href="#"><i class="fas fa-globe globe-icon" onclick="toggleTranslateDropdown()"></i></a>

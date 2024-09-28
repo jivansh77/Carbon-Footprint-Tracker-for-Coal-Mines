@@ -21,6 +21,7 @@ const User = require('./models/user');
 const places = require('./data/india-places');
 const marketplaceRoutes = require('./marketplace/marketplace');
 const authRoutes = require('./auth/auth');
+const isAuthenticated = require('./auth/auth');
 
 app.engine('ejs', ejsMate);
 app.set("view engine", "ejs");
@@ -44,14 +45,14 @@ app.use(session({
 
 app.use(async (req, res, next) => {
     if (req.session.userId) {
-        try {
-            const user = await User.findById(req.session.userId);
-            res.locals.currentUser = user;
-        } catch (err) {
-            console.error(err);
-        }
+      try {
+        const user = await User.findById(req.session.userId);
+        res.locals.currentUser = user;
+      } catch (err) {
+        console.error(err);
+      }
     } else {
-        res.locals.currentUser = null;
+      res.locals.currentUser = null;
     }
     next();
 });
@@ -79,7 +80,7 @@ app.get("/suggest", (req, res) => {
     res.render("suggest");
 })
 
-app.post("/index", async (req, res) => {
+app.post("/index", isAuthenticated, async (req, res) => {
     try {
         const geox = (req.body.Mine.district +", " + req.body.Mine.state);
         console.log(geox)
@@ -97,6 +98,10 @@ app.post("/index", async (req, res) => {
 
 app.get("/index", async (req, res) => {
     try {
+        const user = await User.findById(req.session.userId);
+        if (!user) {
+            return res.redirect('/login');
+        }
         const mines = await Mines.find({});
         res.render("index", { mines });
     } catch (err) {

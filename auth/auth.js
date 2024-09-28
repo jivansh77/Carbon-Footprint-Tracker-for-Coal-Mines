@@ -3,20 +3,13 @@ const router = express.Router();
 const User = require('../models/user');
 
 // Middleware to check if user is authenticated
-async function isAuthenticated(req, res, next) {
+module.exports = function isAuthenticated(req, res, next) {
   if (req.session && req.session.userId) {
-    try {
-      const user = await User.findById(req.session.userId);
-      if (user) {
-        res.locals.currentUser = user;
-        return next();
-      }
-    } catch (err) {
-      console.error(err);
-    }
+    return next();
+  } else {
+    res.redirect('/login');
   }
-  res.redirect('/login');
-}
+};
 
 // GET: Display login page
 router.get('/login', (req, res) => {
@@ -90,5 +83,4 @@ router.get('/logout', (req, res) => {
   res.redirect('/login');
 });
 
-module.exports = isAuthenticated;
 module.exports = router;

@@ -7,6 +7,10 @@ const UserSchema = new mongoose.Schema({
   email:    { type: String, required: true, unique: true },
   password: { type: String, required: true },
   coinBalance: { type: Number, default: 0 },
+  envImpact: {
+    treesPlanted: { type: Number, default: 0 },
+    solarEnergy: { type: Number, default: 0 },
+  },
   createdAt: { type: Date, default: Date.now },
 });
 

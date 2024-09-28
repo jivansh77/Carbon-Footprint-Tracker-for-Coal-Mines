@@ -304,7 +304,7 @@
             <p><span id="coinBalance"></span> coins</p>
         </div>
     </div>
-    <button onclick="buyCoins()" class="btn">Buy Coins</button>
+    <button onclick="buyCoins()" class="btn">Buy MineCoins</button>
     
     <div id="creditMarketplace" class="credit-grid">
         <!-- Credit cards will be dynamically inserted here -->
@@ -315,7 +315,7 @@
         <div id="cartItems" class="cart-items">
             <!-- Cart items will be dynamically inserted here -->
         </div>
-        <div class="cart-total">Total: <span id="cartTotal">0</span> coins</div>
+        <div class="cart-total">Total: <span id="cartTotal">0</span> MineCoins</div>
         <button onclick="checkout()" class="btn">Checkout</button>
     </div>
 </div>
@@ -353,12 +353,14 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-  const userId = '<%= user._id %>';
   let coinBalance = '<%= user.coinBalance %>';
+  let trees = '<%= user.envImpact.treesPlanted %>';
+  let solar = '<%= user.envImpact.solarEnergy %>';
   let cart = [];
   let credits = 0;
   let count=0;
   updateCoinBalance();
+  updateImpact();
 
   function calculateCredits() {
     credits = parseInt(document.getElementById('emissions').value);
@@ -381,7 +383,7 @@
             if (response.ok) {
                 coinBalance = data.newBalance;
                 updateCoinBalance();
-                alert(`Successfully purchased ${amount} coins!`);
+                alert(`Successfully purchased ${amount} MineCoins!`);
             } else {
                 alert('Failed to buy coins: ' + data.message);
             }
@@ -457,7 +459,7 @@
         {
           data.items.forEach(item => {
             cartItems.innerHTML += `
-              <p>${item.creditListing.name} - ${item.creditListing.price} coins x ${item.quantity}</p>
+              <p>${item.creditListing.name} - ${item.creditListing.price} MineCoins x ${item.quantity}</p>
               <button onclick="removeFromCart('${item.creditListing._id}')" class="remove">Remove</button>`;
             total += item.creditListing.price * item.quantity;
           });
@@ -473,8 +475,6 @@
       console.error('Error fetching cart:', error);
     }
   }
-
-
   updateCart();
   
   async function checkout() {
@@ -491,10 +491,11 @@
       const data = await response.json();
       if (response.ok) {
         coinBalance = data.newBalance;
+        solar = data.solarEnergy;
+        trees = data.treesPlanted;
         updateCoinBalance();
-        alert('Purchase successful!');
-        count += itemCount;
-        updateImpact(count);
+        updateImpact();
+        alert('Purchase Successful. Thank You for helping to save the environment.');
         updateCart();
       } else {
         alert('Checkout failed: ' + data.message);
@@ -536,9 +537,26 @@
   displayCreditListings();
 
   function updateImpact(count) {
-    document.getElementById('treesPlanted').textContent = 50 * count;
-    document.getElementById('solarEnergy').textContent = 1000 * count;
+    document.getElementById('treesPlanted').textContent = trees;
+    document.getElementById('solarEnergy').textContent = solar;
   }
+
+  async function fetchEnvImpact() {
+  try {
+    const response = await fetch('/marketplace/api/envImpact');
+    const data = await response.json();
+    if (response.ok) {
+      solarEnergy = data.solarEnergy;
+      treesPlanted = data.treesPlanted;
+      updateImpactDisplay();
+    } else {
+      console.error('Failed to fetch environmental impact data:', data.message);
+    }
+  } catch (error) {
+    console.error('Error fetching environmental impact data:', error);
+  }
+}
+fetchEnvImpact();
 
   const ctx = document.getElementById('creditChart').getContext('2d');
     new Chart(ctx, {

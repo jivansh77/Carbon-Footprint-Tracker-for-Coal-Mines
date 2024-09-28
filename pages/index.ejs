@@ -8,26 +8,12 @@
     <div class="row mb-5">
         <div class="col-4">
             <div class="card p-2 text-center d-flex align-items-center justify-content-center h-100">
-                <h2 class="fw-semibold"> Carbon Credits Available</h2>
-                <h1 class="text-warning mt-4">43234</h1> 
-            </div>
-        </div>
-
-        <div class="col-4">
-            <div class="card p-2 text-center d-flex align-items-center justify-content-center h-100">
-                <h2 class="fw-semibold">Mines Registered</h2>
-                <h1 class="mt-4 text-primary"><%= mines.length %></h1>
-            </div>
-        </div>
-
-        <div class="col-4">
-            <div class="card p-2 text-center d-flex align-items-center justify-content-center h-100">
                 <h2 class="fw-semibold">Profile</h2>
                 <div class="col-md-4 mb-2">
                     <img src="/notfound.jpg" class="img-fluid rounded-start ratio ratio-4x3 border" alt="Error">
                 </div>
                 <p>
-                    <h3>Raj Singh</h3>
+                    <h3><%= currentUser.username %></h3>
                 </p>
                 <p class="card-text">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
@@ -47,6 +33,18 @@
                         <% } %>
                     <% } %>
                 </p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card p-2 text-center d-flex align-items-center justify-content-center h-100">
+                <h2 class="fw-semibold"> MineCoins Available</h2>
+                <h1 class="text-warning mt-4"><%= currentUser.coinBalance %></h1> 
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card p-2 text-center d-flex align-items-center justify-content-center h-100">
+                <h2 class="fw-semibold">Mines Registered</h2>
+                <h1 class="mt-4 text-primary"><%= mines.length %></h1>
             </div>
         </div>
     </div>
