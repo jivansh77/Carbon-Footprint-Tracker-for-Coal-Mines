@@ -109,7 +109,6 @@ router.get('/api/cart', isAuthenticated, async (req, res) => {
 });
 
 // Checkout
-
 router.post('/api/checkout', isAuthenticated, async (req, res) => {
   try {
     const user = await User.findById(req.session.userId);
@@ -121,9 +120,12 @@ router.post('/api/checkout', isAuthenticated, async (req, res) => {
     }
 
     let totalCost = 0;
+    let totalCreditsPurchased = 0;
+
     for (let item of cart.items) {
       totalCost += item.creditListing.price * item.quantity;
-
+      totalCreditsPurchased += item.quantity;
+      
       if (item.quantity > item.creditListing.available) {
         return res.status(400).json({ message: `Not enough credits available for ${item.creditListing.name}` });
       }
@@ -133,11 +135,11 @@ router.post('/api/checkout', isAuthenticated, async (req, res) => {
       return res.status(400).json({ message: 'Insufficient coins' });
     }
 
-    // Update user balance
     user.coinBalance -= totalCost;
+    user.envImpact.treesPlanted += totalCreditsPurchased * 50;
+    user.envImpact.solarEnergy += totalCreditsPurchased * 1000;
     await user.save();
 
-    // Process each item in the cart
     for (let item of cart.items) {
       const newTransaction = new Transaction({
         user: user._id,
@@ -149,7 +151,6 @@ router.post('/api/checkout', isAuthenticated, async (req, res) => {
       });
       await newTransaction.save();
 
-      // Update available credits
       item.creditListing.available -= item.quantity;
       await item.creditListing.save();
     }
@@ -157,20 +158,45 @@ router.post('/api/checkout', isAuthenticated, async (req, res) => {
     // Clear the cart
     await Cart.findByIdAndDelete(cart._id);
 
-    res.json({ message: 'Checkout successful', newBalance: user.coinBalance });
+    res.json({ message: 'Checkout successful', newBalance: user.coinBalance, solarEnergy: user.envImpact.solarEnergy, treesPlanted: user.envImpact.treesPlanted });
   } catch (error) {
     console.error('Error during checkout:', error);
     res.status(500).json({ message: 'Checkout failed', error: error.message });
   }
 });
 
-// Get user balance
-router.get('/api/balance', isAuthenticated, async (req, res) => {
+router.get('/api/envImpact', isAuthenticated, async (req, res) => {
   try {
     const user = await User.findById(req.session.userId);
-    res.json({ balance: user.coinBalance });
+    res.json({
+      solarEnergy: user.envImpact.solarEnergy,
+      treesPlanted: user.envImpact.treesPlanted,
+    });
   } catch (error) {
-    res.status(400).json({ message: 'Failed to fetch balance', error: error.message });
+    res.status(500).json({ message: 'Failed to fetch environmental impact data', error: error.message });
+  }
+});
+
+router.post('/api/envImpact', isAuthenticated, async (req, res) => {
+  try {
+    const { solarEnergy, treesPlanted } = req.body;
+    const user = await User.findById(req.session.userId);
+
+    if (solarEnergy !== undefined) {
+      user.envImpact.solarEnergy = solarEnergy;
+    }
+    if (treesPlanted !== undefined) {
+      user.envImpact.treesPlanted = treesPlanted;
+    }
+
+    await user.save();
+    res.json({
+      message: 'Environmental impact data updated',
+      solarEnergy: user.envImpact.solarEnergy,
+      treesPlanted: user.envImpact.treesPlanted,
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update environmental impact data', error: error.message });
   }
 });
 
