@@ -3,6 +3,10 @@
 <!-- Header & Hero Section -->
 <div class="Header-Hero-background container-fluid p-0">
     <!-- Hero Section -->
+    <video autoplay muted loop id="bgVideo">
+        <source src="./bgpic.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
     <section class="hero">
         <div class="hero-content">
             <h1><b>Empowering India's Coal Mines Towards a Carbon-Neutral Future</b></h1>
@@ -200,16 +204,33 @@ body {
 }
 
 .Header-Hero-background {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("./minessss (1).gif");
-    background-size: cover;
-    background-position: center;
-    height: 92vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: relative;
+  height: 92vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+#bgVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  height: 92vh;
+  object-fit: cover;
+  z-index: -2;
+}
 
+.Header-Hero-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 92vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.34), rgba(0, 0, 0, 0.34));
+  z-index: -1;
+}
 
 .hero {
     text-align: center;
