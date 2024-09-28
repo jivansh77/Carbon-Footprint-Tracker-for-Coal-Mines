@@ -14,6 +14,7 @@ const User = require('./models/user');
 const places = require('./data/india-places');
 const marketplaceRoutes = require('./marketplace/marketplace');
 const authRoutes = require('./auth/auth');
+const isAuthenticated = require('./auth/auth');
 
 app.engine('ejs', ejsMate);
 app.set("view engine", "ejs");
@@ -72,7 +73,7 @@ app.get("/suggest", (req, res) => {
     res.render("suggest");
 })
 
-app.post("/index", async (req, res) => {
+app.post("/index", isAuthenticated, async (req, res) => {
     try {
         const mineData = req.body.Mine;
         const mine = new Mines(mineData);
@@ -86,6 +87,10 @@ app.post("/index", async (req, res) => {
 
 app.get("/index", async (req, res) => {
     try {
+        const user = await User.findById(req.session.userId);
+        if (!user) {
+            return res.redirect('/login');
+        }
         const mines = await Mines.find({});
         res.render("index", { mines });
     } catch (err) {
