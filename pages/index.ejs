@@ -1,60 +1,67 @@
 <% layout("../layouts/boilerplate") %>
 
-<h1 class="mb-3 mt-3">Dashboard</h1>
+<h1 class="mb-4 mt-4 text-center head">Dashboard</h1>
 <hr class="border border-warning border-1 opacity-100">
 
 <div class="container">
 
+    <!-- Profile, MineCoins, and Mines Registered Cards -->
     <div class="row mb-5">
-        <div class="col-4">
-            <div class="card p-2 text-center d-flex align-items-center justify-content-center h-100">
-                <h2 class="fw-semibold">Profile</h2>
-                <div class="col-md-4 mb-2">
-                    <img src="/notfound.jpg" class="img-fluid rounded-start ratio ratio-4x3 border" alt="Error">
+        <div class="col-md-4 mb-3">
+            <div class="card p-4 text-center h-100 shadow-sm">
+                <div class="d-flex flex-column align-items-center">
+                    <img src="/notfound.jpg" class="img-fluid rounded-circle mb-3" alt="Profile Image" style="width: 100px; height: 100px;">
+                    <h2 class="fw-semibold"><%= currentUser.username %></h2>
+                    <p class="text-muted mb-1">
+                        <i class="fas fa-map-marker-alt me-1"></i>
+                        <% if(mines.length > 0) { %>
+                            <% if(mines[0].district !== "----Select Your District----") { %>
+                                <%= mines[0].district %>,
+                            <% } else { %>
+                                Not Assigned,
+                            <% } %>
+                            <% if(mines[0].state !== "----Select Your State----") { %>
+                                <%= mines[0].state %>
+                            <% } else { %>
+                                Not Assigned
+                            <% } %>
+                        <% } else { %>
+                            Location Not Assigned
+                        <% } %>
+                    </p>
                 </div>
-                <p>
-                    <h3>Raj Singh</h3>
-                </p>
-                <p class="card-text">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
-                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
-                    </svg>
-                    <% if(mines.length > 0) {%>
-                        <% if(mines[0].district !== "----Select Your District----") {%>
-                            <%= mines[0].district %>,
-                        <% } else { %>
-                            Not Assigned,
-                        <% } %>
-    
-                        <% if(mines[0].state !== "----Select Your State----") {%>
-                            <%= mines[0].state %>
-                        <% } else { %>
-                            Not Assigned
-                        <% } %>
-                    <% } %>
-                </p>
             </div>
         </div>
-        <div class="col-4">
-            <div class="card p-2 text-center d-flex align-items-center justify-content-center h-100">
-                <h2 class="fw-semibold"> MineCoins Available</h2>
-                <h1 class="text-warning mt-4"><%= currentUser.coinBalance %></h1> 
+        <div class="col-md-4 mb-3">
+            <div class="card p-4 text-center h-100 shadow-sm">
+                <div class="d-flex flex-column align-items-center">
+                    <div class="mb-2">
+                        <i class="fas fa-coins fa-3x text-warning"></i>
+                    </div>
+                    <h2 class="fw-semibold">MineCoins Available</h2>
+                    <h1 class="text-warning mt-4 display-4"><%= currentUser.coinBalance %></h1> 
+                </div>
             </div>
         </div>
-        <div class="col-4">
-            <div class="card p-2 text-center d-flex align-items-center justify-content-center h-100">
-                <h2 class="fw-semibold">Mines Registered</h2>
-                <h1 class="mt-4 text-primary"><%= mines.length %></h1>
+        <div class="col-md-4 mb-3">
+            <div class="card p-4 text-center h-100 shadow-sm">
+                <div class="d-flex flex-column align-items-center">
+                    <div class="mb-2">
+                        <i class="fas fa-mountain fa-3x text-primary"></i>
+                    </div>
+                    <h2 class="fw-semibold">Mines Registered</h2>
+                    <h1 class="mt-4 text-primary display-4"><%= mines.length %></h1>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col">
-            <div class="card h-100 p-2 text-center d-flex align-items-center justify-content-center">
-                <h2 class="mt-2 fw-bold">Total CO<sub>2e</sub> emissions</h2>
-                <span class="text-success fs-1 my-2">
-                   
+    <!-- Total CO2 Emissions and Cost Savings Cards -->
+    <div class="row mb-5">
+        <div class="col-md-6 mb-3">
+            <div class="card h-100 p-4 text-center shadow-sm">
+                <h2 class="mt-2 fw-bold">Total CO<sub>2e</sub> Emissions</h2>
+                <span class="text-danger display-4 my-2">
                     <% let tot=0; for(let m of mines) { %>
                         <% if (!isNaN(m.result.totalFootprint) && m.result.totalFootprint !== null) { %>
                             <% tot += parseFloat(m.result.totalFootprint).toFixed(2) *1; %>
@@ -62,110 +69,100 @@
                     <% } %>
                     <%= tot %> 
                 </span>
-                <span class="fs-3">metric tons CO<sub>2e</sub>.</span>
+                <span class="fs-4 text-muted">metric tons CO<sub>2e</sub></span>
             </div>
         </div>
-
-        <div class="col">
-            <div class="card h-100 p-2 text-center d-flex align-items-center justify-content-center">
-            <div>
+        <div class="col-md-6 mb-3">
+            <div class="card h-100 p-4 text-center shadow-sm">
                 <h2 class="mt-2 fw-bold">Total Cost Savings</h2>
-                <span class="fs-1 fw-bold"> ₹ </span>
-                <span class="text-success fs-1 my-2">
-                23522
-                </span>
+                <span class="display-4 fw-bold text-success">₹ 23,522</span>
             </div>
         </div>
-        </div>
-    
-        
-        
     </div>
 
+    <hr class="border border-warning border-1 opacity-100">
+
+    <!-- Your Mines Section -->
+    <h2 class="text-center my-4 fw-bold">Your Mines</h2>
+    <div id="map" style="height: 500px; border-radius: 10px; overflow: hidden;"></div>
 
     <hr class="border border-warning border-1 opacity-100">
 
-    <span class="text-center fs-1 fw-bold d-flex justify-content-center">Your Mines</span>
-    <div id="map" style="height: 500px;"></div>
-    
-    <hr class="border border-warning border-1 opacity-100">
-
-        <% if(mines.length > 0) {%>
-            <div>
-                <% for(let m of mines) {%>
-                    <div class="card mb-4">
+    <% if(mines.length > 0) { %>
+        <div class="row">
+            <% for(let m of mines) { %>
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm">
                         <div class="row g-0">
-                          <div class="col-md-4">
-                            <img src="<%= m.image%>" class="img-fluid rounded-start ratio ratio-4x3" alt="Error">
-                          </div>
-                          <div class="col-md-8">
-                            <div class="card-body">
-                              <h3 class="card-title"><%= m.name %></h3>
-                              <p class="card-text text-secondary">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
-                                    <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
-                                </svg>
-                                <% if(m.district === "----Select Your District----") {%>
-                                    Not Assigned,
-                                <% } else { %>
-                                    <%= m.district %>,
-                                <% } %>
-        
-                                <% if(m.state === "----Select Your State----") {%>
-                                    Not Assigned
-                                <% } else { %>
-                                    <%= m.state %>
-                                <% } %>
-                            </p>
-                              
-                              <a href="/index/<%=m._id%>" class="stretched-link"></a>
+                            <div class="col-md-5">
+                                <img src="<%= m.image %>" class="img-fluid rounded-start" alt="Mine Image" style="height: 100%; object-fit: cover;">
                             </div>
-                            <div class="card-footer">
-                              <p class="text-success">Carbon Footprint: <%= m.result.totalFootprint %> tCO<sub>2e</sub></p>
+                            <div class="col-md-7">
+                                <div class="card-body">
+                                    <h4 class="card-title"><%= m.name %></h4>
+                                    <p class="card-text text-secondary">
+                                        <i class="fas fa-map-marker-alt me-1"></i>
+                                        <% if(m.district === "----Select Your District----") { %>
+                                            Not Assigned,
+                                        <% } else { %>
+                                            <%= m.district %>,
+                                        <% } %>
+                                        <% if(m.state === "----Select Your State----") { %>
+                                            Not Assigned
+                                        <% } else { %>
+                                            <%= m.state %>
+                                        <% } %>
+                                    </p>
+                                    <p class="text-success fw-bold">Carbon Footprint: <%= m.result.totalFootprint %> tCO<sub>2e</sub></p>
+                                    <a href="/index/<%= m._id %>" class="btn btn-primary mt-2">View Details</a>
+                                </div>
                             </div>
-                          </div>
                         </div>
-                        
-                      </div>
-                <% } %>
-            </div>
+                    </div>
+                </div>
             <% } %>
+        </div>
+    <% } %>
+
+    <!-- Carbon Footprint Comparison Chart -->
+    <div class="row">
+        <div class="col-12">
+            <h3 class="text-center mt-5">Carbon Footprint Comparison</h3>
+            <canvas id="comparisonChart" style="max-width: 100%;"></canvas>
+        </div>
+    </div>
 </div>
 
+<!-- Updated CSS Styles -->
 <style>
   body {
-    /* background-image: url("https://img.freepik.com/free-vector/white-with-low-poly-network-connection_1017-29753.jpg?t=st=1725306260~exp=1725309860~hmac=8888afcd8736d0fa759e5a40bcebee93b796c6ee6555eff330a2c2418c2d8107&w=826"); */
-    background-size: cover;
-    background-color: rgb(231, 228, 228);
+    background-color: #f5f5f5;
   }
 
   .container {
-      padding: 30px;
+      padding-top: 30px;
+      padding-bottom: 30px;
   }
 
-  h1 {
-      font-size: 3rem;
+  .head {
+    font-size: 3rem;
+  }
+
+  h1, h2 {
       font-weight: bold;
       margin-bottom: 40px;
-      text-align: center;
   }
 
   /* Card Styles */
   .card {
       border: none;
       border-radius: 10px;
-      overflow: hidden;
       transition: 0.3s ease;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
   .card:hover {
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-      background-color: #f9f9f9;
-  }
-
-  .card-img-top {
-      border-bottom: 2px solid #f39c12;
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   }
 
   .card-body {
@@ -175,7 +172,6 @@
   .card-title {
       font-size: 1.5rem;
       font-weight: bold;
-      margin-bottom: 15px;
   }
 
   .card-text {
@@ -183,146 +179,194 @@
       color: #666;
   }
 
-  .card-footer {
-      background-color: #f4f4f4;
-      padding: 15px;
-      border-top: 1px solid #ddd;
-  }
-
   .text-success {
-      color: #28a745;
-      font-weight: bold;
+      color: #28a745 !important;
   }
 
-  .ratio-4x3 {
-      aspect-ratio: 4 / 3;
+  .text-danger {
+    font-weight: bold;
+      color: #dc3545 !important;
+  }
+
+  .text-warning {
+    font-weight: bold;
+      color: #ffc107 !important;
+  }
+
+  .text-primary {
+    font-weight: bold;
+      color: #007bff !important;
+  }
+
+  .shadow-sm {
+      box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+  }
+
+  .rounded-circle {
       object-fit: cover;
-  }
-
-  svg {
-      margin-bottom: 4px;
-      vertical-align: middle;
   }
 </style>
 
-
+<!-- JavaScript for Map and Chart (Remains Unchanged) -->
 <script>
-    const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>';
-    const mines = { features: <%- JSON.stringify(mines) %>}
+    const maptilerApiKey = "<%- process.env.MAPTILER_API_KEY %>";
+    const mines = {
+        "type": "FeatureCollection",
+        "features": <%- JSON.stringify(mines.map(function(m) {
+            return {
+                type: "Feature",
+                geometry: {
+                    type: "Point",
+                    coordinates: [m.longitude, m.latitude]
+                },
+                properties: {
+                    name: m.name,
+                    carbonFootprint: m.result.totalFootprint,
+                    popUp: `<h4>${m.name}</h4><p>Carbon Footprint: ${m.result.totalFootprint} tCO<sub>2e</sub></p>`
+                }
+            };
+        })) %>
+    };
 </script>
 
 <script>
     maptilersdk.config.apiKey = maptilerApiKey;
 
-const map = new maptilersdk.Map({
-    container: 'map',
-    style: maptilersdk.MapStyle.BRIGHT,
-    center: [79, 22],
-    zoom: 3
-});
-
-map.on('load', function () {
-    map.addSource('mines', {
-        type: 'geojson',
-        data: mines,
-        cluster: true,
-        clusterMaxZoom: 14, // Max zoom to cluster points on
-        clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+    const map = new maptilersdk.Map({
+        container: 'map',
+        style: maptilersdk.MapStyle.BRIGHT,
+        center: [79, 22],
+        zoom: 3
     });
 
-    map.addLayer({
-        id: 'clusters',
-        type: 'circle',
-        source: 'mines',
-        filter: ['has', 'point_count'],
-        paint: {
-            // Use step expressions (https://docs.maptiler.com/gl-style-specification/expressions/#step)
-            // with three steps to implement three types of circles:
-            'circle-color': [
-                'step',
-                ['get', 'point_count'],
-                '#00BCD4',
-                10,
-                '#2196F3',
-                30,
-                '#3F51B5'
-            ],
-            'circle-radius': [
-                'step',
-                ['get', 'point_count'],
-                15,
-                10,
-                20,
-                30,
-                25
-            ]
+    let chartInstance = null;
+
+    function updateChart(selectedMine) {
+        const labels = mines.features.map(m => m.properties.name);
+        const data = mines.features.map(m => m.properties.carbonFootprint);
+        const selectedIndex = labels.indexOf(selectedMine);
+
+        const ctx = document.getElementById('comparisonChart').getContext('2d');
+
+        if (chartInstance) {
+            chartInstance.destroy();  // Clear the previous chart
         }
-    });
 
-    map.addLayer({
-        id: 'cluster-count',
-        type: 'symbol',
-        source: 'mines',
-        filter: ['has', 'point_count'],
-        layout: {
-            'text-field': '{point_count_abbreviated}',
-            'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-            'text-size': 15
-        }
-    });
-
-    map.addLayer({
-        id: 'unclustered-point',
-        type: 'circle',
-        source: 'mines',
-        filter: ['!', ['has', 'point_count']],
-        paint: {
-            'circle-color': 'red',
-            'circle-radius': 3,
-            'circle-stroke-width': 2,
-            'circle-stroke-color': 'black'
-        }
-    });
-
-    // inspect a cluster on click
-    map.on('click', 'clusters', async (e) => {
-        const features = map.queryRenderedFeatures(e.point, {
-            layers: ['clusters']
+        chartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Carbon Footprint (tCO2e)',
+                    data: data,
+                    backgroundColor: data.map((_, idx) => idx === selectedIndex ? 'rgba(255, 99, 132, 0.2)' : 'rgba(54, 162, 235, 0.2)'),
+                    borderColor: data.map((_, idx) => idx === selectedIndex ? 'rgba(255, 99, 132, 1)' : 'rgba(54, 162, 235, 1)'),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
         });
-        const clusterId = features[0].properties.cluster_id;
-        const zoom = await map.getSource('mines').getClusterExpansionZoom(clusterId);
-        map.easeTo({
-            center: features[0].geometry.coordinates,
-            zoom
+    }
+
+    map.on('load', function () {
+        map.addSource('mines', {
+            type: 'geojson',
+            data: mines,
+            cluster: true,
+            clusterMaxZoom: 14,
+            clusterRadius: 50
+        });
+
+        map.addLayer({
+            id: 'clusters',
+            type: 'circle',
+            source: 'mines',
+            filter: ['has', 'point_count'],
+            paint: {
+                'circle-color': [
+                    'step',
+                    ['get', 'point_count'],
+                    '#00BCD4',
+                    10,
+                    '#2196F3',
+                    30,
+                    '#3F51B5'
+                ],
+                'circle-radius': [
+                    'step',
+                    ['get', 'point_count'],
+                    15,
+                    10,
+                    20,
+                    30,
+                    25
+                ]
+            }
+        });
+
+        map.addLayer({
+            id: 'cluster-count',
+            type: 'symbol',
+            source: 'mines',
+            filter: ['has', 'point_count'],
+            layout: {
+                'text-field': '{point_count_abbreviated}',
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-size': 15
+            }
+        });
+
+        map.addLayer({
+            id: 'unclustered-point',
+            type: 'circle',
+            source: 'mines',
+            filter: ['!', ['has', 'point_count']],
+            paint: {
+                'circle-color': 'red',
+                'circle-radius': 3,
+                'circle-stroke-width': 2,
+                'circle-stroke-color': 'black'
+            }
+        });
+
+        map.on('click', 'clusters', async (e) => {
+            const features = map.queryRenderedFeatures(e.point, {
+                layers: ['clusters']
+            });
+            const clusterId = features[0].properties.cluster_id;
+            const zoom = await map.getSource('mines').getClusterExpansionZoom(clusterId);
+            map.easeTo({
+                center: features[0].geometry.coordinates,
+                zoom
+            });
+        });
+
+        map.on('click', 'unclustered-point', function (e) {
+            const mineName = e.features[0].properties.name;
+            const coordinates = e.features[0].geometry.coordinates.slice();
+            
+            // Update chart with selected mine data
+            updateChart(mineName);
+
+            new maptilersdk.Popup()
+                .setLngLat(coordinates)
+                .setHTML(e.features[0].properties.popUp)
+                .addTo(map);
+        });
+
+        map.on('mouseenter', 'clusters', () => {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+        map.on('mouseleave', 'clusters', () => {
+            map.getCanvas().style.cursor = '';
         });
     });
-
-    // When a click event occurs on a feature in
-    // the unclustered-point layer, open a popup at
-    // the location of the feature, with
-    // description HTML from its properties.
-    map.on('click', 'unclustered-point', function (e) {
-        const { popUp } = e.features[0].properties;
-        const coordinates = e.features[0].geometry.coordinates.slice();
-
-        // Ensure that if the map is zoomed out such that
-        // multiple copies of the feature are visible, the
-        // popup appears over the copy being pointed to.
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        }
-
-        new maptilersdk.Popup()
-            .setLngLat(coordinates)
-            .setHTML(popUp)
-            .addTo(map);
-    });
-
-    map.on('mouseenter', 'clusters', () => {
-        map.getCanvas().style.cursor = 'pointer';
-    });
-    map.on('mouseleave', 'clusters', () => {
-        map.getCanvas().style.cursor = '';
-    });
-});
 </script>

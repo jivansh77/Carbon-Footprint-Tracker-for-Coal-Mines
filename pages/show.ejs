@@ -1,5 +1,7 @@
 <% layout("../layouts/boilerplate") %>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <a href="/index" class="">
   <div class="btn btn-primary goback">Go back</div>
 </a>
@@ -77,6 +79,17 @@
             </div>
             <div class="col-12 col-md-6">
               <div id="totalChart"></div>
+            </div>
+          </div>
+
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <h5 class="text-center">Coal Produced Distribution</h5>
+              <canvas id="coalBarChart"></canvas>
+            </div>
+            <div class="col-md-6">
+              <h5 class="text-center">Footprint Distribution</h5>
+              <canvas id="lineChart"></canvas>
             </div>
           </div>
 
@@ -314,6 +327,64 @@
     var chart = new google.visualization.PieChart(document.getElementById('totalChart'));
     chart.draw(data, options);
   }
+</script>
+
+<script>
+  // Bar Chart for Coal Quantity Distribution
+  const ctxBar = document.getElementById('coalBarChart').getContext('2d');
+  const coalBarChart = new Chart(ctxBar, {
+    type: 'bar',
+    data: {
+      labels: ['Lignite', 'Sub-Bituminous', 'Bituminous', 'Anthracite'],
+      datasets: [{
+        label: 'Coal Quantity (kg)',
+        data: [lignite, subbitu, bitu, anthra],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+  
+  // Line Chart for Electricity and Transport Footprint
+  const ctxLine = document.getElementById('lineChart').getContext('2d');
+  const lineChart = new Chart(ctxLine, {
+    type: 'line',
+    data: {
+      labels: ['Coal Footprint', 'Electricity Footprint', 'Transport Footprint', 'Deforestation Footprint'],
+      datasets: [{
+        label: 'Carbon Footprint (tCO2e)',
+        data: [coalFootprint, electricityFootprint, transportFootprint, deforestationFootprint],
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
 </script>
 
 <!-- Tab Navigation Script -->

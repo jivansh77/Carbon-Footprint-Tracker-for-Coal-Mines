@@ -14,6 +14,8 @@ const cors = require('cors');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const maptilerClient = require("@maptiler/client");
+const csv = require('csv-parser');
+const fs = require('fs');
 maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 
 const Mines = require('./models/mines');
@@ -120,17 +122,24 @@ app.get("/index/:id/suggestions",(req, res) => {
 
 app.get("/index/:id", async (req, res) => {
     try {
+        const data = [];
         const mines = await Mines.findById(req.params.id);
         if (!mines) {
             return res.status(404).send("Mine not found");
         }
-        res.render("show", {mines});
+        fs.createReadStream('./mine_data3.csv')
+          .pipe(csv())
+          .on('data', (row) => {
+            data.push(row);
+          })
+          .on('end', () => {
+            res.render('show', { mines, mineData: data });
+          });
     } catch (err) {
         console.error("Error fetching mine:", err);
         res.status(500).send("Internal Server Error");
     }
 });
-
 
 app.delete("/index/:id", async (req, res) => {
     try {
