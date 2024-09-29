@@ -317,7 +317,7 @@ st.markdown(
         </a>
         <a href="http://localhost:3000/index">
             <button style="background-color: #188753; color: black; border: none; padding: 10px 33px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-left: 20px;">
-                View Data
+                Dashboard
             </button>
         </a>
     </div>

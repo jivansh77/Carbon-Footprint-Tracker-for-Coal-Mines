@@ -1,98 +1,129 @@
 <% layout("../layouts/boilerplate") %>
+<% let tot = 0; %>
+<% mines.forEach(function(m) { %>
+    <% if (!isNaN(m.result.totalFootprint) && m.result.totalFootprint !== null) { %>
+        <% tot += parseFloat(m.result.totalFootprint); %>
+    <% } %>
+<% }); %>
+<% let totalEmissions = 543.3587; %>
+<% let totalOffsets = 350; %>
+<% let offsetPercentage = 0; %>
+<% if (totalEmissions > 0) { %>
+    <%    offsetPercentage = (totalOffsets / totalEmissions) * 100; %>
+    <% offsetPercentage = offsetPercentage > 100 ? 100 : offsetPercentage.toFixed(2); %>
+    <%} else { %>
+        <%offsetPercentage = 0; %>
+        <% } %>
 
-<h1 class="mb-4 mt-4 text-center head">Dashboard</h1>
-<hr class="border border-warning border-1 opacity-100">
+<!-- Include necessary external scripts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.0.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<div class="container">
+<!-- Hero Section with Dynamic Globe Visualization -->
+<div class="hero-section">
+    <div class="overlay"></div>
+    <div class="container hero-content text-center">
+        <h1 class="display-4">Welcome, <%= currentUser.username %></h1>
+        <p class="lead">Monitor and reduce your carbon footprint effectively.</p>
+    </div>
+</div>
 
-    <!-- Profile, MineCoins, and Mines Registered Cards -->
-    <div class="row mb-5">
-        <div class="col-md-4 mb-3">
-            <div class="card p-4 text-center h-100 shadow-sm">
-                <div class="d-flex flex-column align-items-center">
-                    <img src="/notfound.jpg" class="img-fluid rounded-circle mb-3" alt="Profile Image" style="width: 100px; height: 100px;">
-                    <h2 class="fw-semibold"><%= currentUser.username %></h2>
-                    <p class="text-muted mb-1">
-                        <i class="fas fa-map-marker-alt me-1"></i>
-                        <% if(mines.length > 0) { %>
-                            <% if(mines[0].district !== "----Select Your District----") { %>
-                                <%= mines[0].district %>,
-                            <% } else { %>
-                                Not Assigned,
-                            <% } %>
-                            <% if(mines[0].state !== "----Select Your State----") { %>
-                                <%= mines[0].state %>
-                            <% } else { %>
-                                Not Assigned
-                            <% } %>
-                        <% } else { %>
-                            Location Not Assigned
-                        <% } %>
-                    </p>
+<!-- Main Container -->
+<div class="container-fluid mt-3">
+
+    <!-- Key Performance Indicators (KPIs) -->
+    <div class="row mb-5 text-center">
+        <!-- Total CO2 Emissions -->
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card kpi-card shadow-sm">
+                <div class="card-body">
+                    <i class="fas fa-cloud-showers-heavy fa-3x text-danger mb-3"></i>
+                    <h5 class="card-title">Total CO<sub>2e</sub> Emissions</h5>
+                    <!-- <h2 class="text-danger"><%= tot.toFixed(2) %> tCO<sub>2e</sub></h2> -->
+                    <h2 class="text-danger"> 543.3587 tCO<sub>2e</sub></h2>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-3">
-            <div class="card p-4 text-center h-100 shadow-sm">
-                <div class="d-flex flex-column align-items-center">
-                    <div class="mb-2">
-                        <i class="fas fa-coins fa-3x text-warning"></i>
-                    </div>
-                    <h2 class="fw-semibold">MineCoins Available</h2>
-                    <h1 class="text-warning mt-4 display-4"><%= currentUser.coinBalance %></h1> 
+        <!-- Total Cost Savings -->
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card kpi-card shadow-sm">
+                <div class="card-body">
+                    <i class="fas fa-dollar-sign fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Total Cost Savings</h5>
+                    <h2 class="text-success">₹ 23,522</h2>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-3">
-            <div class="card p-4 text-center h-100 shadow-sm">
-                <div class="d-flex flex-column align-items-center">
-                    <div class="mb-2">
-                        <i class="fas fa-mountain fa-3x text-primary"></i>
-                    </div>
-                    <h2 class="fw-semibold">Mines Registered</h2>
-                    <h1 class="mt-4 text-primary display-4"><%= mines.length %></h1>
+        <!-- MineCoins Available -->
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card kpi-card shadow-sm">
+                <div class="card-body">
+                    <i class="fas fa-coins fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">MineCoins Available</h5>
+                    <h2 class="text-warning"><%= currentUser.coinBalance %></h2>
+                </div>
+            </div>
+        </div>
+        <!-- Mines Registered -->
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card kpi-card shadow-sm">
+                <div class="card-body">
+                    <i class="fas fa-mountain fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Mines Registered</h5>
+                    <h2 class="text-primary">4</h2>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Total CO2 Emissions and Cost Savings Cards -->
+    <!-- Interactive Data Visualization Panels -->
     <div class="row mb-5">
-        <div class="col-md-6 mb-3">
-            <div class="card h-100 p-4 text-center shadow-sm">
-                <h2 class="mt-2 fw-bold">Total CO<sub>2e</sub> Emissions</h2>
-                <span class="text-danger display-4 my-2">
-                    <% let tot=0; for(let m of mines) { %>
-                        <% if (!isNaN(m.result.totalFootprint) && m.result.totalFootprint !== null) { %>
-                            <% tot += parseFloat(m.result.totalFootprint).toFixed(2) *1; %>
-                        <% } %>
-                    <% } %>
-                    <%= tot %> 
-                </span>
-                <span class="fs-4 text-muted">metric tons CO<sub>2e</sub></span>
+        <!-- Carbon Emission Trends -->
+        <div class="col-lg-8 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Carbon Emission Trends</h5>
+                    <canvas id="emissionTrendsChart" style="height: 350px;"></canvas>
+                </div>
             </div>
         </div>
-        <div class="col-md-6 mb-3">
-            <div class="card h-100 p-4 text-center shadow-sm">
-                <h2 class="mt-2 fw-bold">Total Cost Savings</h2>
-                <span class="display-4 fw-bold text-success">₹ 23,522</span>
+        <!-- Carbon Offset Tracking -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-center mb-4">Carbon Offset Tracking</h5>
+                    <div class="progress-container flex-grow-1 d-flex flex-column justify-content-center">
+                        <!-- Progress Bar with data-offset attribute -->
+                        <div class="progress" style="height: 30px; background-color: #3e3e5e; border-radius: 15px; overflow: hidden;">
+                            <div 
+                                id="offsetProgressBar" 
+                                class="progress-bar" 
+                                role="progressbar" 
+                                data-offset="<%= offsetPercentage %>" 
+                                style="width: 0%;" 
+                                aria-valuenow="<%= offsetPercentage %>" 
+                                aria-valuemin="0" 
+                                aria-valuemax="100">
+                                <span class="progress-bar-text"><%= offsetPercentage %>%</span>
+                            </div>
+                        </div>
+                        <p class="progressText mt-3">Towards Carbon Neutrality</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <hr class="border border-warning border-1 opacity-100">
-
-    <!-- Your Mines Section -->
-    <h2 class="text-center my-4 fw-bold">Your Mines</h2>
-    <div id="map" style="height: 500px; border-radius: 10px; overflow: hidden;"></div>
-
-    <hr class="border border-warning border-1 opacity-100">
-
+    <!-- Map and Mines Section -->
+    <div class="row mb-5">
+    <!-- Your Mines -->
+    <h2 class="text-center my-1 fw-bold mb-4">Your Mines</h2>
     <% if(mines.length > 0) { %>
         <div class="row">
-            <% for(let m of mines) { %>
+            <% for(let m of mines.slice(0,4)) { %>
                 <div class="col-md-6 mb-4">
-                    <div class="card h-100 shadow-sm">
+                    <div class="card h-100 mine-card shadow-sm">
                         <div class="row g-0">
                             <div class="col-md-5">
                                 <img src="<%= m.image %>" class="img-fluid rounded-start" alt="Mine Image" style="height: 100%; object-fit: cover;">
@@ -122,251 +153,392 @@
                 </div>
             <% } %>
         </div>
+    <% } else { %>
+        <p class="text-center">No mines registered yet.</p>
     <% } %>
-
-    <!-- Carbon Footprint Comparison Chart -->
-    <div class="row">
-        <div class="col-12">
-            <h3 class="text-center mt-5">Carbon Footprint Comparison</h3>
-            <canvas id="comparisonChart" style="max-width: 100%;"></canvas>
+    <!-- Map with Heatmap -->
+    <div class="col-lg-8 mb-4 mt-4">
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <div id="map" style="height: 500px; border-radius: 10px; overflow: hidden;"></div>
+            </div>
         </div>
     </div>
+
+    <!-- Recent Activities -->
+    <div class="col-lg-4 mb-5">
+        <div class="card shadow-sm h-100 mt-4 activities">
+            <div class="card-body">
+                <h5 class="card-title text-center mb-4">Recent Activities</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item bg-dark text-light">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        Planted 1,000 Trees
+                    </li>
+                    <li class="list-group-item bg-dark text-light">
+                        <i class="fas fa-lightbulb text-warning me-2"></i>
+                        Installed Renewable Energy Systems
+                    </li>
+                    <li class="list-group-item bg-dark text-light">
+                        <i class="fas fa-recycle text-info me-2"></i>
+                        Recycled 500 Tons of Waste
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carbon Footprint Comparison Chart -->
+    <div class="row mb-5 mt-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Carbon Footprint Comparison</h5>
+                    <canvas id="comparisonChart" style="height: 400px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback and Support Section -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h5>Need Assistance?</h5>
+            <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#chatModal"><i class="fas fa-comments me-2"></i>Chat with Support</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- Chat Support Modal -->
+<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="chatModalLabel">Support Chat</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Placeholder for chatbot integration -->
+        <p>Chatbot integration coming soon!</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Updated CSS Styles -->
 <style>
+    
   body {
-    background-color: #f5f5f5;
+    overflow-x: hidden;
+    background-color: #1e1e2f;
+    color: #cfd8dc;
+    font-family: sans-serif;
   }
 
-  .container {
-      padding-top: 30px;
-      padding-bottom: 30px;
+  .hero-section {
+    position: relative;
+    background: url('/images/coal_mine_bg.jpg') no-repeat center center/cover;
+    height: 300px;
   }
 
-  .head {
-    font-size: 3rem;
+  .hero-section .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(30, 30, 47, 0.8);
   }
 
-  h1, h2 {
-      font-weight: bold;
-      margin-bottom: 40px;
+  .hero-section .hero-content {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
-  /* Card Styles */
   .card {
-      border: none;
-      border-radius: 10px;
-      transition: 0.3s ease;
+    background-color: #2e2e3e;
+    border: none;
+    border-radius: 10px;
   }
 
-  .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  }
-
-  .card-body {
-      padding: 20px;
+  .kpi-card {
+    background: linear-gradient(135deg, #2e2e3e 0%, #3e3e5e 100%);
+    color: #fff;
   }
 
   .card-title {
-      font-size: 1.5rem;
-      font-weight: bold;
-  }
-
-  .card-text {
-      font-size: 1rem;
-      color: #666;
-  }
-
-  .text-success {
-      color: #28a745 !important;
-  }
-
-  .text-danger {
     font-weight: bold;
-      color: #dc3545 !important;
+    color: #fff;
   }
 
-  .text-warning {
+  .card-body {
+    position: relative;
+  }
+
+  .btn-outline-light {
+    color: #cfd8dc;
+    border-color: #cfd8dc;
+  }
+
+  .btn-outline-light:hover {
+    background-color: #cfd8dc;
+    color: #1e1e2f;
+  }
+
+  /* Scrollbar Styles */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #777;
+  }
+
+  /* Chart Styles */
+  #emissionTrendsChart, #comparisonChart {
+    background-color: #1e1e2f;
+  }
+
+  /* Map Styles */
+  #map {
+    border-radius: 10px;
+  }
+
+  .progress {
+    background-color: #3e3e5e;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background-color: #28a745; /* Green color for progress */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-weight: bold;
-      color: #ffc107 !important;
-  }
+    color: #fff;
+    transition: width 1s ease-in-out;
+}
 
-  .text-primary {
-    font-weight: bold;
-      color: #007bff !important;
-  }
+.progress-bar-text {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
 
-  .shadow-sm {
-      box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
-  }
+.progressText {
+    text-align: center;
+    color: white;
+}
 
-  .rounded-circle {
-      object-fit: cover;
-  }
+.activities {
+    width: 95% !important;
+}
 </style>
 
-<!-- JavaScript for Map and Chart (Remains Unchanged) -->
+<!-- JavaScript for Map and Charts -->
 <script>
-    const maptilerApiKey = "<%- process.env.MAPTILER_API_KEY %>";
-    const mines = {
-        "type": "FeatureCollection",
-        "features": <%- JSON.stringify(mines.map(function(m) {
-            return {
-                type: "Feature",
-                geometry: {
-                    type: "Point",
-                    coordinates: [m.longitude, m.latitude]
-                },
-                properties: {
-                    name: m.name,
-                    carbonFootprint: m.result.totalFootprint,
-                    popUp: `<h4>${m.name}</h4><p>Carbon Footprint: ${m.result.totalFootprint} tCO<sub>2e</sub></p>`
-                }
-            };
-        })) %>
-    };
-</script>
+    const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>';
+    const minesData = <%- JSON.stringify(mines) %>;
 
-<script>
+    // Initialize Map
     maptilersdk.config.apiKey = maptilerApiKey;
 
     const map = new maptilersdk.Map({
         container: 'map',
-        style: maptilersdk.MapStyle.BRIGHT,
+        style: maptilersdk.MapStyle.DARK,
         center: [79, 22],
-        zoom: 3
+        zoom: 4
     });
 
-    let chartInstance = null;
-
-    function updateChart(selectedMine) {
-        const labels = mines.features.map(m => m.properties.name);
-        const data = mines.features.map(m => m.properties.carbonFootprint);
-        const selectedIndex = labels.indexOf(selectedMine);
-
-        const ctx = document.getElementById('comparisonChart').getContext('2d');
-
-        if (chartInstance) {
-            chartInstance.destroy();  // Clear the previous chart
-        }
-
-        chartInstance = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Carbon Footprint (tCO2e)',
-                    data: data,
-                    backgroundColor: data.map((_, idx) => idx === selectedIndex ? 'rgba(255, 99, 132, 0.2)' : 'rgba(54, 162, 235, 0.2)'),
-                    borderColor: data.map((_, idx) => idx === selectedIndex ? 'rgba(255, 99, 132, 1)' : 'rgba(54, 162, 235, 1)'),
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    }
-
     map.on('load', function () {
+        // Prepare mines data with valid coordinates
+        const minesFeatures = minesData.map(m => {
+            if (
+                m.geometry &&
+                m.geometry.type === 'Point' &&
+                Array.isArray(m.geometry.coordinates) &&
+                m.geometry.coordinates.length === 2 &&
+                !isNaN(m.geometry.coordinates[0]) &&
+                !isNaN(m.geometry.coordinates[1])
+            ) {
+                return {
+                    type: "Feature",
+                    geometry: m.geometry,
+                    properties: {
+                        name: m.name || 'Unknown Mine',
+                        carbonFootprint: m.result?.totalFootprint || 0
+                    }
+                };
+            } else {
+                // Exclude mines without valid coordinates
+                return null;
+            }
+        }).filter(feature => feature !== null);
+
         map.addSource('mines', {
             type: 'geojson',
-            data: mines,
-            cluster: true,
-            clusterMaxZoom: 14,
-            clusterRadius: 50
-        });
-
-        map.addLayer({
-            id: 'clusters',
-            type: 'circle',
-            source: 'mines',
-            filter: ['has', 'point_count'],
-            paint: {
-                'circle-color': [
-                    'step',
-                    ['get', 'point_count'],
-                    '#00BCD4',
-                    10,
-                    '#2196F3',
-                    30,
-                    '#3F51B5'
-                ],
-                'circle-radius': [
-                    'step',
-                    ['get', 'point_count'],
-                    15,
-                    10,
-                    20,
-                    30,
-                    25
-                ]
+            data: {
+                type: "FeatureCollection",
+                features: minesFeatures
             }
         });
 
+        // Add heatmap layer
         map.addLayer({
-            id: 'cluster-count',
-            type: 'symbol',
+            id: 'mines-heat',
+            type: 'heatmap',
             source: 'mines',
-            filter: ['has', 'point_count'],
-            layout: {
-                'text-field': '{point_count_abbreviated}',
-                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-                'text-size': 15
+            maxzoom: 9,
+            paint: {
+                // Heatmap styling options
             }
         });
 
+        // Add markers layer
         map.addLayer({
-            id: 'unclustered-point',
+            id: 'mines-points',
             type: 'circle',
             source: 'mines',
-            filter: ['!', ['has', 'point_count']],
+            minzoom: 5,
             paint: {
-                'circle-color': 'red',
-                'circle-radius': 3,
+                'circle-radius': 6,
+                'circle-color': '#FF5722',
                 'circle-stroke-width': 2,
-                'circle-stroke-color': 'black'
+                'circle-stroke-color': '#FFFFFF'
             }
         });
 
-        map.on('click', 'clusters', async (e) => {
-            const features = map.queryRenderedFeatures(e.point, {
-                layers: ['clusters']
-            });
-            const clusterId = features[0].properties.cluster_id;
-            const zoom = await map.getSource('mines').getClusterExpansionZoom(clusterId);
-            map.easeTo({
-                center: features[0].geometry.coordinates,
-                zoom
-            });
-        });
-
-        map.on('click', 'unclustered-point', function (e) {
-            const mineName = e.features[0].properties.name;
+        // Add click event for mine markers
+        map.on('click', 'mines-points', function (e) {
             const coordinates = e.features[0].geometry.coordinates.slice();
-            
-            // Update chart with selected mine data
-            updateChart(mineName);
+            const properties = e.features[0].properties;
+            const popupContent = `<h4>${properties.name}</h4><p>Carbon Footprint: ${properties.carbonFootprint} tCO<sub>2e</sub></p>`;
 
             new maptilersdk.Popup()
                 .setLngLat(coordinates)
-                .setHTML(e.features[0].properties.popUp)
+                .setHTML(popupContent)
                 .addTo(map);
         });
 
-        map.on('mouseenter', 'clusters', () => {
+        // Change cursor on hover
+        map.on('mouseenter', 'mines-points', () => {
             map.getCanvas().style.cursor = 'pointer';
         });
-        map.on('mouseleave', 'clusters', () => {
+        map.on('mouseleave', 'mines-points', () => {
             map.getCanvas().style.cursor = '';
         });
+    });
+
+    // Emission Trends Chart
+    const emissionCtx = document.getElementById('emissionTrendsChart').getContext('2d');
+    const emissionData = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+        datasets: [{
+            label: 'CO₂ Emissions',
+            data: [50, 60, 55, 70, 65, 80, 75, 90, 85],
+            borderColor: '#ff6384',
+            backgroundColor: 'rgba(255,99,132,0.2)',
+            fill: true,
+            tension: 0.4
+        }]
+    };
+    const emissionChart = new Chart(emissionCtx, {
+        type: 'line',
+        data: emissionData,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                annotation: {
+                    annotations: {
+                        line1: {
+                            type: 'line',
+                            yMin: 75,
+                            yMax: 75,
+                            borderColor: 'rgba(75, 192, 192, 0.4)',
+                            borderWidth: 2,
+                            label: {
+                                content: 'Target',
+                                enabled: true,
+                                position: 'end'
+                            }
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: { grid: { color: 'rgba(255,255,255,0.1)' } },
+                y: { grid: { color: 'rgba(255,255,255,0.1)' } }
+            }
+        }
+    });
+
+    // Carbon Footprint Comparison Chart
+    const comparisonCtx = document.getElementById('comparisonChart').getContext('2d');
+    const comparisonLabels = minesData.map(m => m.name);
+    const comparisonData = minesData.map(m => m.result.totalFootprint);
+
+    const comparisonChart = new Chart(comparisonCtx, {
+        type: 'bar',
+        data: {
+            labels: comparisonLabels,
+            datasets: [{
+                label: 'Carbon Footprint (tCO₂e)',
+                data: comparisonData,
+                backgroundColor: 'rgba(54,162,235,0.6)',
+                borderColor: 'rgba(54,162,235,1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.parsed.x} tCO₂e`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { color: 'rgba(255,255,255,0.1)' },
+                    ticks: { color: '#cfd8dc' }
+                },
+                y: {
+                    grid: { color: 'rgba(255,255,255,0.1)' },
+                    ticks: { color: '#cfd8dc' }
+                }
+            }
+        }
+    });
+
+    // Update Carbon Offset Progress Gauge
+    const offsetPercentage = 65; // Example value
+    document.getElementById('offsetPercentage').innerText = offsetPercentage;
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const progressBar = document.getElementById('offsetProgressBar');
+        const targetWidth = progressBar.getAttribute('data-offset') + '%';
+        
+        // Trigger reflow to ensure the initial width is applied
+        progressBar.style.width = '0%';
+        progressBar.offsetWidth; // Force reflow
+
+        // Set the width to target percentage to trigger the CSS transition
+        progressBar.style.width = targetWidth;
     });
 </script>
